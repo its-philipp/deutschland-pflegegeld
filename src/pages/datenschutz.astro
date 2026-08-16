@@ -1,0 +1,175 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  SITE_NAME,
+  CONTACT_EMAIL,
+  IMPRESSUM_NAME,
+  IMPRESSUM_ADDRESS,
+  IMPRESSUM_HOSTER,
+} from '../lib/site';
+import { adsEnabled } from '../lib/ads';
+
+/**
+ * Datenschutzerklärung per Art. 13 DSGVO. `noindex`, out of the sitemap.
+ *
+ * The advertising and cookie sections are bound to `adsEnabled`, which reads
+ * the single `ADSENSE_CLIENT` constant. That binding is the point: while ads
+ * are off, no ad script is emitted anywhere, so the sentence "diese Website
+ * setzt keine Cookies" is verifiably true rather than aspirational — and it
+ * flips automatically the day the constant is filled in. A privacy notice that
+ * describes a state the site is not in is the common failure here, and this
+ * makes it structurally impossible.
+ *
+ * No hand-rolled cookie banner: serving personalised ads in the EEA requires
+ * one of Google's certified CMPs (root CLAUDE.md).
+ */
+---
+
+<BaseLayout
+  title={`Datenschutzerklärung — ${SITE_NAME}`}
+  description="Informationen zur Verarbeitung personenbezogener Daten nach Art. 13 DSGVO."
+  path="/datenschutz/"
+  noindex
+>
+  <h1 class="font-display text-3xl font-semibold">Datenschutzerklärung</h1>
+
+  <section class="mt-8 max-w-prose">
+    <h2 class="font-display text-xl font-semibold">Verantwortlicher</h2>
+    <p class="mt-3 whitespace-pre-line">{IMPRESSUM_NAME}
+{IMPRESSUM_ADDRESS}</p>
+    <p class="mt-3">
+      E-Mail: <a class="underline" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+    </p>
+  </section>
+
+  <section class="mt-8 max-w-prose">
+    <h2 class="font-display text-xl font-semibold">
+      Ihre Angaben bleiben auf Ihrem Gerät
+    </h2>
+    <p class="mt-3">
+      Die Rechner und die Selbsteinschätzung auf dieser Website laufen
+      vollständig in Ihrem Browser. Was Sie dort eingeben — etwa Angaben zur
+      Pflegesituation oder zum Gesundheitszustand — wird <strong>nicht</strong> an
+      uns übertragen und nicht gespeichert. Wir sehen diese Angaben zu keinem
+      Zeitpunkt. Sobald Sie die Seite schließen, sind sie fort.
+    </p>
+    <p class="mt-3">
+      Das ist uns bei diesem Thema wichtig: Angaben zur Pflegebedürftigkeit sind
+      Gesundheitsdaten im Sinne von Art. 9 DSGVO. Wir erheben sie deshalb
+      erst gar nicht.
+    </p>
+  </section>
+
+  <section class="mt-8 max-w-prose">
+    <h2 class="font-display text-xl font-semibold">Server-Logfiles</h2>
+    <p class="mt-3">
+      Beim Aufruf dieser Website verarbeitet unser Hosting-Anbieter
+      ({IMPRESSUM_HOSTER}) technisch notwendige Zugriffsdaten: IP-Adresse,
+      Datum und Uhrzeit, aufgerufene Seite, übertragene Datenmenge, Referrer
+      und Browserkennung. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO; das
+      berechtigte Interesse liegt im sicheren und störungsfreien Betrieb der
+      Website. Diese Daten werden nicht mit anderen Datenquellen zusammengeführt
+      und nach kurzer Zeit gelöscht.
+    </p>
+    {/* Ohne diesen Absatz nennt die Erklärung einen US-Dienstleister und
+        schweigt zu Art. 44 ff. DSGVO. */}
+    <p class="mt-3">
+      Mit dem Hosting-Anbieter besteht ein Vertrag zur Auftragsverarbeitung nach
+      Art. 28 DSGVO. Da der Anbieter seinen Sitz in den USA hat, kann es zu einer
+      Übermittlung personenbezogener Daten in ein Drittland kommen. Diese ist
+      durch die vom Anbieter einbezogenen Standardvertragsklauseln der
+      EU-Kommission nach Art. 46 Abs. 2 lit. c DSGVO abgesichert.
+    </p>
+  </section>
+
+  <section class="mt-8 max-w-prose">
+    <h2 class="font-display text-xl font-semibold">Cookies</h2>
+    {
+      adsEnabled ? (
+        <p class="mt-3">
+          Diese Website setzt Cookies im Zusammenhang mit der Werbeauslieferung
+          ein. Über das Einwilligungsbanner können Sie Ihre Auswahl treffen und
+          jederzeit ändern.
+        </p>
+      ) : (
+        <p class="mt-3">
+          Diese Website setzt <strong>keine Cookies</strong> und bindet keine
+          Analyse- oder Trackingdienste ein. Es werden keine
+          Nutzungsprofile erstellt.
+        </p>
+      )
+    }
+  </section>
+
+  <section class="mt-8 max-w-prose">
+    <h2 class="font-display text-xl font-semibold">Schriftarten</h2>
+    <p class="mt-3">
+      Alle Schriftarten liegen auf unserem eigenen Server. Es besteht keine
+      Verbindung zu Google Fonts oder einem anderen externen Anbieter, und es
+      wird dabei keine IP-Adresse an Dritte übertragen.
+    </p>
+  </section>
+
+  <section class="mt-8 max-w-prose">
+    <h2 class="font-display text-xl font-semibold">Werbung</h2>
+    {
+      adsEnabled ? (
+        <>
+          <p class="mt-3">
+            Wir binden Google AdSense ein, einen Dienst der Google Ireland
+            Limited, Gordon House, Barrow Street, Dublin 4, Irland. Google kann
+            dabei Cookies setzen und Nutzungsdaten verarbeiten, um Anzeigen
+            auszuliefern und zu messen. Rechtsgrundlage ist Ihre Einwilligung
+            nach Art. 6 Abs. 1 lit. a DSGVO; eine Datenübermittlung in die USA
+            ist möglich.
+          </p>
+          <p class="mt-3">
+            Anzeigen sind auf dieser Website immer als „Anzeige" gekennzeichnet
+            und vom redaktionellen Inhalt abgesetzt.
+          </p>
+        </>
+      ) : (
+        <p class="mt-3">
+          Diese Website zeigt derzeit <strong>keine Werbung</strong> an. Es ist
+          kein Werbeskript eingebunden, und es werden keine Daten zu
+          Werbezwecken verarbeitet. Sollte sich das ändern, wird diese Erklärung
+          vorher angepasst und Ihre Einwilligung eingeholt.
+        </p>
+      )
+    }
+  </section>
+
+  <section class="mt-8 max-w-prose">
+    <h2 class="font-display text-xl font-semibold">Kontaktaufnahme per E-Mail</h2>
+    <p class="mt-3">
+      Schreiben Sie uns an die im Impressum genannte Adresse, verarbeiten wir
+      Ihre Nachricht und Ihre Absenderangaben ausschließlich, um sie zu
+      beantworten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO,
+      beziehungsweise Art. 6 Abs. 1 lit. b DSGVO, wenn Ihre Anfrage der
+      Anbahnung eines Vertrags dient. Wir geben diese Daten nicht ohne Ihre
+      Einwilligung weiter.
+    </p>
+    <p class="mt-3">
+      Für den Empfang nutzen wir den Weiterleitungsdienst Cloudflare Email
+      Routing (Cloudflare, Inc., 101 Townsend Street, San Francisco, CA 94107,
+      USA). Ihre Nachricht wird dabei von Cloudflare verarbeitet und an unser
+      Postfach weitergeleitet. Es gelten die oben genannten Grundlagen zur
+      Auftragsverarbeitung und zur Drittlandübermittlung.
+    </p>
+  </section>
+
+  <section class="mt-8 max-w-prose">
+    <h2 class="font-display text-xl font-semibold">Ihre Rechte</h2>
+    <p class="mt-3">
+      Sie haben das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16),
+      Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18),
+      Datenübertragbarkeit (Art. 20) und Widerspruch gegen die Verarbeitung
+      (Art. 21). Eine erteilte Einwilligung können Sie jederzeit mit Wirkung für
+      die Zukunft widerrufen.
+    </p>
+    <p class="mt-3">
+      Außerdem können Sie sich bei einer Datenschutz-Aufsichtsbehörde beschweren
+      (Art. 77 DSGVO).
+    </p>
+  </section>
+</BaseLayout>

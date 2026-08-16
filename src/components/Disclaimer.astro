@@ -1,0 +1,65 @@
+---
+/**
+ * The standard disclaimer for every tool and guide page (root CLAUDE.md →
+ * Legal, plus pflege-kompass/CLAUDE.md).
+ *
+ * The wording is deliberate and the constraint here is sharper than on the
+ * sibling sites. This site publishes Informationen and Rechner about care
+ * benefits; it must never read as Rechtsberatung (RDG). Two specific traps:
+ *
+ * 1. **Never promise a Pflegegrad.** A self-assessment produces an
+ *    orientation, and the Medizinischer Dienst plus the Pflegekasse decide —
+ *    saying anything else would both mislead a reader in a hard situation and
+ *    stray into assessing an individual case.
+ * 2. **Never state an amount as what the reader will receive.** Benefit
+ *    amounts depend on the Pflegegrad actually granted and on the care
+ *    situation, and they change with reforms.
+ *
+ * The tone matters as much as the content: this is read by relatives under
+ * stress, so it says what is true plainly, without hedging into fog.
+ */
+interface Props {
+  /** Extra sentence where a page needs one, e.g. a benefit with its own conditions. */
+  note?: string;
+  /** Set on pages carrying the self-assessment, which needs the sharper sentence. */
+  einschaetzung?: boolean;
+}
+
+const { note, einschaetzung = false } = Astro.props;
+---
+
+<aside class="mt-10 border-t border-rule pt-5 text-sm text-ink-mute">
+  <h2 class="font-display text-sm font-semibold tracking-wide text-ink uppercase">Hinweis</h2>
+
+  <p class="mt-2 max-w-prose">
+    Diese Seite gibt allgemeine Informationen zur Pflegeversicherung und ersetzt
+    keine Rechtsberatung und keine Beratung durch die Pflegekasse. Welche
+    Leistungen Ihnen zustehen, entscheidet Ihre Pflegekasse.
+  </p>
+
+  {
+    einschaetzung && (
+      <p class="mt-2 max-w-prose">
+        Die Selbsteinschätzung ist eine Orientierung und kein Pflegegrad. Über
+        den Pflegegrad entscheidet die Pflegekasse auf Grundlage der
+        Begutachtung durch den Medizinischen Dienst. Das Ergebnis hier kann von
+        der Begutachtung abweichen, und es begründet keinen Anspruch.
+      </p>
+    )
+  }
+
+  <p class="mt-2 max-w-prose">
+    Beträge nennen wir mit Quelle und Stand. Sie gelten für den jeweils
+    genannten Pflegegrad und die genannte Situation — was in Ihrem Fall
+    ausgezahlt wird, hängt vom bewilligten Pflegegrad und Ihrer Pflegesituation
+    ab. Gesetzliche Leistungsbeträge ändern sich mit Reformen; maßgeblich ist
+    immer die geltende Fassung der verlinkten Quelle.
+  </p>
+
+  {note && <p class="mt-2 max-w-prose">{note}</p>}
+
+  <p class="mt-2 max-w-prose">
+    Wenn Sie persönliche Beratung brauchen: Die Pflegeberatung nach § 7a SGB XI
+    ist für Sie kostenlos, ebenso die Beratung in den Pflegestützpunkten.
+  </p>
+</aside>

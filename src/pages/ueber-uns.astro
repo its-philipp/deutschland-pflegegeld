@@ -1,0 +1,140 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT_EMAIL, CURRENT_YEAR, SITE_NAME } from '../lib/site';
+import { adsEnabled } from '../lib/ads';
+
+/**
+ * Über uns — indexierbar, weil Impressum und Datenschutz `noindex` tragen und
+ * im Index sonst keine Aussage darüber stünde, wer hier über Geld schreibt, das
+ * Menschen in einer Ausnahmesituation brauchen.
+ *
+ * **Bewusst kurz** (Owner-Entscheidung 2026-08-15, an deutschland-vorlagen
+ * gelernt): Jeder Satz über die eigene Sorgfalt ist eine Behauptung, die
+ * niemand nachprüfen kann, und altert mit. Was hier trägt, ist der verlinkte
+ * Paragraf unter jedem Betrag.
+ *
+ * Der Ton folgt der Design-Richtung „Ruhiger Ratgeber": Wer diese Seite liest,
+ * hat gerade einen Pflegegrad-Bescheid bekommen oder einen Elternteil, der
+ * nicht mehr allein zurechtkommt. Keine Werbesprache, keine Dringlichkeit, und
+ * an der Stelle, an der wir nicht weiterhelfen, ein Verweis auf die kostenlose
+ * Pflegeberatung nach § 7a SGB XI statt auf uns selbst.
+ */
+---
+
+<BaseLayout
+  title={`Über ${SITE_NAME}: Woher die Beträge kommen`}
+  description="Wer hinter Deutschland Pflegegeld steht, aus welchen Paragrafen die Leistungsbeträge stammen, wie oft sie geprüft werden und wo die Grenze zur Pflegeberatung liegt."
+  path="/ueber-uns/"
+>
+  <h1 class="font-display text-3xl font-semibold">Über {SITE_NAME}</h1>
+  <p class="mt-3 max-w-prose text-ink-soft">
+    Woher die Zahlen kommen, wer sie zusammenstellt – und wo diese Seite aufhört
+    und eine Beratung anfangen muss.
+  </p>
+
+  <section class="mt-10 max-w-prose space-y-8">
+    <div>
+      <h2 class="font-display text-xl font-semibold">Wer dahintersteht</h2>
+      <p class="mt-3 text-ink-soft">
+        {SITE_NAME} ist ein privates Projekt von Philipp Trinh aus Hamburg –
+        keine Pflegekasse, kein Pflegedienst, kein Vermittlungsportal. Wir
+        verkaufen nichts und vermitteln niemanden; es gibt hier keine Anbieter,
+        die für eine Empfehlung zahlen. Verantwortlich für die Inhalte nach § 18
+        Abs. 2 MStV bin ebenfalls ich, die vollständige Anbieterkennzeichnung
+        steht im <a href="/impressum/" class="underline underline-offset-2">Impressum</a>.
+      </p>
+      <p class="mt-3 text-ink-soft">
+        Zwei Dinge zur Einordnung: Hier schreibt <strong>keine Pflegeberaterin
+        und kein Sozialrechtler</strong>. Und die Texte dieser Seite entstehen{' '}
+        <strong>mit Unterstützung von KI-Systemen</strong> – unter meiner Regie,
+        und veröffentlicht wird nichts ohne meine Freigabe.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="font-display text-xl font-semibold">Woher die Beträge kommen</h2>
+      <p class="mt-3 text-ink-soft">
+        Alle Leistungsbeträge stehen an einer einzigen Stelle im Quelltext, jeder
+        mit seinem Paragrafen, der Fundstelle und dem Datum, an dem er dort
+        gelesen wurde – Pflegegeld nach § 37 SGB XI, Sachleistung nach § 36,
+        Entlastungsbetrag nach § 45b und so fort. Keine Seite schreibt einen
+        Betrag selbst auf; sie holt ihn aus dieser Liste. Deshalb kann eine Zahl
+        hier nicht an einer Stelle veraltet und an einer anderen aktuell sein.
+      </p>
+      <p class="mt-3 text-ink-soft">
+        Die Eigenanteile im Pflegeheim stammen aus der Erhebung des vdek und
+        werden mit ihrem Stichtag genannt. <strong>Geschätzt oder gerundet wird
+        nichts</strong> – fehlt eine Zahl, fehlt sie.
+      </p>
+      <p class="mt-3 text-ink-soft">
+        Das Pflegerecht ändert sich häufiger als die meisten Rechtsgebiete. Alle
+        Angaben ohne Gewähr: Sehen Sie einen Betrag, an dem für Sie etwas hängt,
+        bitte an der verlinkten Fundstelle nach oder lassen Sie ihn sich von
+        Ihrer Pflegekasse bestätigen.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="font-display text-xl font-semibold">Was diese Seite nicht ist</h2>
+      <p class="mt-3 text-ink-soft">
+        {SITE_NAME} leistet <strong>keine Rechtsberatung</strong> im Sinne des
+        Rechtsdienstleistungsgesetzes und keine Pflegeberatung. Was Ihnen im
+        Einzelfall zusteht, entscheidet Ihre Pflegekasse auf Grundlage des
+        Gutachtens des Medizinischen Dienstes – nicht eine Website, und auch
+        kein Rechner.
+      </p>
+      <p class="mt-3 text-ink-soft">
+        Wenn Sie eine echte Beratung brauchen: Nach <strong>§ 7a SGB XI</strong>
+        {' '}haben Sie Anspruch auf eine kostenlose Pflegeberatung durch Ihre
+        Pflegekasse, auch bei Ihnen zu Hause. Daneben beraten die
+        Pflegestützpunkte, die Verbraucherzentralen und die Sozialverbände; bei
+        Streit mit der Kasse helfen Sozialverbände und Fachanwältinnen für
+        Sozialrecht. Diese Stellen kennen Ihren Fall, wir kennen nur die
+        Vorschrift.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="font-display text-xl font-semibold">Ihre Angaben bleiben bei Ihnen</h2>
+      <p class="mt-3 text-ink-soft">
+        Alle Rechner laufen vollständig in Ihrem Browser. Was Sie eintragen –
+        Pflegegrad, genutzte Leistungen, Einkommen – wird nicht gesendet, nicht
+        gespeichert und nicht ausgewertet. Das ist hier kein technisches Detail:
+        Angaben über Pflegebedürftigkeit sind Gesundheitsdaten im Sinne von
+        Art. 9 DSGVO, und die sichersten Daten sind die, die gar nicht erst
+        erhoben werden. Einzelheiten in der{' '}
+        <a href="/datenschutz/" class="underline underline-offset-2">
+          Datenschutzerklärung</a
+        >.
+      </p>
+    </div>
+
+    {
+      adsEnabled && (
+        <div>
+          <h2 class="font-display text-xl font-semibold">Wie sich die Seite finanziert</h2>
+          <p class="mt-3 text-ink-soft">
+            Die Nutzung ist kostenlos und soll es bleiben; getragen wird die
+            Seite durch Werbung. Jede Anzeige ist als solche gekennzeichnet, und
+            zwischen einer Eingabe und dem daraus berechneten Betrag steht nie
+            eine. Es gibt keine bezahlten Empfehlungen und keine Vermittlung von
+            Pflegediensten, Heimen oder Versicherungen.
+          </p>
+        </div>
+      )
+    }
+
+    <div>
+      <h2 class="font-display text-xl font-semibold">Fehler gefunden?</h2>
+      <p class="mt-3 text-ink-soft">
+        Stimmt ein Betrag nicht mit Ihrem Bescheid überein oder ist eine Angabe
+        überholt, schreiben Sie bitte an{' '}
+        <a href={`mailto:${CONTACT_EMAIL}`} class="underline underline-offset-2">
+          {CONTACT_EMAIL}</a
+        >. Ich sehe an der Fundstelle nach.
+      </p>
+    </div>
+
+    <p class="border-t border-rule pt-4 text-sm text-ink-mute">Stand: {CURRENT_YEAR}</p>
+  </section>
+</BaseLayout>

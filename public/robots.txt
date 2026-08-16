@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://deutschland-pflegegeld.de/sitemap-index.xml

@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CATEGORIES } from '../data/kategorien';
+
+/**
+ * 404 — und der Grund, warum es diese Datei braucht, ist leicht zu übersehen.
+ *
+ * Cloudflare Pages liefert einen statischen Build aus. Fehlt `404.html` im
+ * `dist/`, antwortet eine unbekannte Adresse **nicht** mit 404: Pages fällt auf
+ * `index.html` zurück und schickt **200 mit der Startseite**. Auf
+ * deutschland-kosten.de am 2026-08-16 an der laufenden Seite nachgemessen —
+ * `/gibtsnicht`, `/404` und `/sitemap.xml` gaben alle dieselbe Startseite
+ * zurück. Für einen Crawler ist das ein unbegrenzter Vorrat an Soft-404s. Astro
+ * macht aus dieser Datei `dist/404.html`, und Pages liefert sie dann mit echtem
+ * 404-Status aus.
+ *
+ * `noindex`, weil diese Seite unter beliebig vielen Adressen erreichbar ist.
+ *
+ * Der Ton folgt der Designrichtung „Ruhiger Ratgeber": keine Fehlermeldung, die
+ * jemanden anspringt, der ohnehin einen schweren Tag hat — ein Satz, was
+ * passiert ist, und dann Wege weiter.
+ */
+const grade = [1, 2, 3, 4, 5];
+---
+
+<BaseLayout
+  title="Seite nicht gefunden"
+  description="Diese Seite gibt es nicht. Hier stehen die Pflegegrade und die Übersichten."
+  path="/404/"
+  noindex
+>
+  <h1 class="font-display text-3xl font-semibold sm:text-4xl">
+    Diese Seite gibt es nicht
+  </h1>
+  <p class="mt-4 max-w-prose text-lg">
+    Vielleicht hat sich in der Adresse ein Zeichen verirrt, vielleicht ist die
+    Seite umgezogen. Hier geht es weiter.
+  </p>
+
+  <section class="mt-10">
+    <h2 class="font-display text-xl font-semibold">Die fünf Pflegegrade</h2>
+    <ul class="mt-4 flex flex-wrap gap-2">
+      {
+        grade.map((grad) => (
+          <li>
+            <a
+              href={`/pflegegrad-${grad}/`}
+              class="inline-block rounded border border-current px-4 py-2 underline-offset-2 hover:underline"
+            >
+              Pflegegrad {grad}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="font-display text-xl font-semibold">Themenbereiche</h2>
+    <ul class="mt-4 flex flex-col divide-y divide-rule border-y border-rule">
+      {
+        CATEGORIES.map((kategorie) => (
+          <li>
+            <a
+              href={`/kategorie/${kategorie.slug}/`}
+              class="block py-3 underline underline-offset-2"
+            >
+              {kategorie.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <p class="mt-10">
+    <a href="/" class="underline underline-offset-2">Zur Startseite</a>
+  </p>
+</BaseLayout>

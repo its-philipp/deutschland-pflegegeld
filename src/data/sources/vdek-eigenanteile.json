@@ -1,0 +1,403 @@
+{
+  "_meta": {
+    "topic": "vdek-eigenanteile",
+    "retrieved": "2026-08-03",
+    "collector": "local session (owner's machine)",
+    "quelle": {
+      "herausgeber": "Verband der Ersatzkassen e. V. (vdek)",
+      "titel": "Finanzielle Belastung einer/eines Pflegebedürftigen im Pflegeheim in EUR je Monat",
+      "stand": "1. Juli 2026",
+      "veroeffentlicht": "2026-07-14",
+      "pressemitteilung": "https://www.vdek.com/presse/pressemitteilungen/2026/stationaere-pflege-eigenanteile-juli-2026.html",
+      "datengrafik": "https://www.vdek.com/content/dam/vdeksite/vdek/daten/f_pflegeversicherung/BUND_UND_ALLE_LAENDER_eigenanteile_vergleich_07_2026.jpg",
+      "pdf": "https://www.vdek.com/content/vdeksite/presse/pressemitteilungen/2026/stationaere-pflege-eigenanteile-juli-2026/_jcr_content/par/download/file.res/vdek_pm_20260714_Eigenbeteiligung_Pflegeheim_final.pdf",
+      "abgerufen": "2026-08-03"
+    },
+    "method": "Die Ländertabelle liegt beim vdek nur als Grafik vor (die PDF-Pressemitteilung enthält die 16 Werte nicht im Text). Die Werte wurden aus der veröffentlichten Datengrafik übertragen und anschließend rechnerisch gegen sich selbst geprüft.",
+    "validierung": {
+      "spaltensummen": {
+        "geprueft": 17,
+        "abweichungen": 0,
+        "regel": "EEE + Unterkunft/Verpflegung + Investitionskosten = Eigenbeteiligung ohne Zuschüsse"
+      },
+      "zuschussprozente": {
+        "geprueft": 68,
+        "abweichungen": 0,
+        "regel": "Zuschuss = Prozentsatz nach § 43c SGB XI auf den EEE (15/30/50/75)"
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "geprueft": 68,
+        "exakt": 52,
+        "abweichung_1_euro": 16,
+        "erklaerung": "Die 16 Abweichungen betragen jeweils genau 1 € und sind Rundung, kein Übertragungsfehler: der vdek rundet Zuschuss und Ergebnis unabhängig voneinander. Gegen die **ungerundete** Rechnung (ohne Zuschüsse − Prozentsatz × EEE) liegt jeder veröffentlichte Wert innerhalb von 0,60 €.",
+        "konsequenz": "Auf der Seite gelten die veröffentlichten Werte aus `eigenbeteiligung_mit_zuschuss`. Nicht selbst subtrahieren — sonst weicht die Seite an 16 Stellen um 1 € von der Quelle ab, auf die sie sich beruft."
+      },
+      "gegenprobe_am_fliesstext": "Bundesdurchschnitt 3.364 €, Sachsen-Anhalt mit 2.891 € am niedrigsten, Bremen mit 3.761 € am höchsten — alle drei decken sich mit der Pressemitteilung. Damit ist die Übertragung aus der Grafik unabhängig bestätigt."
+    },
+    "wichtig_fuer_die_seite": [
+      "Es sind **Durchschnittswerte**; die Kosten unterscheiden sich von Heim zu Heim. Innerhalb eines Heims ist der EEE für alle Bewohnenden mit Pflegegrad 2 bis 5 gleich.",
+      "Für Pflegegrad 1 gibt es im Pflegeheim keine Kostenübernahme durch die Pflegekasse (§ 43 Abs. 3 SGB XI gewährt nur den Zuschuss von 131 €).",
+      "Der Zuschuss nach § 43c SGB XI wirkt **nur auf den EEE**, nicht auf Unterkunft, Verpflegung und Investitionskosten. Das ist der häufigste Fehler bei der Darstellung — hier ist er in den Zahlen bereits richtig abgebildet.",
+      "Die Ausbildungskosten sind im EEE enthalten; sie stehen in der Quelle als Klammerwert und sind hier als eigenes Feld geführt."
+    ]
+  },
+  "laender": [
+    {
+      "code": "BUND",
+      "name": "Bundesdurchschnitt",
+      "eee_ohne_zuschuss": 2088,
+      "davon_ausbildungskosten": 150,
+      "unterkunft_verpflegung": 1068,
+      "investitionskosten": 521,
+      "eigenbeteiligung_ohne_zuschuss": 3677,
+      "zuschuss": {
+        "bis_12_monate_15": 313,
+        "ab_12_monate_30": 626,
+        "ab_24_monate_50": 1044,
+        "ab_36_monate_75": 1566
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3364,
+        "ab_12_monate": 3051,
+        "ab_24_monate": 2633,
+        "ab_36_monate": 2111
+      }
+    },
+    {
+      "code": "BW",
+      "name": "Baden-Württemberg",
+      "eee_ohne_zuschuss": 2401,
+      "davon_ausbildungskosten": 164,
+      "unterkunft_verpflegung": 1153,
+      "investitionskosten": 463,
+      "eigenbeteiligung_ohne_zuschuss": 4017,
+      "zuschuss": {
+        "bis_12_monate_15": 360,
+        "ab_12_monate_30": 720,
+        "ab_24_monate_50": 1201,
+        "ab_36_monate_75": 1801
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3657,
+        "ab_12_monate": 3297,
+        "ab_24_monate": 2817,
+        "ab_36_monate": 2216
+      }
+    },
+    {
+      "code": "BY",
+      "name": "Bayern",
+      "eee_ohne_zuschuss": 2185,
+      "davon_ausbildungskosten": 123,
+      "unterkunft_verpflegung": 979,
+      "investitionskosten": 434,
+      "eigenbeteiligung_ohne_zuschuss": 3598,
+      "zuschuss": {
+        "bis_12_monate_15": 328,
+        "ab_12_monate_30": 656,
+        "ab_24_monate_50": 1093,
+        "ab_36_monate_75": 1639
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3270,
+        "ab_12_monate": 2943,
+        "ab_24_monate": 2506,
+        "ab_36_monate": 1959
+      }
+    },
+    {
+      "code": "BE",
+      "name": "Berlin",
+      "eee_ohne_zuschuss": 2410,
+      "davon_ausbildungskosten": 239,
+      "unterkunft_verpflegung": 870,
+      "investitionskosten": 469,
+      "eigenbeteiligung_ohne_zuschuss": 3749,
+      "zuschuss": {
+        "bis_12_monate_15": 362,
+        "ab_12_monate_30": 723,
+        "ab_24_monate_50": 1205,
+        "ab_36_monate_75": 1808
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3388,
+        "ab_12_monate": 3026,
+        "ab_24_monate": 2544,
+        "ab_36_monate": 1942
+      }
+    },
+    {
+      "code": "BB",
+      "name": "Brandenburg",
+      "eee_ohne_zuschuss": 2172,
+      "davon_ausbildungskosten": 129,
+      "unterkunft_verpflegung": 972,
+      "investitionskosten": 332,
+      "eigenbeteiligung_ohne_zuschuss": 3476,
+      "zuschuss": {
+        "bis_12_monate_15": 326,
+        "ab_12_monate_30": 652,
+        "ab_24_monate_50": 1086,
+        "ab_36_monate_75": 1629
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3150,
+        "ab_12_monate": 2824,
+        "ab_24_monate": 2390,
+        "ab_36_monate": 1847
+      }
+    },
+    {
+      "code": "HB",
+      "name": "Bremen",
+      "eee_ohne_zuschuss": 2296,
+      "davon_ausbildungskosten": 179,
+      "unterkunft_verpflegung": 1179,
+      "investitionskosten": 630,
+      "eigenbeteiligung_ohne_zuschuss": 4105,
+      "zuschuss": {
+        "bis_12_monate_15": 344,
+        "ab_12_monate_30": 689,
+        "ab_24_monate_50": 1148,
+        "ab_36_monate_75": 1722
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3761,
+        "ab_12_monate": 3416,
+        "ab_24_monate": 2957,
+        "ab_36_monate": 2383
+      }
+    },
+    {
+      "code": "HH",
+      "name": "Hamburg",
+      "eee_ohne_zuschuss": 2159,
+      "davon_ausbildungskosten": 229,
+      "unterkunft_verpflegung": 1074,
+      "investitionskosten": 572,
+      "eigenbeteiligung_ohne_zuschuss": 3805,
+      "zuschuss": {
+        "bis_12_monate_15": 324,
+        "ab_12_monate_30": 648,
+        "ab_24_monate_50": 1080,
+        "ab_36_monate_75": 1619
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3481,
+        "ab_12_monate": 3157,
+        "ab_24_monate": 2726,
+        "ab_36_monate": 2186
+      }
+    },
+    {
+      "code": "HE",
+      "name": "Hessen",
+      "eee_ohne_zuschuss": 2233,
+      "davon_ausbildungskosten": 174,
+      "unterkunft_verpflegung": 1005,
+      "investitionskosten": 528,
+      "eigenbeteiligung_ohne_zuschuss": 3766,
+      "zuschuss": {
+        "bis_12_monate_15": 335,
+        "ab_12_monate_30": 670,
+        "ab_24_monate_50": 1117,
+        "ab_36_monate_75": 1675
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3431,
+        "ab_12_monate": 3096,
+        "ab_24_monate": 2650,
+        "ab_36_monate": 2091
+      }
+    },
+    {
+      "code": "MV",
+      "name": "Mecklenburg-Vorpommern",
+      "eee_ohne_zuschuss": 2070,
+      "davon_ausbildungskosten": 148,
+      "unterkunft_verpflegung": 901,
+      "investitionskosten": 371,
+      "eigenbeteiligung_ohne_zuschuss": 3342,
+      "zuschuss": {
+        "bis_12_monate_15": 311,
+        "ab_12_monate_30": 621,
+        "ab_24_monate_50": 1035,
+        "ab_36_monate_75": 1553
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3032,
+        "ab_12_monate": 2721,
+        "ab_24_monate": 2307,
+        "ab_36_monate": 1790
+      }
+    },
+    {
+      "code": "NI",
+      "name": "Niedersachsen",
+      "eee_ohne_zuschuss": 1862,
+      "davon_ausbildungskosten": 136,
+      "unterkunft_verpflegung": 857,
+      "investitionskosten": 568,
+      "eigenbeteiligung_ohne_zuschuss": 3287,
+      "zuschuss": {
+        "bis_12_monate_15": 279,
+        "ab_12_monate_30": 559,
+        "ab_24_monate_50": 931,
+        "ab_36_monate_75": 1397
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3008,
+        "ab_12_monate": 2728,
+        "ab_24_monate": 2356,
+        "ab_36_monate": 1891
+      }
+    },
+    {
+      "code": "NW",
+      "name": "Nordrhein-Westfalen",
+      "eee_ohne_zuschuss": 1983,
+      "davon_ausbildungskosten": 173,
+      "unterkunft_verpflegung": 1331,
+      "investitionskosten": 654,
+      "eigenbeteiligung_ohne_zuschuss": 3968,
+      "zuschuss": {
+        "bis_12_monate_15": 297,
+        "ab_12_monate_30": 595,
+        "ab_24_monate_50": 992,
+        "ab_36_monate_75": 1487
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3671,
+        "ab_12_monate": 3373,
+        "ab_24_monate": 2977,
+        "ab_36_monate": 2481
+      }
+    },
+    {
+      "code": "RP",
+      "name": "Rheinland-Pfalz",
+      "eee_ohne_zuschuss": 1766,
+      "davon_ausbildungskosten": 145,
+      "unterkunft_verpflegung": 1280,
+      "investitionskosten": 508,
+      "eigenbeteiligung_ohne_zuschuss": 3554,
+      "zuschuss": {
+        "bis_12_monate_15": 265,
+        "ab_12_monate_30": 530,
+        "ab_24_monate_50": 883,
+        "ab_36_monate_75": 1325
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3289,
+        "ab_12_monate": 3024,
+        "ab_24_monate": 2671,
+        "ab_36_monate": 2230
+      }
+    },
+    {
+      "code": "SL",
+      "name": "Saarland",
+      "eee_ohne_zuschuss": 2176,
+      "davon_ausbildungskosten": 254,
+      "unterkunft_verpflegung": 1271,
+      "investitionskosten": 574,
+      "eigenbeteiligung_ohne_zuschuss": 4021,
+      "zuschuss": {
+        "bis_12_monate_15": 326,
+        "ab_12_monate_30": 653,
+        "ab_24_monate_50": 1088,
+        "ab_36_monate_75": 1632
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3695,
+        "ab_12_monate": 3368,
+        "ab_24_monate": 2933,
+        "ab_36_monate": 2389
+      }
+    },
+    {
+      "code": "SN",
+      "name": "Sachsen",
+      "eee_ohne_zuschuss": 2136,
+      "davon_ausbildungskosten": 135,
+      "unterkunft_verpflegung": 881,
+      "investitionskosten": 455,
+      "eigenbeteiligung_ohne_zuschuss": 3472,
+      "zuschuss": {
+        "bis_12_monate_15": 320,
+        "ab_12_monate_30": 641,
+        "ab_24_monate_50": 1068,
+        "ab_36_monate_75": 1602
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3152,
+        "ab_12_monate": 2831,
+        "ab_24_monate": 2404,
+        "ab_36_monate": 1870
+      }
+    },
+    {
+      "code": "ST",
+      "name": "Sachsen-Anhalt",
+      "eee_ohne_zuschuss": 1993,
+      "davon_ausbildungskosten": 104,
+      "unterkunft_verpflegung": 852,
+      "investitionskosten": 345,
+      "eigenbeteiligung_ohne_zuschuss": 3190,
+      "zuschuss": {
+        "bis_12_monate_15": 299,
+        "ab_12_monate_30": 598,
+        "ab_24_monate_50": 997,
+        "ab_36_monate_75": 1495
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 2891,
+        "ab_12_monate": 2592,
+        "ab_24_monate": 2194,
+        "ab_36_monate": 1695
+      }
+    },
+    {
+      "code": "SH",
+      "name": "Schleswig-Holstein",
+      "eee_ohne_zuschuss": 1782,
+      "davon_ausbildungskosten": 76,
+      "unterkunft_verpflegung": 1060,
+      "investitionskosten": 573,
+      "eigenbeteiligung_ohne_zuschuss": 3415,
+      "zuschuss": {
+        "bis_12_monate_15": 267,
+        "ab_12_monate_30": 535,
+        "ab_24_monate_50": 891,
+        "ab_36_monate_75": 1337
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3148,
+        "ab_12_monate": 2880,
+        "ab_24_monate": 2524,
+        "ab_36_monate": 2079
+      }
+    },
+    {
+      "code": "TH",
+      "name": "Thüringen",
+      "eee_ohne_zuschuss": 2045,
+      "davon_ausbildungskosten": 122,
+      "unterkunft_verpflegung": 971,
+      "investitionskosten": 454,
+      "eigenbeteiligung_ohne_zuschuss": 3470,
+      "zuschuss": {
+        "bis_12_monate_15": 307,
+        "ab_12_monate_30": 614,
+        "ab_24_monate_50": 1023,
+        "ab_36_monate_75": 1534
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3163,
+        "ab_12_monate": 2857,
+        "ab_24_monate": 2448,
+        "ab_36_monate": 1936
+      }
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PflegegradBadge from '../components/PflegegradBadge.astro';
+import PflegegradSkala from '../components/PflegegradSkala.astro';
+import AdSlot from '../components/AdSlot.astro';
+import Icon from '../components/Icon.astro';
+import NaechsterSchritt from '../components/NaechsterSchritt.astro';
+import ThemenSuche from '../components/ThemenSuche.tsx';
+import type { ThemenSucheItem } from '../components/ThemenSuche.tsx';
+import { SITE_NAME } from '../lib/site';
+import { CATEGORIES, accentFor, iconFor } from '../data/kategorien';
+import { THEMEN, pfadVon } from '../data/themen';
+import { PFLEGEGELD, SGB_XI_STAND } from '../data/leistungen';
+
+const pflegegrade = [1, 2, 3, 4, 5] as const;
+
+// Plain data only — the island's serialized props must never carry a whole
+// Category or Thema object (root task brief).
+/**
+ * Die Skala als Kopf der Startseite (Überarbeitung 2026-08-15).
+ *
+ * Vorher: Überschrift, Absatz, Suchfeld, einundzwanzig gleich aussehende
+ * Zeilen — und das Signaturelement dieser Seite, die Farbskala der fünf
+ * Pflegegrade, kam auf der Startseite überhaupt nicht vor. Ebenso wenig eine
+ * einzige der Zahlen, wegen der die Leute hier sind.
+ *
+ * Jetzt trägt dieselbe Skala das Pflegegeld je Grad. Sie beantwortet damit in
+ * einem Zug die zwei häufigsten Fragen — „was bedeutet mein Grad" und „was
+ * bekomme ich" — und ist zugleich die Navigation für die Hälfte der Besucher.
+ * Grad 1 zeigt bewusst „kein Pflegegeld" statt eines Strichs: Das ist die
+ * ehrliche Antwort und die Frage, mit der die meisten auf diese Seite kommen.
+ */
+const pflegegeldJeGrad = Object.fromEntries(
+  ([1, 2, 3, 4, 5] as const).map((grad) => [
+    grad,
+    PFLEGEGELD.betrag[grad] === null
+      ? 'kein Pflegegeld'
+      : `${PFLEGEGELD.betrag[grad]!.toLocaleString('de-DE')} €`,
+  ]),
+);
+
+const themenItems: ThemenSucheItem[] = THEMEN.map((thema) => {
+  const kategorie = CATEGORIES.find((category) => category.slug === thema.kategorie);
+  return {
+    slug: thema.slug,
+    pfad: pfadVon(thema),
+    titel: thema.titel,
+    kategorie: thema.kategorie,
+    kategorieLabel: kategorie?.label ?? thema.kategorie,
+    accent: accentFor(thema.kategorie),
+    icon: iconFor(thema.slug, thema.kategorie),
+  };
+});
+---
+
+<BaseLayout
+  title={`${SITE_NAME} — Orientierung bei Pflegegrad, Pflegegeld und Heimkosten`}
+  description="Orientierung bei Pflegegrad, Pflegegeld, Antrag und Begutachtung sowie den Kosten eines Pflegeheims — verständlich erklärt und ohne Fachjargon."
+  path="/"
+>
+  <h1 class="font-display text-4xl text-ink">{SITE_NAME}</h1>
+  <p class="mt-4 max-w-prose text-ink">
+    Wir nehmen uns die Zeit, die Ihnen im Alltag oft fehlt. Neben Pflegegeld begleiten wir Sie
+    auch bei der Einschätzung Ihres Pflegegrads, beim Antrag und der Begutachtung sowie bei den
+    Kosten eines Pflegeheims und dem Eigenanteil — Schritt für Schritt und in ruhiger Sprache.
+  </p>
+
+  <section class="mt-10">
+    <h2 class="font-display text-2xl text-ink">Was Ihr Pflegegrad an Pflegegeld bedeutet</h2>
+    <p class="mt-2 max-w-prose text-[15px] text-ink-mute">
+      Wählen Sie Ihren Grad — jede Stufe führt zu ihrer Seite mit allen Leistungen,
+      jeweils mit der Vorschrift, aus der der Betrag stammt.
+    </p>
+    <div class="mt-5">
+      <PflegegradSkala
+        betraege={pflegegeldJeGrad}
+        betragLabel="Pflegegeld im Monat, § 37 Abs. 1 SGB XI"
+        verlinkt
+        beschriftet
+      />
+    </div>
+    <p class="mt-3 text-[14px] text-ink-mute">Stand: {SGB_XI_STAND.split('-').reverse().join('.')}</p>
+  </section>
+
+  {/* Allowed slot: below the intro, never between the search input and its
+      results (root CLAUDE.md → Advertising slots). */}
+  <div class="mt-10">
+    <AdSlot />
+  </div>
+
+  <section class="mt-16">
+    <h2 class="font-display text-2xl text-ink">Themen durchsuchen</h2>
+    <p class="mt-2 max-w-prose text-[15px] text-ink-mute">
+      {
+        themenItems.length > 0
+          ? 'Suchen Sie nach einem Stichwort, oder sehen Sie sich die vollständige Liste an.'
+          : 'Die Themenseiten entstehen gerade. Sobald sie stehen, finden Sie sie hier über die Suche.'
+      }
+    </p>
+    <div class="mt-6">
+      <ThemenSuche items={themenItems} client:load />
+    </div>
+  </section>
+
+  <section class="mt-16">
+    <h2 class="font-display text-2xl text-ink">Die fünf Pflegegrade</h2>
+    <p class="mt-2 max-w-prose text-[15px] text-ink-mute">
+      Eine Farbskala, die auf jeder Seite dasselbe bedeutet — von Pflegegrad 1 bis Pflegegrad 5.
+    </p>
+    <ul class="mt-6 flex flex-wrap items-center gap-4">
+      {
+        pflegegrade.map((grad) => (
+          <li>
+            <PflegegradBadge grad={grad} />
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="mt-16">
+    <h2 class="font-display text-2xl text-ink">Bereiche</h2>
+    <p class="mt-2 max-w-prose text-[15px] text-ink-mute">
+      {SITE_NAME} deckt mehr ab als der Name vermuten lässt: Pflegegrad, Leistungen, Pflegeheim
+      und Eigenanteil sowie Antrag und Begutachtung gehören genauso dazu.
+    </p>
+    <ul class="mt-6 flex flex-col divide-y divide-rule border-y border-rule">
+      {
+        CATEGORIES.map((category) => (
+          <li style={`--accent: ${category.accent}`}>
+            <a
+              href={`/kategorie/${category.slug}/`}
+              class="flex items-center gap-4 py-4 transition-colors hover:bg-(--accent)/5"
+            >
+              <span class="text-(--accent)">
+                <Icon name={category.icon} class="h-7 w-7" />
+              </span>
+              <span class="font-display text-lg text-ink">{category.label}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="mt-16 max-w-prose">
+    <h2 class="font-display text-2xl text-ink">Wie wir rechnen</h2>
+    <ul class="mt-4 flex flex-col gap-3 text-[15px] text-ink-mute">
+      <li class="flex gap-2.5">
+        <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-ink" />
+        <span>
+          Jeder Betrag, den wir nennen, trägt eine Quelle und ein Stand-Datum, damit Sie ihn
+          selbst nachprüfen können.
+        </span>
+      </li>
+      <li class="flex gap-2.5">
+        <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-ink" />
+        <span>
+          Unsere Einschätzungen sind Orientierung, keine Rechtsberatung — die verbindliche
+          Entscheidung über Pflegegrad und Leistungen trifft immer die Pflegekasse.
+        </span>
+      </li>
+      <li class="flex gap-2.5">
+        <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-ink" />
+        <span>Wir nehmen uns Zeit für verständliche Erklärungen statt Fachjargon.</span>
+      </li>
+    </ul>
+  </section>
+
+  <NaechsterSchritt akzent={accentFor('antrag')} />
+</BaseLayout>

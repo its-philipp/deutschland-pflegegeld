@@ -1,0 +1,251 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import Icon from '../components/Icon.astro';
+import { accentFor } from '../data/kategorien';
+import {
+  BUND,
+  EIGENANTEIL_QUELLE,
+  LAENDER,
+  landSlug,
+  rangErstesJahr,
+  spanneErstesJahr,
+  type LandEigenanteil,
+} from '../data/eigenanteile';
+import { LEISTUNGSZUSCHLAG, VOLLSTATIONAER } from '../data/leistungen';
+
+/**
+ * "Pflegeheim Kosten «Bundesland»" — sixteen pages (queue task 2.7).
+ *
+ * The page exists because the number people are given ("ein Heimplatz kostet
+ * 3.364 €") hides the two things that decide what they actually pay: which
+ * Bundesland they are in, and how long they have been there. Both are in the
+ * vdek data, so both are on the page.
+ *
+ * **The Leistungszuschlag is the trap this page is built around.** § 43c SGB XI
+ * reduces only the EEE — the care share — and leaves Unterkunft, Verpflegung
+ * and Investitionskosten untouched. Ratgeber routinely present it as a discount
+ * on the whole bill, which overstates the relief by a wide margin. The
+ * breakdown here shows the three parts separately, so the reader can see what
+ * the percentage does and does not touch.
+ */
+export function getStaticPaths() {
+  return LAENDER.map((land) => ({ params: { land: landSlug(land) }, props: { land } }));
+}
+
+interface Props {
+  land: LandEigenanteil;
+}
+
+const { land } = Astro.props;
+const akzent = accentFor('heim');
+const { guenstigste, teuerste } = spanneErstesJahr();
+const rang = rangErstesJahr(land);
+
+const euro = (b: number) =>
+  b.toLocaleString('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+const datum = (iso: string) => iso.split('-').reverse().join('.');
+
+const erstesJahr = land.eigenbeteiligung_mit_zuschuss.bis_12_monate;
+const abweichung = erstesJahr - BUND.eigenbeteiligung_mit_zuschuss.bis_12_monate;
+
+const stufen = [
+  { label: 'im 1. Jahr', prozent: 15, zuschuss: land.zuschuss.bis_12_monate_15, zahlt: land.eigenbeteiligung_mit_zuschuss.bis_12_monate },
+  { label: 'ab dem 2. Jahr', prozent: 30, zuschuss: land.zuschuss.ab_12_monate_30, zahlt: land.eigenbeteiligung_mit_zuschuss.ab_12_monate },
+  { label: 'ab dem 3. Jahr', prozent: 50, zuschuss: land.zuschuss.ab_24_monate_50, zahlt: land.eigenbeteiligung_mit_zuschuss.ab_24_monate },
+  { label: 'ab dem 4. Jahr', prozent: 75, zuschuss: land.zuschuss.ab_36_monate_75, zahlt: land.eigenbeteiligung_mit_zuschuss.ab_36_monate },
+];
+
+const bestandteile = [
+  {
+    was: 'Pflegekosten (einrichtungseinheitlicher Eigenanteil)',
+    betrag: land.eee_ohne_zuschuss,
+    hinweis: `Darin enthalten: ${euro(land.davon_ausbildungskosten)} für die Ausbildung von Pflegekräften. Nur dieser Teil wird durch den Zuschlag gemindert.`,
+    gemindert: true,
+  },
+  {
+    was: 'Unterkunft und Verpflegung',
+    betrag: land.unterkunft_verpflegung,
+    hinweis: 'Zimmer und Essen. Vom Leistungszuschlag unberührt.',
+    gemindert: false,
+  },
+  {
+    was: 'Investitionskosten',
+    betrag: land.investitionskosten,
+    hinweis: 'Für Bau und Instandhaltung des Hauses. Vom Leistungszuschlag unberührt.',
+    gemindert: false,
+  },
+];
+
+const titel = `Pflegeheim Kosten ${land.name} 2026: Eigenanteil im Monat`;
+const beschreibung = `Was ein Heimplatz in ${land.name} selbst kostet: ${euro(erstesJahr)} im ersten Jahr, mit den drei Kostenteilen einzeln und dem Leistungszuschlag nach Aufenthaltsdauer. Stand ${datum(EIGENANTEIL_QUELLE.abgerufen)}.`;
+---
+
+<BaseLayout title={titel} description={beschreibung} path={`/pflegeheim-kosten-${landSlug(land)}/`}>
+  <p style={`--accent: ${akzent}`} class="flex items-center gap-2 text-[14px] font-medium text-(--accent)">
+    <Icon name="heim" class="h-5 w-5" />
+    Pflegeheim & Eigenanteil
+  </p>
+
+  <h1 class="mt-3 font-display text-3xl text-ink sm:text-4xl">
+    Was kostet ein Pflegeheim in {land.name}?
+  </h1>
+
+  <p class="mt-6 max-w-prose text-lg text-ink">
+    Im ersten Jahr zahlen Bewohnerinnen und Bewohner in {land.name} durchschnittlich{' '}
+    <strong>{euro(erstesJahr)} im Monat</strong> aus eigener Tasche. Das sind{' '}
+    {abweichung === 0
+      ? 'genau so viel wie im Bundesdurchschnitt'
+      : `${euro(Math.abs(abweichung))} ${abweichung > 0 ? 'mehr' : 'weniger'} als im Bundesdurchschnitt`}{' '}
+    ({euro(BUND.eigenbeteiligung_mit_zuschuss.bis_12_monate)}). Unter den 16 Bundesländern liegt{' '}
+    {land.name} damit auf Platz {rang} von 16 — Platz 1 ist am günstigsten.
+  </p>
+
+  <p class="mt-4 max-w-prose text-ink-soft">
+    Je länger jemand im Heim lebt, desto weniger wird es: {euro(land.eigenbeteiligung_mit_zuschuss.ab_36_monate)}{' '}
+    ab dem vierten Jahr. Warum das so ist, steht weiter unten.
+  </p>
+
+  <div class="mt-10">
+    <AdSlot />
+  </div>
+
+  <h2 class="mt-12 font-display text-2xl text-ink">Woraus sich der Eigenanteil zusammensetzt</h2>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    Drei Posten, und nur einer davon wird durch den Zuschlag der Pflegekasse kleiner. Das ist der
+    Punkt, an dem die meisten Darstellungen zu viel versprechen.
+  </p>
+
+  <div class="mt-5 overflow-x-auto">
+    <table class="w-full min-w-[32rem] text-left">
+      <tbody>
+        {
+          bestandteile.map((b) => (
+            <tr class="border-b border-rule align-baseline">
+              <th scope="row" class="py-3 pr-3 text-left font-normal">
+                <span class="block text-ink">{b.was}</span>
+                <span class="mt-0.5 block text-[15px] text-ink-mute">{b.hinweis}</span>
+              </th>
+              <td class="py-3 text-right font-display text-lg tabular-nums whitespace-nowrap text-ink">
+                {euro(b.betrag)}
+              </td>
+            </tr>
+          ))
+        }
+        <tr class="align-baseline">
+          <th scope="row" class="py-3 pr-3 text-left font-semibold text-ink">
+            Zusammen, vor dem Zuschlag
+          </th>
+          <td class="py-3 text-right font-display text-xl tabular-nums whitespace-nowrap text-ink">
+            {euro(land.eigenbeteiligung_ohne_zuschuss)}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="mt-14 font-display text-2xl text-ink">Der Zuschlag wächst mit der Aufenthaltsdauer</h2>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    Nach § 43c SGB XI übernimmt die Pflegekasse einen wachsenden Anteil der <em>Pflegekosten</em> —
+    nicht der gesamten Rechnung. Deshalb sinkt der Eigenanteil deutlich, aber nie auf null.
+  </p>
+
+  <div class="mt-5 overflow-x-auto">
+    <table class="w-full min-w-[32rem] text-left">
+      <thead>
+        <tr class="border-b-2 border-ink">
+          <th scope="col" class="py-2 pr-3 font-display font-semibold">Aufenthalt</th>
+          <th scope="col" class="py-2 pr-3 text-right font-display font-semibold">Zuschlag</th>
+          <th scope="col" class="py-2 text-right font-display font-semibold">Sie zahlen</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          stufen.map((s) => (
+            <tr class="border-b border-rule align-baseline">
+              <th scope="row" class="py-3 pr-3 text-left font-normal text-ink">
+                {s.label}
+                <span class="mt-0.5 block text-[15px] text-ink-mute">
+                  {s.prozent} % der Pflegekosten
+                </span>
+              </th>
+              <td class="py-3 pr-3 text-right font-display tabular-nums whitespace-nowrap text-ink-soft">
+                − {euro(s.zuschuss)}
+              </td>
+              <td class="py-3 text-right font-display text-lg tabular-nums whitespace-nowrap text-ink">
+                {euro(s.zahlt)}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <p class="mt-4 max-w-prose text-ink-soft">
+    Der Zuschlag gilt ab Pflegegrad {LEISTUNGSZUSCHLAG.gilt_ab_pflegegrad}. Dazu zahlt die
+    Pflegekasse ihren festen Anteil an den Pflegekosten — bei Pflegegrad 2 sind das{' '}
+    {euro(VOLLSTATIONAER.betrag[2]!)} im Monat, bei Pflegegrad 5{' '}
+    {euro(VOLLSTATIONAER.betrag[5]!)}; die Beträge oben sind das, was danach übrig bleibt.
+  </p>
+
+  <h2 class="mt-14 font-display text-2xl text-ink">Wie {land.name} im Vergleich steht</h2>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    Zwischen dem günstigsten und dem teuersten Bundesland liegen im ersten Jahr{' '}
+    {euro(
+      teuerste.eigenbeteiligung_mit_zuschuss.bis_12_monate -
+        guenstigste.eigenbeteiligung_mit_zuschuss.bis_12_monate,
+    )}{' '}
+    im Monat. Am wenigsten zahlt man in {guenstigste.name} (
+    {euro(guenstigste.eigenbeteiligung_mit_zuschuss.bis_12_monate)}), am meisten in {teuerste.name}{' '}
+    ({euro(teuerste.eigenbeteiligung_mit_zuschuss.bis_12_monate)}). Die Unterschiede kommen vor
+    allem daher, wie stark ein Land sich an den Investitionskosten beteiligt, und von
+    unterschiedlichen Personalkosten.
+  </p>
+
+  <ul class="mt-6 flex flex-col divide-y divide-rule border-y border-rule">
+    {
+      LAENDER.filter((l) => l.code !== land.code).map((l) => (
+        <li>
+          <a
+            href={`/pflegeheim-kosten-${landSlug(l)}/`}
+            style={`--accent: ${akzent}`}
+            class="flex items-center gap-3 py-3 transition-colors hover:bg-(--accent)/5"
+          >
+            <Icon name="pfeil-rechts" class="h-5 w-5 shrink-0 text-(--accent)" />
+            <span class="min-w-0 flex-1 text-ink">Pflegeheim {l.name}</span>
+            <span class="font-display tabular-nums text-ink-soft">
+              {euro(l.eigenbeteiligung_mit_zuschuss.bis_12_monate)}
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2 class="mt-14 font-display text-2xl text-ink">Woher diese Zahlen stammen</h2>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    Erhebung des {EIGENANTEIL_QUELLE.herausgeber}, Stand {EIGENANTEIL_QUELLE.stand},
+    veröffentlicht am {datum(EIGENANTEIL_QUELLE.veroeffentlicht)}, abgerufen am{' '}
+    {datum(EIGENANTEIL_QUELLE.abgerufen)}. Es sind Durchschnittswerte — die Kosten unterscheiden
+    sich von Heim zu Heim erheblich. Innerhalb eines Heims ist der Pflegeanteil für alle
+    Bewohnenden mit Pflegegrad 2 bis 5 gleich hoch.{' '}
+    <a
+      href={EIGENANTEIL_QUELLE.pressemitteilung}
+      rel="nofollow noopener"
+      target="_blank"
+      class="text-ink underline"
+    >
+      Zur Quelle
+    </a>
+  </p>
+
+  <div class="mt-12">
+    <AdSlot />
+  </div>
+
+  <div class="mt-10">
+    <Disclaimer />
+  </div>
+</BaseLayout>

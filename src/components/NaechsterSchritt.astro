@@ -1,0 +1,140 @@
+---
+import Icon from './Icon.astro';
+
+/**
+ * Der Weg zum Antrag — und die Fristen, die dabei für Sie laufen.
+ *
+ * **Warum das hier steht:** Eine Seite, die erklärt, was ein Pflegegrad
+ * bedeutet, lässt den Leser genau an der Stelle allein, an der er etwas tun
+ * müsste. Der nächste Schritt ist immer derselbe und lässt sich ohne jede
+ * Einzelfallprüfung benennen: formlos bei der Pflegekasse beantragen.
+ *
+ * **Wohin verlinkt wird und wohin nicht.** Verlinkt wird ausschließlich auf
+ * amtliche und gesetzlich verankerte Stellen — den Gesetzestext, die
+ * Pflegeberatung nach § 7a SGB XI, die Pflegestützpunkte nach § 7c SGB XI, das
+ * Bürgertelefon des zuständigen Ministeriums. **Keine Vergleichsportale, keine
+ * Vermittler, keine Anbieterlisten mit Provision.** Das ist keine
+ * Zurückhaltung aus Vorsicht, sondern die Zusage, die auf „Über uns" steht:
+ * Diese Seite verdient an Anzeigen, nicht daran, wohin sie schickt.
+ *
+ * **Nicht verboten, sondern vertagt** (Owner-Entscheidung 2026-08-16):
+ * Kommerzielle Verlinkung wird erst wieder erwogen, wenn die Seiten indexiert
+ * sind und AdSense läuft — dann lässt sich an Zahlen ablesen, ob sie sich
+ * lohnt. Wer sie einführt, ändert drei Dinge **zusammen**: die Links, die
+ * Werbekennzeichnung an jedem einzelnen (§ 5a Abs. 4 UWG) und die
+ * „Über uns"-/Datenschutztexte, die heute das Gegenteil zusagen. Eines ohne
+ * die anderen beiden ist ein Rechtsmangel oder eine unwahre Aussage über die
+ * eigene Seite. Details in der Root-`STATE.md` unter den offenen
+ * Owner-Entscheidungen.
+ *
+ * Die Fristen unten sind der eigentliche Wert des Blocks: Die 25 Arbeitstage
+ * und die 70 Euro je angefangener Woche kennt kaum jemand, und sie stehen
+ * wörtlich im Gesetz (§ 18c Abs. 5 SGB XI).
+ */
+interface Props {
+  /** Akzentfarbe der aufrufenden Seite, als CSS-Farbe. */
+  akzent?: string;
+}
+
+const { akzent = 'var(--color-ink)' } = Astro.props;
+
+const schritte = [
+  {
+    titel: 'Antrag bei der Pflegekasse stellen',
+    text: 'Die Pflegekasse sitzt bei Ihrer Krankenkasse. Der Antrag ist formlos möglich — ein Anruf oder ein Satz genügt, und es zählt das Datum des Antrags, nicht das der Begutachtung. Leistungen gibt es ab dem Monat der Antragstellung.',
+    fundstelle: '§ 33 Abs. 1 SGB XI',
+  },
+  {
+    titel: 'Begutachtung durch den Medizinischen Dienst',
+    text: 'Die Pflegekasse beauftragt die Begutachtung innerhalb von drei Arbeitstagen. Ist nach 20 Arbeitstagen noch nicht begutachtet worden, muss die Pflegekasse Ihnen eine Liste mit mindestens drei unabhängigen Gutachterinnen und Gutachtern zur Auswahl schicken.',
+    fundstelle: '§ 18 Abs. 1 und 3 SGB XI',
+  },
+  {
+    titel: 'Bescheid — und was passiert, wenn er zu spät kommt',
+    text: 'Der schriftliche Bescheid muss innerhalb von 25 Arbeitstagen nach Eingang des Antrags da sein. Kommt er später, zahlt die Pflegekasse 70 Euro für jede begonnene Woche der Fristüberschreitung. Sie muss Sie bei Antragseingang selbst auf diese Frist hinweisen.',
+    fundstelle: '§ 18c Abs. 5 SGB XI',
+  },
+  {
+    titel: 'Kostenlose Beratung — darauf haben Sie einen Anspruch',
+    text: 'Die Pflegeberatung ist eine Leistung, kein Entgegenkommen: Die Pflegekasse soll Ihnen unverzüglich eine Beraterin oder einen Berater benennen, auf Wunsch bei Ihnen zu Hause. Der Anspruch besteht schon, sobald ein Antrag gestellt ist.',
+    fundstelle: '§ 7a SGB XI',
+  },
+];
+
+const anlaufstellen = [
+  {
+    label: 'Pflegestützpunkte in Ihrer Nähe (ZQP-Datenbank)',
+    url: 'https://www.zqp.de/beratung-pflege/',
+    beschreibung:
+      'Wohnortnahe Beratung nach § 7c SGB XI, getragen von Pflegekassen und Kommunen. Die Datenbank der gemeinnützigen Stiftung Zentrum für Qualität in der Pflege führt sie bundesweit.',
+  },
+  {
+    label: 'Bürgertelefon zur Pflegeversicherung (Bundesgesundheitsministerium)',
+    url: 'https://www.bundesgesundheitsministerium.de/service/buergertelefon',
+    beschreibung: 'Auskunft zu Anspruch, Antrag und Verfahren, kostenfrei aus dem deutschen Festnetz.',
+  },
+  {
+    label: 'Pflegeleistungen im Überblick (Bundesgesundheitsministerium)',
+    url: 'https://www.bundesgesundheitsministerium.de/themen/pflege',
+    beschreibung: 'Die amtliche Darstellung der Leistungen, Verfahren und aktuellen Änderungen.',
+  },
+  {
+    label: 'SGB XI im Volltext (Bundesministerium der Justiz)',
+    url: 'https://www.gesetze-im-internet.de/sgb_11/',
+    beschreibung: 'Der Gesetzestext, auf den sich jede Zahl auf dieser Website stützt.',
+  },
+];
+---
+
+<section class="mt-14" style={`--accent: ${akzent}`}>
+  <h2 class="font-display text-2xl text-ink">So beantragen Sie den Pflegegrad</h2>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    Der Weg ist bei jeder Pflegekasse derselbe, und an drei Stellen laufen
+    dabei Fristen — für die Pflegekasse, nicht für Sie.
+  </p>
+
+  <ol class="mt-6 flex flex-col divide-y divide-rule border-y border-rule">
+    {
+      schritte.map((s, i) => (
+        <li class="flex gap-4 py-4">
+          <span
+            class="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-(--accent)/10 text-[14px] font-semibold text-(--accent)"
+            aria-hidden="true"
+          >
+            {i + 1}
+          </span>
+          <div class="min-w-0">
+            <h3 class="font-medium text-ink">{s.titel}</h3>
+            <p class="mt-1 text-[15px] text-ink-soft">{s.text}</p>
+            <p class="mt-1 text-[14px] text-ink-mute">{s.fundstelle}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+
+  <h3 class="mt-10 font-display text-xl text-ink">Wo Sie sich beraten lassen können</h3>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    Alle vier Stellen sind amtlich oder gemeinnützig und kosten nichts. Diese
+    Website vermittelt keine Anbieter und verdient an keinem dieser Links.
+  </p>
+  <ul class="mt-4 flex flex-col divide-y divide-rule border-y border-rule">
+    {
+      anlaufstellen.map((a) => (
+        <li class="flex gap-3 py-3">
+          <Icon name="info" class="mt-1 h-5 w-5 shrink-0 text-(--accent)" />
+          <div class="min-w-0">
+            <a
+              href={a.url}
+              rel="noopener"
+              class="text-ink underline underline-offset-2 hover:text-(--accent)"
+            >
+              {a.label}
+            </a>
+            <p class="mt-1 text-[15px] text-ink-soft">{a.beschreibung}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</section>

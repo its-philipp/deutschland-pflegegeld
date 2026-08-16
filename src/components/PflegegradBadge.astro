@@ -1,0 +1,48 @@
+---
+/**
+ * The one component that renders a Pflegegrad from here on — tables, the
+ * wizard result and every page that names a Grad go through this. The scale
+ * flips its text colour mid-step (STATE.md → Design-Richtung), so ground and
+ * text are looked up as a PAIR and wired together via CSS custom properties;
+ * a class string built from `grad` would let someone pair a ground with the
+ * wrong text colour, which is exactly the bug this component exists to make
+ * impossible (Tailwind cannot build class names from data — root CLAUDE.md).
+ *
+ * Ratios measured on the paired ground, see src/styles/global.css for the
+ * source of truth: 1) 10.10:1, 2) 7.68:1, 3) 4.60:1 (near the 4.5:1 floor —
+ * see the warning on that token), 4) 7.16:1, 5) 11.56:1.
+ */
+export type Pflegegrad = 1 | 2 | 3 | 4 | 5;
+
+interface Props {
+  grad: Pflegegrad;
+  class?: string;
+}
+
+const GROUNDS: Record<Pflegegrad, string> = {
+  1: 'var(--color-pflegegrad-1)',
+  2: 'var(--color-pflegegrad-2)',
+  3: 'var(--color-pflegegrad-3)',
+  4: 'var(--color-pflegegrad-4)',
+  5: 'var(--color-pflegegrad-5)',
+};
+
+const TEXT_COLORS: Record<Pflegegrad, string> = {
+  1: 'var(--color-pflegegrad-on-1)',
+  2: 'var(--color-pflegegrad-on-2)',
+  3: 'var(--color-pflegegrad-on-3)',
+  4: 'var(--color-pflegegrad-on-4)',
+  5: 'var(--color-pflegegrad-on-5)',
+};
+
+const { grad, class: className = '' } = Astro.props;
+const ground = GROUNDS[grad];
+const onColor = TEXT_COLORS[grad];
+---
+
+<span
+  class:list={['pflegegrad-badge', 'inline-flex items-center gap-1 rounded-full px-4 py-1 font-display font-semibold bg-(--pg-ground) text-(--pg-on)', className]}
+  style={`--pg-ground: ${ground}; --pg-on: ${onColor};`}
+>
+  Pflegegrad {grad}
+</span>

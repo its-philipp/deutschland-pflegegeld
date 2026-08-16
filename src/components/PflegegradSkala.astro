@@ -1,0 +1,159 @@
+---
+import type { Pflegegrad } from './PflegegradBadge.astro';
+
+/**
+ * Die fünf Pflegegrade als durchgehende Farbskala — das Signaturelement dieser
+ * Seite (Design-Richtung A „Ruhiger Ratgeber", Owner-Entscheidung 2026-08-02).
+ *
+ * Der Entwurf zeigte die Skala als einen Balken am Fuß der Seite, nicht als
+ * einzelnes Abzeichen. Der Unterschied ist nicht dekorativ: eine Skala zeigt,
+ * **wo** ein Grad liegt, ein Abzeichen nur, **dass** er existiert. Wer gerade
+ * Pflegegrad 2 bekommen hat, sieht hier auf einen Blick, dass darüber noch drei
+ * Stufen liegen — und dass die Farbe, die er auf jeder anderen Seite dieser
+ * Website wiedersieht, immer dasselbe bedeutet.
+ *
+ * Grund und Textfarbe werden paarweise nachgeschlagen und über CSS-Variablen
+ * verdrahtet, nie zu einem Klassennamen zusammengesetzt: Tailwind kann Klassen
+ * nicht aus Daten bauen, und ein Grund mit der falschen Textfarbe ist genau der
+ * Fehler, den diese Bauweise unmöglich macht.
+ */
+interface Props {
+  /** Hebt einen Grad hervor. Ohne Angabe steht die Skala für sich. */
+  aktiv?: Pflegegrad;
+  /** Sichtbare Beschriftung unter der Skala. */
+  beschriftet?: boolean;
+  /**
+   * Ein Betrag je Grad, schon formatiert — die Skala wird damit vom Wegweiser
+   * zur Antwort.
+   *
+   * **Der Grund, warum es diese Erweiterung gibt** (2026-08-15): Die Skala war
+   * gebaut, gut gebaut, und stand am Fuß von fünf Seiten. Auf der Startseite
+   * kam sie nicht vor — dort standen Überschrift, Absatz, Suchfeld und
+   * einundzwanzig gleich aussehende Zeilen. Das Signaturelement dieser Seite
+   * war also unsichtbar, und die Zahl, wegen der die Leute kommen, ebenfalls.
+   * Mit Beträgen beantwortet dieselbe Skala beides auf einmal: was ein Grad
+   * bedeutet und was er bringt.
+   */
+  betraege?: Partial<Record<Pflegegrad, string>>;
+  /** Beschriftung der Beträge, z. B. „Pflegegeld im Monat". */
+  betragLabel?: string;
+  /** Macht jede Stufe zum Link auf ihre Seite. */
+  verlinkt?: boolean;
+  class?: string;
+}
+
+const {
+  aktiv,
+  beschriftet = true,
+  betraege,
+  betragLabel,
+  verlinkt = false,
+  class: className = '',
+} = Astro.props;
+
+const GRADE = [1, 2, 3, 4, 5] as const;
+const GROUNDS: Record<Pflegegrad, string> = {
+  1: 'var(--color-pflegegrad-1)',
+  2: 'var(--color-pflegegrad-2)',
+  3: 'var(--color-pflegegrad-3)',
+  4: 'var(--color-pflegegrad-4)',
+  5: 'var(--color-pflegegrad-5)',
+};
+const ON: Record<Pflegegrad, string> = {
+  1: 'var(--color-pflegegrad-on-1)',
+  2: 'var(--color-pflegegrad-on-2)',
+  3: 'var(--color-pflegegrad-on-3)',
+  4: 'var(--color-pflegegrad-on-4)',
+  5: 'var(--color-pflegegrad-on-5)',
+};
+---
+
+<div class:list={['pflegegrad-skala', className]}>
+  <ol class="flex list-none gap-0 p-0" aria-label="Die fünf Pflegegrade als Skala">
+    {
+      GRADE.map((grad) => (
+        <li
+          class:list={[
+            'pflegegrad-stufe min-w-0 flex-1 px-1 py-3 text-center font-display font-semibold sm:px-2 bg-(--pg-ground) text-(--pg-on)',
+            grad === aktiv && 'is-aktiv',
+          ]}
+          style={`--pg-ground: ${GROUNDS[grad]}; --pg-on: ${ON[grad]};`}
+          aria-current={grad === aktiv ? 'true' : undefined}
+        >
+          {
+            verlinkt ? (
+              <a
+                href={`/pflegegrad-${grad}/`}
+                class="block text-(--pg-on) no-underline focus-visible:outline-offset-4"
+              >
+                <span class="block text-[13px] leading-none opacity-80 sm:text-[15px]">Grad</span>
+                <span class="block text-xl leading-tight sm:text-2xl">{grad}</span>
+                {betraege?.[grad] && (
+                  <span
+                    class:list={[
+                      'mt-3 block leading-tight font-semibold tracking-tight',
+                      /* Eine Zahl darf groß sein, ein Satz nicht: „kein
+                         Pflegegeld" in Ziffernhöhe bricht um und drückt die
+                         Stufe auseinander. Erkennungsmerkmal ist die führende
+                         Ziffer — damit muss die aufrufende Seite nichts über
+                         die Darstellung wissen. */
+                      /^\d/.test(betraege[grad]!)
+                        ? 'text-[clamp(0.95rem,3.4vw,2.25rem)]'
+                        : 'text-[12px] opacity-90 sm:text-[15px]',
+                    ]}
+                  >
+                    {betraege[grad]}
+                  </span>
+                )}
+              </a>
+            ) : (
+              <>
+                <span class="block text-[15px] leading-none opacity-80">Grad</span>
+                <span class="block text-xl leading-tight">{grad}</span>
+                {betraege?.[grad] && (
+                  <span class="mt-2 block text-2xl leading-none font-semibold">
+                    {betraege[grad]}
+                  </span>
+                )}
+              </>
+            )
+          }
+          {grad === aktiv && <span class="sr-only">— Ihr Pflegegrad</span>}
+        </li>
+      ))
+    }
+  </ol>
+
+  {
+    betragLabel && (
+      <p class="mt-2 text-center text-[15px] text-ink-mute">{betragLabel}</p>
+    )
+  }
+
+  {
+    beschriftet && (
+      <p class="mt-2 flex justify-between text-[15px] text-ink-mute">
+        <span>geringste Beeinträchtigung</span>
+        <span>schwerste Beeinträchtigung</span>
+      </p>
+    )
+  }
+</div>
+
+<style>
+  /* Die aktive Stufe tritt nach vorn, ohne dass sich die Skala verschiebt —
+     ein Rahmen innen statt außen, damit die Farbfläche ihre Breite behält. */
+  .pflegegrad-stufe.is-aktiv {
+    box-shadow: inset 0 0 0 3px var(--color-ink);
+  }
+
+  /* Die Skala ist das eine Element dieser Seite, das Bedeutung über Farbe
+     trägt. Im Druck erzwingen wir sie deshalb ausnahmsweise — ohne die Fläche
+     bleibt eine Reihe leerer Kästchen übrig, die nichts mehr aussagt. */
+  @media print {
+    .pflegegrad-stufe {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>

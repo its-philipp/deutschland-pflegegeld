@@ -1,0 +1,89 @@
+---
+/**
+ * Local SVG sprite — inlined once per page in BaseLayout, referenced with
+ * <Icon name="…" />. Never an icon font, never a CDN, never emoji.
+ *
+ * Four category marks (pflegegrad/leistungen/heim/antrag, see
+ * data/kategorien.ts for the accent that goes with each) plus five UI marks
+ * (suche/check/schliessen/pfeil-rechts/info). Every mark drawn fresh for this
+ * site — none of the paths are copied from was-kostet's sprite.
+ *
+ * Grid: 24×24 viewBox, stroke 1.5, round caps/joins, fill none, all geometry
+ * kept inside the 2.4–21.6 safe area so marks optically align at 24px. The
+ * "i-info" dot is the one deliberate exception to fill:none — a
+ * zero-length round-capped stroke (`v.01`) renders as a filled dot without
+ * adding a fill attribute, the standard way to draw an info-dot in an
+ * outline icon set.
+ */
+---
+
+<svg width="0" height="0" aria-hidden="true" style="position:absolute" focusable="false">
+  <defs>
+    <!-- Ascending bars — echoes the Pflegegrad scale itself, the site's
+         signature element, without borrowing its colours. -->
+    <symbol id="i-pflegegrad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4.8 19.6V16"></path>
+      <path d="M8.4 19.6V12.8"></path>
+      <path d="M12 19.6V9.6"></path>
+      <path d="M15.6 19.6V6.4"></path>
+      <path d="M19.2 19.6V3.2"></path>
+    </symbol>
+
+    <!-- Gift box — Leistungen as something the Pflegekasse gives you. -->
+    <symbol id="i-leistungen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+      stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3.2" y="8" width="17.6" height="3.2" rx="0.8"></rect>
+      <rect x="4.4" y="11.2" width="15.2" height="8.8" rx="0.8"></rect>
+      <path d="M12 8V20"></path>
+      <path d="M12 8 9.2 4.8"></path>
+      <path d="M12 8 14.8 4.8"></path>
+      <circle cx="12" cy="8" r="0.9"></circle>
+    </symbol>
+
+    <!-- House with a heart — Pflegeheim as a place, not a price. -->
+    <symbol id="i-heim" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 12 12 4.4 20 12"></path>
+      <rect x="6.4" y="11.2" width="11.2" height="9.2" rx="1"></rect>
+      <circle cx="10.4" cy="14.4" r="1.6"></circle>
+      <circle cx="13.6" cy="14.4" r="1.6"></circle>
+      <path d="M8.8 15.2 12 18.4 15.2 15.2"></path>
+    </symbol>
+
+    <!-- Clipboard with a checkmark — Antrag/Begutachtung/Widerspruch as one process. -->
+    <symbol id="i-antrag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+      stroke-linecap="round" stroke-linejoin="round">
+      <rect x="6.4" y="5.6" width="11.2" height="14.4" rx="1.2"></rect>
+      <rect x="9.6" y="3.6" width="4.8" height="2.8" rx="0.8"></rect>
+      <path d="M9.2 13.2 11.4 15.4 15.8 10.6"></path>
+      <path d="M9.2 17.6h6.4"></path>
+    </symbol>
+
+    <symbol id="i-suche" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+      stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="10.8" cy="10.8" r="6"></circle>
+      <path d="M15.6 15.6 20.4 20.4"></path>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4.8 12.4 9.6 17.2 19.2 6.4"></path>
+    </symbol>
+    <symbol id="i-schliessen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 6 18 18"></path>
+      <path d="M18 6 6 18"></path>
+    </symbol>
+    <symbol id="i-pfeil-rechts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4.8 12h13.2"></path>
+      <path d="M13.2 6.8 18 12 13.2 17.2"></path>
+    </symbol>
+    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+      stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="8.4"></circle>
+      <path d="M12 8v.01"></path>
+      <path d="M12 11.2v5.6"></path>
+    </symbol>
+  </defs>
+</svg>

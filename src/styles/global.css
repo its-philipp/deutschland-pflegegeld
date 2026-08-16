@@ -1,0 +1,130 @@
+@import 'tailwindcss';
+
+/* Self-hosted fonts (npm, never a CDN). Source Serif 4 carries the display
+   voice (human, not clinical — the "Ruhiger Ratgeber" metaphor), Public Sans
+   carries body text. Only the weights actually used are imported. */
+@import '@fontsource/source-serif-4/400.css';
+@import '@fontsource/source-serif-4/600.css';
+@import '@fontsource/public-sans/400.css';
+@import '@fontsource/public-sans/500.css';
+@import '@fontsource/public-sans/600.css';
+
+/* Design direction A "Ruhiger Ratgeber" (owner's pick, 2026-08-02, STATE.md).
+   Deliberately no Klinikblau. Tokens only here — the full design system
+   (spacing, components) is a later task; this file just wires the palette
+   and the base type so every later page starts from the same ground. */
+@theme {
+  --font-sans: 'Public Sans', system-ui, -apple-system, sans-serif;
+  --font-display: 'Source Serif 4', Georgia, serif;
+
+  --color-paper: #f6f7f4;
+  --color-ink: #22282a;
+  --color-sage: #3a5a44;
+  --color-ink-mute: #606a6d; /* 5.17:1 on paper — secondary text only */
+  --color-rule: #dce0da; /* hairlines/borders only, never text */
+
+  /* The five Pflegegrade as one colour scale — the site's signature element.
+     Used consistently in tables, the wizard and swatches; never re-derived
+     per component. Each step is a GROUND + the only text colour that is
+     legible on it — the pair is wired together in PflegegradBadge.astro via
+     CSS custom properties, never assembled from a class string, so the two
+     cannot drift apart in use. */
+  --color-pflegegrad-1: #c9d8cd;
+  --color-pflegegrad-on-1: var(--color-ink); /* 10.10:1 */
+  --color-pflegegrad-2: #a6c0b0;
+  --color-pflegegrad-on-2: var(--color-ink); /* 7.68:1 */
+  /* Step 3 has almost no headroom above the 4.5:1 floor — do not darken this
+     green, it breaks the ratio for the ink text it carries. */
+  --color-pflegegrad-3: #6e9880;
+  --color-pflegegrad-on-3: var(--color-ink); /* 4.60:1 */
+  --color-pflegegrad-4: #3a5a44;
+  --color-pflegegrad-on-4: var(--color-paper); /* 7.16:1 */
+  --color-pflegegrad-5: #22392c;
+  --color-pflegegrad-on-5: var(--color-paper); /* 11.56:1 */
+}
+
+@layer base {
+  html {
+    /* Sensitive audience (stressed relatives) — STATE.md requires at least
+       18px as the base size, never smaller. */
+    font-size: 18px;
+  }
+
+  body {
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  a {
+    text-underline-offset: 3px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+}
+
+/* Ad container (root CLAUDE.md → Advertising slots). The outline marks an
+   unfilled slot for us while building; in production a slot stays empty for
+   months until AdSense is live (task 2.8), and an empty box with a dashed
+   border would be visible clutter on every shipped page — so AdSlot.astro
+   sets `data-dev` only under `import.meta.env.DEV` and the rule hangs off
+   that, never off `.ad-slot:empty` alone. */
+.ad-slot[data-dev]:empty {
+  display: block;
+  min-height: 90px;
+  border: 1px dashed var(--color-rule);
+  border-radius: 4px;
+}
+
+@media print {
+  @page {
+    margin: 18mm 16mm;
+  }
+
+  /* Ads never print, on any page (root CLAUDE.md → Advertising slots). Must
+     be `display: none`, not `visibility: hidden` — the latter keeps the box
+     and pushes blank pages behind printed content (portfolio-wide rule,
+     learned the hard way — see MEMORY.md). */
+  .ad-slot,
+  ins.adsbygoogle {
+    display: none !important;
+  }
+
+  /* Grouped blocks (a Pflegegrad result, a data table row group) should not
+     split across a page break. */
+  .pflegegrad-badge,
+  .druck-block {
+    break-inside: avoid;
+  }
+
+  /* No shadows in print. */
+  * {
+    box-shadow: none !important;
+  }
+
+  /* The Pflegegrad scale is the one thing on this site that carries meaning
+     by colour alone — deliberately NOT fixed with print-color-adjust, since
+     browsers vary in whether they print backgrounds at all. Instead the
+     badge gains a border so a step is still identifiable as "a step on the
+     scale" even when its ground drops out. */
+  .pflegegrad-badge {
+    border: 1px solid var(--color-ink);
+  }
+
+  /* External links print their target — the paper copy has no way to follow
+     a link. */
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    word-break: break-all;
+  }
+}

@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import PflegegradWizard from '../components/PflegegradWizard';
+import { BOGEN, MODUL5, STAND } from '../data/begutachtung';
+
+/**
+ * Die Pflegegrad-Selbsteinschätzung (queue task 2.6).
+ *
+ * Die Seite erklärt die Rechnung **vor** dem Werkzeug, nicht danach. Wer den
+ * Pflegegrad einschätzen will, soll vorher wissen, was gleich mit den Antworten
+ * passiert — und vor allem, dass nicht alle Module gleich zählen. Die
+ * Selbstversorgung macht 40 Prozent aus, die Mobilität 10; das ist die
+ * überraschendste Zahl an der ganzen Begutachtung und steht deshalb oben.
+ *
+ * Kein `AdSlot` zwischen Einleitung und Wizard: Formular und Ergebnis sind eine
+ * Fläche (root CLAUDE.md → Advertising slots).
+ */
+const module = [
+  { nummer: 1, name: 'Mobilität', gewicht: '10 %' },
+  { nummer: 2, name: 'Kognitive und kommunikative Fähigkeiten', gewicht: '15 %' },
+  { nummer: 3, name: 'Verhaltensweisen und psychische Problemlagen', gewicht: 'zusammen mit Modul 2' },
+  { nummer: 4, name: 'Selbstversorgung', gewicht: '40 %' },
+  { nummer: 5, name: 'Krankheits- und therapiebedingte Anforderungen', gewicht: '20 %' },
+  { nummer: 6, name: 'Gestaltung des Alltagslebens und sozialer Kontakte', gewicht: '15 %' },
+];
+---
+
+<BaseLayout
+  title="Pflegegrad berechnen 2026: Selbsteinschätzung nach § 15 SGB XI"
+  description="Pflegegrad selbst einschätzen — mit den sechs Modulen des amtlichen Begutachtungsinstruments, den gesetzlichen Gewichtungen und der Punktrechnung nach § 15 SGB XI."
+  path="/pflegegrad-berechnen/"
+>
+  <nav class="text-[14px] text-ink-mute" aria-label="Sie sind hier">
+    <a href="/" class="underline underline-offset-2">Startseite</a> · Pflegegrad berechnen
+  </nav>
+
+  <h1 class="mt-2 font-display text-3xl font-semibold sm:text-4xl">
+    Pflegegrad selbst einschätzen
+  </h1>
+
+  <p class="mt-4 max-w-prose text-lg">
+    Die Begutachtung durch den Medizinischen Dienst folgt keiner Einschätzung
+    nach Gefühl, sondern einem Punktesystem, das im Gesetz steht. Sie können es
+    nachrechnen — mit denselben sechs Modulen, denselben Fragen und denselben
+    Gewichtungen wie das Gutachten.
+  </p>
+
+  <section class="mt-10">
+    <h2 class="font-display text-xl font-semibold">Was viele überrascht</h2>
+    <p class="mt-3 max-w-prose">
+      Die sechs Module zählen <strong>nicht gleich viel</strong>. Wer sich
+      schlecht bewegen kann, aber sich selbst versorgt, kommt auf weniger Punkte
+      als umgekehrt — die Selbstversorgung wiegt viermal so schwer wie die
+      Mobilität.
+    </p>
+
+    <ul class="mt-5 flex flex-col divide-y divide-rule border-y border-rule">
+      {
+        module.map((m) => (
+          <li class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 py-3">
+            <span class="min-w-0 flex-1">
+              <span class="text-ink-mute">{m.nummer}.</span> {m.name}
+            </span>
+            <span class="font-semibold tabular-nums">{m.gewicht}</span>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="mt-4 max-w-prose text-[15px] text-ink-mute">
+      Modul 2 und Modul 3 teilen sich ihre 15 Prozent: Gezählt wird nur der
+      höhere der beiden Werte, nicht deren Summe (§ 15 Abs. 3 Satz 2 SGB XI).
+      Das ist die Stelle, an der die meisten Rechner im Netz danebenliegen.
+    </p>
+  </section>
+
+  <div class="mt-10">
+    <AdSlot />
+  </div>
+
+  <section class="mt-10">
+    <h2 class="font-display text-xl font-semibold">Die Einschätzung</h2>
+    <p class="mt-3 max-w-prose">
+      Ein Schritt pro Bildschirm, etwa fünf Minuten. Antworten Sie so, wie es an
+      einem durchschnittlichen Tag ist — nicht am besten und nicht am
+      schlechtesten. Das Ergebnis erscheint am Ende; unterwegs zeigt die Seite
+      bewusst keine Punktzahl, damit die Antworten nicht auf ein Ziel hin
+      ausfallen.
+    </p>
+
+    <div class="mt-6">
+      <PflegegradWizard bogen={BOGEN} diaetSkala={MODUL5.diaetSkala} client:load />
+    </div>
+  </section>
+
+  <section class="mt-12 max-w-prose">
+    <h2 class="font-display text-xl font-semibold">Wie gerechnet wird</h2>
+    <ol class="mt-3 flex list-decimal flex-col gap-2 pl-5">
+      <li>In jedem Modul werden die Einzelpunkte der Kriterien addiert.</li>
+      <li>
+        Die Modulsumme fällt in einen von fünf Punktbereichen, und jeder
+        Punktbereich hat einen festen gewichteten Wert — deshalb ändern zwei
+        zusätzliche Punkte manchmal alles und manchmal nichts.
+      </li>
+      <li>Aus Modul 2 und 3 zählt nur der höhere gewichtete Wert.</li>
+      <li>Die gewichteten Werte aller Module ergeben zusammen die Gesamtpunkte, höchstens 100.</li>
+      <li>
+        Ab 12,5 Punkten beginnt Pflegegrad 1, ab 27 Grad 2, ab 47,5 Grad 3, ab
+        70 Grad 4 und ab 90 Grad 5.
+      </li>
+    </ol>
+    <p class="mt-4 text-[15px] text-ink-mute">
+      Grundlage: § 15 SGB XI mit den Anlagen 1 und 2 sowie die Richtlinien des
+      Medizinischen Dienstes Bund vom 21.08.2024 für die Umrechnung der
+      Häufigkeiten in Modul 5. Stand der Erhebung: {STAND.split('-').reverse().join('.')}.
+    </p>
+  </section>
+
+  <Disclaimer />
+
+  <div class="mt-10">
+    <AdSlot />
+  </div>
+</BaseLayout>

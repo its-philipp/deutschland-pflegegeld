@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { CATEGORIES, iconFor } from '../../data/kategorien';
+import type { Category } from '../../data/kategorien';
+import { pfadVon, themenIn } from '../../data/themen';
+import { SITE_NAME } from '../../lib/site';
+
+export function getStaticPaths() {
+  return CATEGORIES.map((category) => ({
+    params: { kategorie: category.slug },
+    props: { category },
+  }));
+}
+
+interface Props {
+  category: Category;
+}
+
+const { category } = Astro.props;
+const themen = themenIn(category.slug);
+const leer = themen.length === 0;
+---
+
+<BaseLayout
+  title={`${category.label} — ${SITE_NAME}`}
+  description={`Orientierung rund um ${category.label}: verständlich erklärt, mit Quelle und Stand-Datum, sobald die Themenseiten stehen.`}
+  path={`/kategorie/${category.slug}/`}
+  noindex={leer}
+>
+  <p style={`--accent: ${category.accent}`} class="flex items-center gap-2 text-[14px] font-medium text-(--accent)">
+    <Icon name={category.icon} class="h-5 w-5" />
+    {category.label}
+  </p>
+
+  <h1 class="mt-3 font-display text-3xl text-ink sm:text-4xl">{category.label}</h1>
+
+  <p class="mt-4 max-w-prose text-ink">
+    Hier sammeln wir, was wir zu {category.label} zusammentragen — Schritt für Schritt, mit
+    Quelle und Stand-Datum zu jeder Zahl.
+  </p>
+
+  <div class="mt-10">
+    <AdSlot />
+  </div>
+
+  {
+    leer ? (
+      <p class="mt-10 max-w-prose text-ink-mute">
+        Für diesen Bereich bereiten wir die Themenseiten gerade sorgfältig vor. Schauen Sie gern
+        bald wieder vorbei.
+      </p>
+    ) : (
+      <ul class="mt-10 flex flex-col divide-y divide-rule border-y border-rule">
+        {themen.map((thema) => (
+          <li>
+            <a
+              href={pfadVon(thema)}
+              style={`--accent: ${category.accent}`}
+              class="flex items-center gap-3 py-4 transition-colors hover:bg-(--accent)/5"
+            >
+              <Icon name={iconFor(thema.slug, category.slug)} class="h-6 w-6 shrink-0 text-(--accent)" />
+              <span class="min-w-0 flex-1">
+                <span class="block font-display text-lg text-ink">{thema.titel}</span>
+                <span class="mt-1 block text-[14px] text-ink-mute">{thema.kurz}</span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  <p class="mt-10">
+    <a href="/" class="text-ink underline">Zur Startseite</a>
+  </p>
+</BaseLayout>

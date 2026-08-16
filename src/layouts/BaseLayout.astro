@@ -1,0 +1,95 @@
+---
+import '../styles/global.css';
+import { SITE_NAME, GITHUB_REPO, absoluteUrl } from '../lib/site';
+import IconSprite from '../components/IconSprite.astro';
+import { adsEnabled, adsenseScriptUrl } from '../lib/ads';
+import { CATEGORIES } from '../data/kategorien';
+
+interface Props {
+  /** Unique per page — targets the page's one keyword. */
+  title: string;
+  /** Unique per page, ~150 chars. */
+  description: string;
+  /** Path starting with '/', used for canonical + og:url. */
+  path: string;
+  /** Set true for legal/utility pages that should not be indexed. */
+  noindex?: boolean;
+}
+
+const { title, description, path, noindex } = Astro.props;
+const canonical = absoluteUrl(path);
+---
+
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:locale" content="de_DE" />
+    {/* Injected only when a publisher id is configured. While ADSENSE_CLIENT is
+        empty no ad script reaches the page at all, which is what makes the
+        Datenschutz sentence "keine Cookies" verifiable rather than a promise. */}
+    {adsEnabled && <script is:inline async src={adsenseScriptUrl()} crossorigin="anonymous"></script>}
+  </head>
+  <body class="min-h-screen bg-paper font-sans text-ink antialiased">
+    <IconSprite />
+    <a
+      href="#inhalt"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:bg-ink focus:px-4 focus:py-2 focus:text-paper"
+    >
+      Zum Inhalt springen
+    </a>
+    {/* The Wortmarke says "Pflegegeld", but the site also covers Begutachtung,
+        Heimkosten and Eigenanteil. The owner's decision (STATE.md) is that
+        *every* page must show that breadth — so it lives in the layout, where
+        it cannot be forgotten on a page built later. */}
+    <header class="border-b border-rule">
+      <nav aria-label="Hauptbereiche" class="mx-auto max-w-5xl px-4 py-5">
+        <a href="/" class="font-display text-lg font-semibold text-ink">{SITE_NAME}</a>
+        <ul class="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-[15px]">
+          {
+            CATEGORIES.map((category) => (
+              <li>
+                <a
+                  href={`/kategorie/${category.slug}/`}
+                  class="text-ink-mute underline-offset-4 hover:text-ink hover:underline"
+                >
+                  {category.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </header>
+
+    <main id="inhalt" class="mx-auto max-w-5xl px-4 py-14">
+      <slot />
+    </main>
+
+    <footer class="mt-16 border-t border-rule">
+      <div
+        class="mx-auto flex max-w-5xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-8 text-sm text-ink-mute"
+      >
+        <a class="underline" href="/">{SITE_NAME}</a>
+        <a class="underline" href="/ueber-uns/">Über uns</a>
+        <a class="underline" href="/kontakt/">Kontakt</a>
+        <a class="underline" href="/impressum/">Impressum</a>
+        <a class="underline" href="/datenschutz/">Datenschutz</a>
+        {/* Belegstück zu den Beträgen und zum Bewertungsmodell: im Spiegel
+            steht die Rechnung samt der 169 Aussagen, die sie gegen § 15
+            SGB XI prüfen. */}
+        <a class="underline" href={GITHUB_REPO} rel="noopener" target="_blank">Quellcode</a>
+      </div>
+    </footer>
+  </body>
+</html>

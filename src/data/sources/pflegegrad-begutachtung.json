@@ -1,0 +1,991 @@
+{
+ "_meta": {
+  "topic": "pflegegrad-begutachtung",
+  "retrieved": "2026-08-16",
+  "collector": "local session (owner's machine)",
+  "norm": "SGB XI — § 15 mit Anlage 1 und Anlage 2",
+  "method": "Gesamt-XML des SGB XI gezogen, § 15 im Volltext gelesen, Anlage 1 und Anlage 2 über die <row>/<entry>-Struktur geparst.",
+  "sources": [
+   {
+    "label": "SGB XI § 15 – Ermittlung des Grades der Pflegebedürftigkeit",
+    "url": "https://www.gesetze-im-internet.de/sgb_11/__15.html",
+    "retrieved": "2026-08-16"
+   },
+   {
+    "label": "SGB XI § 14 – Begriff der Pflegebedürftigkeit",
+    "url": "https://www.gesetze-im-internet.de/sgb_11/__14.html",
+    "retrieved": "2026-08-16"
+   },
+   {
+    "label": "SGB XI Anlage 1 – Einzelpunkte der Kriterien",
+    "url": "https://www.gesetze-im-internet.de/sgb_11/anlage_1.html",
+    "retrieved": "2026-08-16"
+   },
+   {
+    "label": "SGB XI Anlage 2 – Punktbereiche und gewichtete Punkte",
+    "url": "https://www.gesetze-im-internet.de/sgb_11/anlage_2.html",
+    "retrieved": "2026-08-16"
+   },
+   {
+    "label": "Richtlinien des Medizinischen Dienstes Bund zur Feststellung der Pflegebedürftigkeit (BRi) vom 21.08.2024",
+    "url": "https://md-bund.de/fileadmin/dokumente/Publikationen/SPV/Begutachtungsgrundlagen/BRi_Pflege_21_08_2024.pdf",
+    "retrieved": "2026-08-16",
+    "hinweis": "Richtlinie nach § 17 Abs. 1 SGB XI. Sie nummeriert die Kriterien als F 4.5.x, was den Ziffern 5.x der Anlage 1 entspricht."
+   }
+  ],
+  "gegenrechnung": "Die Summe der Höchstpunkte aller Kriterien eines Moduls muss die Obergrenze seines Punktbereichs 4 aus Anlage 2 treffen. Geprüft für die Module 1, 2, 3, 4 und 6: 15/33/65/54/18 — alle exakt. Damit ist belegt, dass aus Anlage 1 kein Kriterium fehlt und keines doppelt gezählt wurde.",
+  "warnung_modul_5": "Modul 5 ist NICHT als Skala je Kriterium aufgebaut — die erste Extraktion behandelte es so und kam auf 67 statt 15 Höchstpunkte, gefangen von der Gegenrechnung gegen Anlage 2. Der richtige Aufbau steht unter module.5.gruppen: vier Blöcke mit 3 + 3 + 6 + 3 = 15. Ein Wizard, der hier nach Selbständigkeit je Kriterium fragt, rechnet falsch.",
+  "offen": "Erledigt am 2026-08-16: Die Divisoren standen nicht im Gesetz, sondern in den Begutachtungs-Richtlinien nach § 17 SGB XI — pro Woche durch 7, pro Monat durch 30. Im PDF der Richtlinie selbst gelesen, nicht aus einer Suchzusammenfassung übernommen. Der Rechner darf damit auch nach Wochen- und Monatsangaben fragen."
+ },
+ "rechenregel": {
+  "legal_basis": "§ 15 Abs. 2 und 3 SGB XI",
+  "schritte": [
+   "Je Modul die Einzelpunkte der Kriterien addieren (Anlage 1).",
+   "Die Modulsumme dem Punktbereich 0–4 zuordnen und daraus die gewichteten Punkte ablesen (Anlage 2).",
+   "**Module 2 und 3 erhalten einen gemeinsamen gewichteten Punkt: den höheren der beiden**, nicht deren Summe (§ 15 Abs. 3 Satz 2).",
+   "Die gewichteten Punkte aller Module addieren — das sind die Gesamtpunkte (maximal 100).",
+   "Den Pflegegrad aus den Gesamtpunkten ablesen."
+  ],
+  "modulgewichte_prozent": {
+   "1": 10,
+   "2_und_3_zusammen": 15,
+   "4": 40,
+   "5": 20,
+   "6": 15
+  },
+  "haeufigster_fehler": "Die gewichteten Punkte von Modul 2 und Modul 3 zu addieren. Das Gesetz nimmt den höheren der beiden Werte; wer addiert, kommt auf bis zu 15 Punkte zu viel und damit leicht einen Pflegegrad zu hoch."
+ },
+ "pflegegrade": {
+  "legal_basis": "§ 15 Abs. 3 Satz 4 SGB XI",
+  "schwellen": [
+   {
+    "grad": 1,
+    "ab": 12.5,
+    "unter": 27,
+    "bezeichnung": "geringe Beeinträchtigungen der Selbständigkeit oder der Fähigkeiten"
+   },
+   {
+    "grad": 2,
+    "ab": 27,
+    "unter": 47.5,
+    "bezeichnung": "erhebliche Beeinträchtigungen"
+   },
+   {
+    "grad": 3,
+    "ab": 47.5,
+    "unter": 70,
+    "bezeichnung": "schwere Beeinträchtigungen"
+   },
+   {
+    "grad": 4,
+    "ab": 70,
+    "unter": 90,
+    "bezeichnung": "schwerste Beeinträchtigungen"
+   },
+   {
+    "grad": 5,
+    "ab": 90,
+    "bis": 100,
+    "bezeichnung": "schwerste Beeinträchtigungen mit besonderen Anforderungen an die pflegerische Versorgung"
+   }
+  ],
+  "unter_12_5": "Unter 12,5 Gesamtpunkten liegt keine Pflegebedürftigkeit im Sinne des Gesetzes vor.",
+  "besondere_bedarfskonstellation": "§ 15 Abs. 4: Pflegebedürftige mit einem spezifischen, außergewöhnlich hohen Hilfebedarf können aus pflegefachlichen Gründen dem Pflegegrad 5 zugeordnet werden, auch wenn die Gesamtpunkte unter 90 liegen. Ein Rechner kann das nicht abbilden.",
+  "kinder": "§ 15 Abs. 6: Bei Kindern wird mit altersentsprechend entwickelten Kindern verglichen. § 15 Abs. 7: Kinder bis 18 Monate werden abweichend eingestuft — dieselben Punktspannen führen jeweils einen Grad höher.",
+  "module_7_und_8": "Die Module 7 (Außerhäusliche Aktivitäten) und 8 (Haushaltsführung) werden im Gutachten erhoben, aber ausdrücklich NICHT in die Punktzahl einbezogen (Anlage 2). Sie dienen der Versorgungs- und Pflegeplanung."
+ },
+ "module": {
+  "1": {
+   "name": "Mobilität",
+   "gewichtung_prozent": 10,
+   "punktbereiche": [
+    [
+     0,
+     1
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     4,
+     5
+    ],
+    [
+     6,
+     9
+    ],
+    [
+     10,
+     15
+    ]
+   ],
+   "gewichtete_punkte": [
+    0,
+    2.5,
+    5,
+    7.5,
+    10
+   ],
+   "kriterien": [
+    {
+     "ziffer": "1.1",
+     "kriterium": "Positionswechsel im Bett",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "1.2",
+     "kriterium": "Halten einer stabilen Sitzposition",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "1.3",
+     "kriterium": "Umsetzen",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "1.4",
+     "kriterium": "Fortbewegen innerhalb des Wohnbereichs",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "1.5",
+     "kriterium": "Treppensteigen",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "antwortskala": [
+    "selbständig",
+    "überwiegend selbständig",
+    "überwiegend unselbständig",
+    "unselbständig"
+   ]
+  },
+  "2": {
+   "name": "Kognitive und kommunikative Fähigkeiten",
+   "gewichtung_prozent": 15,
+   "punktbereiche": [
+    [
+     0,
+     1
+    ],
+    [
+     2,
+     5
+    ],
+    [
+     6,
+     10
+    ],
+    [
+     11,
+     16
+    ],
+    [
+     17,
+     33
+    ]
+   ],
+   "gewichtete_punkte": [
+    0,
+    3.75,
+    7.5,
+    11.25,
+    15
+   ],
+   "hinweis": "gemeinsam mit Modul 3",
+   "kriterien": [
+    {
+     "ziffer": "2.1",
+     "kriterium": "Erkennen von Personen aus dem näheren Umfeld",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "2.2",
+     "kriterium": "Örtliche Orientierung",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "2.3",
+     "kriterium": "Zeitliche Orientierung",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "2.4",
+     "kriterium": "Erinnern an wesentliche Ereignisse oder Beobachtungen",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "2.5",
+     "kriterium": "Steuern von mehrschrittigen Alltagshandlungen",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "2.6",
+     "kriterium": "Treffen von Entscheidungen im Alltag",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "2.7",
+     "kriterium": "Verstehen von Sachverhalten und Informationen",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "2.8",
+     "kriterium": "Erkennen von Risiken und Gefahren",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "2.9",
+     "kriterium": "Mitteilen von elementaren Bedürfnissen",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "2.10",
+     "kriterium": "Verstehen von Aufforderungen",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "2.11",
+     "kriterium": "Beteiligen an einem Gespräch",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "antwortskala": [
+    "Fähigkeit vorhanden/ unbeeinträchtigt",
+    "Fähigkeit größtenteils vorhanden",
+    "Fähigkeit in geringem Maße vorhanden",
+    "Fähigkeit nicht vorhanden"
+   ]
+  },
+  "3": {
+   "name": "Verhaltensweisen und psychische Problemlagen",
+   "gewichtung_prozent": null,
+   "punktbereiche": [
+    [
+     0,
+     0
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     3,
+     4
+    ],
+    [
+     5,
+     6
+    ],
+    [
+     7,
+     65
+    ]
+   ],
+   "gewichtete_punkte": [
+    0,
+    3.75,
+    7.5,
+    11.25,
+    15
+   ],
+   "hinweis": "gemeinsam mit Modul 2",
+   "kriterien": [
+    {
+     "ziffer": "3.1",
+     "kriterium": "Motorisch geprägte Verhaltensauffälligkeiten",
+     "einzelpunkte": [
+      0,
+      1,
+      3,
+      5
+     ]
+    },
+    {
+     "ziffer": "3.2",
+     "kriterium": "Nächtliche Unruhe",
+     "einzelpunkte": [
+      0,
+      1,
+      3,
+      5
+     ]
+    },
+    {
+     "ziffer": "3.3",
+     "kriterium": "Selbstschädigendes und autoaggressives Verhalten",
+     "einzelpunkte": [
+      0,
+      1,
+      3,
+      5
+     ]
+    },
+    {
+     "ziffer": "3.4",
+     "kriterium": "Beschädigen von Gegenständen",
+     "einzelpunkte": [
+      0,
+      1,
+      3,
+      5
+     ]
+    },
+    {
+     "ziffer": "3.5",
+     "kriterium": "Physisch aggressives Verhalten gegenüber anderen Personen",
+     "einzelpunkte": [
+      0,
+      1,
+      3,
+      5
+     ]
+    },
+    {
+     "ziffer": "3.6",
+     "kriterium": "Verbale Aggression",
+     "einzelpunkte": [
+      0,
+      1,
+      3,
+      5
+     ]
+    },
+    {
+     "ziffer": "3.7",
+     "kriterium": "Andere pflegerelevante vokale Auffälligkeiten",
+     "einzelpunkte": [
+      0,
+      1,
+      3,
+      5
+     ]
+    },
+    {
+     "ziffer": "3.8",
+     "kriterium": "Abwehr pflegerischer und anderer unterstützender Maßnahmen",
+     "einzelpunkte": [
+      0,
+      1,
+      3,
+      5
+     ]
+    },
+    {
+     "ziffer": "3.9",
+     "kriterium": "Wahnvorstellungen",
+     "einzelpunkte": [
+      0,
+      1,
+      3,
+      5
+     ]
+    },
+    {
+     "ziffer": "3.10",
+     "kriterium": "Ängste",
+     "einzelpunkte": [
+      0,
+      1,
+      3,
+      5
+     ]
+    },
+    {
+     "ziffer": "3.11",
+     "kriterium": "Antriebslosigkeit bei depressiver Stimmungslage",
+     "einzelpunkte": [
+      0,
+      1,
+      3,
+      5
+     ]
+    },
+    {
+     "ziffer": "3.12",
+     "kriterium": "Sozial inadäquate Verhaltensweisen",
+     "einzelpunkte": [
+      0,
+      1,
+      3,
+      5
+     ]
+    },
+    {
+     "ziffer": "3.13",
+     "kriterium": "Sonstige pflegerelevante inadäquate Handlungen",
+     "einzelpunkte": [
+      0,
+      1,
+      3,
+      5
+     ]
+    }
+   ],
+   "antwortskala": [
+    "nie oder sehr selten",
+    "selten (ein- bis dreimal innerhalb von zwei Wochen)",
+    "häufig (zweimal bis mehrmals wöchentlich, aber nicht täglich)",
+    "täglich"
+   ]
+  },
+  "4": {
+   "name": "Selbstversorgung",
+   "gewichtung_prozent": 40,
+   "punktbereiche": [
+    [
+     0,
+     2
+    ],
+    [
+     3,
+     7
+    ],
+    [
+     8,
+     18
+    ],
+    [
+     19,
+     36
+    ],
+    [
+     37,
+     54
+    ]
+   ],
+   "gewichtete_punkte": [
+    0,
+    10,
+    20,
+    30,
+    40
+   ],
+   "kriterien": [
+    {
+     "ziffer": "4.1",
+     "kriterium": "Waschen des vorderen Oberkörpers",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "4.2",
+     "kriterium": "Körperpflege im Bereich des Kopfes (Kämmen, Zahnpflege/Prothesenreinigung, Rasieren)",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "4.3",
+     "kriterium": "Waschen des Intimbereichs",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "4.4",
+     "kriterium": "Duschen und Baden einschließlich Waschen der Haare",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "4.5",
+     "kriterium": "An- und Auskleiden des Oberkörpers",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "4.6",
+     "kriterium": "An- und Auskleiden des Unterkörpers",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "4.7",
+     "kriterium": "Mundgerechtes Zubereiten der Nahrung und Eingießen von Getränken",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "4.8",
+     "kriterium": "Essen",
+     "einzelpunkte": [
+      0,
+      3,
+      6,
+      9
+     ]
+    },
+    {
+     "ziffer": "4.9",
+     "kriterium": "Trinken",
+     "einzelpunkte": [
+      0,
+      2,
+      4,
+      6
+     ]
+    },
+    {
+     "ziffer": "4.10",
+     "kriterium": "Benutzen einer Toilette oder eines Toilettenstuhls",
+     "einzelpunkte": [
+      0,
+      2,
+      4,
+      6
+     ]
+    },
+    {
+     "ziffer": "4.11",
+     "kriterium": "Bewältigen der Folgen einer Harninkontinenz und Umgang mit Dauerkatheter und Urostoma",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "4.12",
+     "kriterium": "Bewältigen der Folgen einer Stuhlinkontinenz und Umgang mit Stoma",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "4.13",
+     "kriterium": "Ernährung parental oder über Sonde",
+     "einzelpunkte": [
+      0,
+      6,
+      3
+     ]
+    }
+   ],
+   "antwortskala": [
+    "selbständig",
+    "überwiegend selbständig",
+    "überwiegend unselbständig",
+    "unselbständig"
+   ]
+  },
+  "5": {
+   "name": "Bewältigung von und selbständiger Umgang mit krankheits- oder therapiebedingten Anforderungen und Belastungen",
+   "gewichtung_prozent": 20,
+   "punktbereiche": [
+    [
+     0,
+     0
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     4,
+     5
+    ],
+    [
+     6,
+     15
+    ]
+   ],
+   "gewichtete_punkte": [
+    0,
+    5,
+    10,
+    15,
+    20
+   ],
+   "aufbau": "gruppen",
+   "hinweis": "Modul 5 ist als einziges Modul nicht \"je Kriterium eine Stufe\". Es besteht aus vier Blöcken, die zusammen höchstens 15 Einzelpunkte ergeben: 3 + 3 + 6 + 3. Das trifft die Obergrenze des Punktbereichs 4 aus Anlage 2 und bestätigt damit den Aufbau.",
+   "gruppen": [
+    {
+     "id": "haeufig",
+     "ziffern": "5.1–5.7",
+     "kriterien": [
+      "Medikation",
+      "Injektionen (subcutan oder intramuskulär)",
+      "Versorgung intravenöser Zugänge (Port)",
+      "Absaugen und Sauerstoffgabe",
+      "Einreibungen oder Kälte- und Wärmeanwendungen",
+      "Messung und Deutung von Körperzuständen",
+      "Körpernahe Hilfsmittel"
+     ],
+     "bemessung": "Anzahl der Maßnahmen aus 5.1 bis 5.7 aufsummieren und in Maßnahmen pro Tag umrechnen.",
+     "schwellen_pro_tag": [
+      {
+       "bis_unter": 1,
+       "einzelpunkte": 0,
+       "text": "keine oder seltener als einmal täglich"
+      },
+      {
+       "bis_max": 3,
+       "einzelpunkte": 1,
+       "text": "mindestens einmal bis maximal dreimal täglich"
+      },
+      {
+       "bis_max": 8,
+       "einzelpunkte": 2,
+       "text": "mehr als dreimal bis maximal achtmal täglich"
+      },
+      {
+       "darueber": true,
+       "einzelpunkte": 3,
+       "text": "mehr als achtmal täglich"
+      }
+     ],
+     "maximum": 3,
+     "umrechnung": {
+      "legal_basis": "BRi vom 21.08.2024, Erläuterungen zu Modul 5",
+      "pro_woche_geteilt_durch": 7,
+      "pro_monat_geteilt_durch": 30,
+      "wortlaut": "Für die Umrechnung der Maßnahmen, die monatlich vorkommen, in einen Durchschnittswert pro Tag wird die Summe der Maßnahmen pro Monat durch 30 geteilt. Für die Umrechnung der Maßnahmen, die wöchentlich erfolgen, in einen Durchschnittswert pro Tag wird die Summe der Maßnahmen pro Woche durch sieben geteilt.",
+      "beispiel_aus_der_richtlinie": "Täglich dreimal Medikamentengabe (5.1) und einmal Blutzuckermessen (5.6) sind vier Maßnahmen pro Tag."
+     }
+    },
+    {
+     "id": "selten",
+     "ziffern": "5.8–5.11",
+     "kriterien": [
+      "Verbandswechsel und Wundversorgung",
+      "Versorgung mit Stoma",
+      "Regelmäßige Einmalkatheterisierung und Nutzung von Abführmethoden",
+      "Therapiemaßnahmen in häuslicher Umgebung"
+     ],
+     "bemessung": "Anzahl der Maßnahmen aus 5.8 bis 5.11 aufsummieren und in Maßnahmen pro Tag umrechnen.",
+     "schwellen_pro_tag": [
+      {
+       "bis_unter": 0.143,
+       "einzelpunkte": 0,
+       "text": "keine oder seltener als einmal wöchentlich"
+      },
+      {
+       "bis_unter": 1,
+       "einzelpunkte": 1,
+       "text": "ein- bis mehrmals wöchentlich"
+      },
+      {
+       "bis_unter": 3,
+       "einzelpunkte": 2,
+       "text": "ein- bis unter dreimal täglich"
+      },
+      {
+       "darueber": true,
+       "einzelpunkte": 3,
+       "text": "mindestens dreimal täglich"
+      }
+     ],
+     "maximum": 3,
+     "umrechnung": {
+      "legal_basis": "BRi vom 21.08.2024, Erläuterungen zu Modul 5",
+      "pro_woche_geteilt_durch": 7,
+      "pro_monat_geteilt_durch": 30,
+      "wortlaut": "Für die Umrechnung der Maßnahmen, die monatlich vorkommen, in einen Durchschnittswert pro Tag wird die Summe der Maßnahmen pro Monat durch 30 geteilt. Für die Umrechnung der Maßnahmen, die wöchentlich erfolgen, in einen Durchschnittswert pro Tag wird die Summe der Maßnahmen pro Woche durch sieben geteilt.",
+      "beispiel_aus_der_richtlinie": "Täglich dreimal Medikamentengabe (5.1) und einmal Blutzuckermessen (5.6) sind vier Maßnahmen pro Tag."
+     }
+    },
+    {
+     "id": "termine",
+     "ziffern": "5.12–5.15 und 5.K",
+     "bemessung": "Häufigkeiten mit den in der Anlage genannten Faktoren multiplizieren und addieren.",
+     "faktoren": [
+      {
+       "ziffer": "5.12",
+       "kriterium": "Zeit- und technikintensive Maßnahmen in häuslicher Umgebung",
+       "taeglich": 60,
+       "woechentlich": 8.6,
+       "monatlich": 2
+      },
+      {
+       "ziffer": "5.13",
+       "kriterium": "Arztbesuche",
+       "woechentlich": 4.3,
+       "monatlich": 1
+      },
+      {
+       "ziffer": "5.14",
+       "kriterium": "Besuch anderer medizinischer oder therapeutischer Einrichtungen",
+       "woechentlich": 4.3,
+       "monatlich": 1
+      },
+      {
+       "ziffer": "5.15",
+       "kriterium": "Zeitlich ausgedehnte Besuche anderer medizinischer oder therapeutischer Einrichtungen",
+       "woechentlich": 8.6,
+       "monatlich": 2
+      },
+      {
+       "ziffer": "5.K",
+       "kriterium": "Besuche von Einrichtungen zur Frühförderung bei Kindern",
+       "woechentlich": 4.3,
+       "monatlich": 1
+      }
+     ],
+     "schwellen_summe": [
+      {
+       "ab": 0,
+       "unter": 4.3,
+       "einzelpunkte": 0
+      },
+      {
+       "ab": 4.3,
+       "unter": 8.6,
+       "einzelpunkte": 1
+      },
+      {
+       "ab": 8.6,
+       "unter": 12.9,
+       "einzelpunkte": 2
+      },
+      {
+       "ab": 12.9,
+       "unter": 60,
+       "einzelpunkte": 3
+      },
+      {
+       "ab": 60,
+       "einzelpunkte": 6
+      }
+     ],
+     "maximum": 6,
+     "hinweis": "Der Sprung von 3 auf 6 ist im Gesetz so vorgesehen — es gibt keine 4 und keine 5."
+    },
+    {
+     "id": "diaet",
+     "ziffern": "5.16",
+     "kriterium": "Einhaltung einer Diät und anderer krankheits- oder therapiebedingter Verhaltensvorschriften",
+     "antwortskala": [
+      "entfällt oder selbständig",
+      "überwiegend selbständig",
+      "überwiegend unselbständig",
+      "unselbständig"
+     ],
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ],
+     "maximum": 3
+    }
+   ]
+  },
+  "6": {
+   "name": "Gestaltung des Alltagslebens und sozialer Kontakte",
+   "gewichtung_prozent": 15,
+   "punktbereiche": [
+    [
+     0,
+     0
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     4,
+     6
+    ],
+    [
+     7,
+     11
+    ],
+    [
+     12,
+     18
+    ]
+   ],
+   "gewichtete_punkte": [
+    0,
+    3.75,
+    7.5,
+    11.25,
+    15
+   ],
+   "kriterien": [
+    {
+     "ziffer": "6.1",
+     "kriterium": "Gestaltung des Tagesablaufs und Anpassung an Veränderungen",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "6.2",
+     "kriterium": "Ruhen und Schlafen",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "6.3",
+     "kriterium": "Sichbeschäftigen",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "6.4",
+     "kriterium": "Vornehmen von in die Zukunft gerichteten Planungen",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "6.5",
+     "kriterium": "Interaktion mit Personen im direkten Kontakt",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    },
+    {
+     "ziffer": "6.6",
+     "kriterium": "Kontaktpflege zu Personen außerhalb des direkten Umfelds",
+     "einzelpunkte": [
+      0,
+      1,
+      2,
+      3
+     ]
+    }
+   ],
+   "antwortskala": [
+    "selbständig",
+    "überwiegend selbständig",
+    "überwiegend unselbständig",
+    "unselbständig"
+   ]
+  }
+ }
+}
