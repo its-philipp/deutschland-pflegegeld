@@ -1,27 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Die fünf Pflegegrade als eine Farbskala — das Signature-Element dieser
-       Seite (STATE.md → Design-Richtung). Fünf Stufen, ansteigend von links
-       nach rechts, in genau den Tönen, die auch Tabellen, Wizard und Badges
-       tragen (--color-pflegegrad-1 bis -5 in global.css). Keine neue Farbe.
-
-       **Warum eine Treppe und keine Balken:** Fünf getrennte Balken sind bei
-       16 px nicht mehr zählbar — dort stehen je zwei Pixel zur Verfügung.
-       Zusammenhängend gesetzt liest die Marke als *eine* Gestalt, die
-       ansteigt, und bleibt damit lesbar. Sie unterscheidet sich zugleich vom
-       Favicon von gemeindegebuehren, das freistehende Balken zeigt; zwei
-       Seiten desselben Portfolios dürfen im Reiter nicht verwechselbar sein.
-
-       **Was diese Marke nicht kann:** Stufe 1 (#C9D8CD) hat auf dem Off-White
-       1,38:1 und ist bei kleiner Darstellung praktisch unsichtbar. Das ist
-       einem Hell-nach-Dunkel-Verlauf nicht zu nehmen — auf hellem Grund
-       verschwindet das helle Ende, auf dunklem das dunkle. Getroffen wird
-       davon die *kürzeste* Stufe, also die, von der die Gestalt nicht abhängt.
-       Vier Varianten wurden bei 16, 32 und 112 px gegeneinander gesehen; diese
-       war die einzige, die bei allen dreien trägt.
-
-       Vorher stand hier ein Haken in einem Kreis auf dunklem Grund — drei
-       verschachtelte Formen, deren innerste bei 16 px etwa fünf Pixel groß
-       war. -->
+  <title>Deutschland Pflegegeld</title>
+  <desc>Fünf ansteigende Stufen in den Farben der Pflegegrad-Skala.</desc>
   <rect width="64" height="64" rx="14" fill="#F6F7F4" />
   <rect x="7"  y="46" width="10" height="6"  fill="#C9D8CD" />
   <rect x="17" y="38" width="10" height="14" fill="#A6C0B0" />
