@@ -6,6 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { CATEGORIES } from './src/data/kategorien.ts';
 import { THEMEN } from './src/data/themen.ts';
 import checkPlaceholders from './scripts/check-placeholders.mjs';
+import checkUrls from './scripts/check-urls.mjs';
 
 // Everything the site renders but tells crawlers not to index, derived from the
 // registry itself so the sitemap and the pages' own robots meta cannot drift
@@ -29,6 +30,10 @@ export default defineConfig({
     // hat. Cloudflare Pages baut mit `npm run build`, ein roter Build ist also
     // ein Deploy, der nicht stattfindet.
     checkPlaceholders(),
+    // Bricht den Build ab, wenn canonical, og:url, ein interner Link oder ein
+    // Sitemap-Eintrag auf eine Adresse zeigt, die Pages weiterleitet — die
+    // Ursache der Search-Console-Meldung „Page with redirect" vom 2026-08-23.
+    checkUrls(),
 
     // Never ask Google to crawl what we tell it not to index: Impressum and
     // Datenschutz are noindex by construction, the empty hubs by derivation.
