@@ -78,8 +78,30 @@ const bestandteile = [
   },
 ];
 
-const titel = `Pflegeheim Kosten ${land.name} 2026: Eigenanteil im Monat`;
-const beschreibung = `Was ein Heimplatz in ${land.name} selbst kostet: ${euro(erstesJahr)} im ersten Jahr, mit den drei Kostenteilen einzeln und dem Leistungszuschlag nach Aufenthaltsdauer. Stand ${datum(EIGENANTEIL_QUELLE.abgerufen)}.`;
+/**
+ * Titel und Description passen sich der Länge des Landesnamens an.
+ *
+ * Sechzehn Länder teilen sich eine Vorlage, und „Mecklenburg-Vorpommern" ist
+ * neun Zeichen länger als „Bremen": 18 der 31 Descriptions lagen über 160
+ * Zeichen, die längste bei 183, und ein Titel über 65. Google schneidet dann
+ * mitten im Satz ab. Gekürzt wird deshalb in Stufen, und die Zahl — das
+ * Einzige, weswegen jemand die Seite aufruft — bleibt in jeder davon stehen.
+ */
+const MAX_TITEL = 65;
+const MAX_BESCHREIBUNG = 160;
+const stand = datum(EIGENANTEIL_QUELLE.abgerufen);
+const titel =
+  [
+    `Pflegeheim Kosten ${land.name} 2026: Eigenanteil im Monat`,
+    `Pflegeheim Kosten ${land.name} 2026: Eigenanteil`,
+  ].find((t) => t.length <= MAX_TITEL) ?? `Pflegeheim Kosten ${land.name} 2026`;
+const beschreibung =
+  [
+    `Was ein Heimplatz in ${land.name} selbst kostet: ${euro(erstesJahr)} im ersten Jahr, mit den drei Kostenteilen einzeln und dem Leistungszuschlag nach Aufenthaltsdauer. Stand ${stand}.`,
+    `Was ein Heimplatz in ${land.name} selbst kostet: ${euro(erstesJahr)} im ersten Jahr, mit den drei Kostenteilen und dem Leistungszuschlag. Stand ${stand}.`,
+    `Was ein Heimplatz in ${land.name} selbst kostet: ${euro(erstesJahr)} im ersten Jahr, aufgeschlüsselt nach Kostenteilen. Stand ${stand}.`,
+  ].find((b) => b.length <= MAX_BESCHREIBUNG) ??
+  `Eigenanteil für einen Heimplatz in ${land.name}: ${euro(erstesJahr)} im ersten Jahr. Stand ${stand}.`;
 ---
 
 <BaseLayout title={titel} description={beschreibung} path={`/pflegeheim-kosten-${landSlug(land)}/`}>

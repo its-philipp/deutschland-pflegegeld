@@ -37,10 +37,17 @@ export default defineConfig({
 
     // Never ask Google to crawl what we tell it not to index: Impressum and
     // Datenschutz are noindex by construction, the empty hubs by derivation.
+/**
+     * Impressum und Datenschutz sind seit 2026-08-28 indexierbar und in der
+     * Sitemap. Die frühere Begründung — ein Rechtstext konkurriere um nichts und
+     * verdünne nur die indexierte Fläche — war teuer: deutschland-vorlagen wurde
+     * von AdSense mit „Low value content" abgelehnt, und der erste Befund der
+     * Diagnose lautete, im Index stehe nirgends, wer die Seite betreibt. Googles
+     * Mindestanforderungen nennen genau das. Der Fund war portfolioweit: alle
+     * sechs Seiten trugen dieselbe Einstellung.
+     */
     sitemap({
       filter: (page) =>
-        !page.includes('/impressum/') &&
-        !page.includes('/datenschutz/') &&
         !noindexPaths.some((path) => page.includes(path)),
     }),
   ],
