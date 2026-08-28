@@ -30,6 +30,13 @@ import Icon from './Icon.astro';
  * Die Fristen unten sind der eigentliche Wert des Blocks: Die 25 Arbeitstage
  * und die 70 Euro je angefangener Woche kennt kaum jemand, und sie stehen
  * wörtlich im Gesetz (§ 18c Abs. 5 SGB XI).
+ *
+ * **Die Vorversicherungszeit steht bewusst VOR den Schritten** (ergänzt am
+ * 2026-08-28). Sie fehlte auf allen 31 Seiten des Projekts — gemessen, nicht
+ * vermutet. Eine fehlende Voraussetzung ist gefährlicher als eine falsche
+ * Zahl, weil niemand sie vermisst: Wer die zwei Jahre nicht hat, durchläuft
+ * Antrag und Begutachtung und bekommt am Ende nichts, ohne je erfahren zu
+ * haben, warum. Sie gehört deshalb an den Anfang und nicht in eine Fußnote.
  */
 interface Props {
   /** Akzentfarbe der aufrufenden Seite, als CSS-Farbe. */
@@ -92,6 +99,26 @@ const anlaufstellen = [
     Der Weg ist bei jeder Pflegekasse derselbe, und an drei Stellen laufen
     dabei Fristen — für die Pflegekasse, nicht für Sie.
   </p>
+
+  <div class="mt-6 border-l-2 border-(--accent) pl-4">
+    <p class="font-medium text-ink">Zuerst: Sind Sie lange genug versichert?</p>
+    <p class="mt-1 max-w-prose text-[15px] text-ink-soft">
+      Leistungen der Pflegeversicherung gibt es nur, wenn Sie in den letzten
+      zehn Jahren vor der Antragstellung mindestens zwei Jahre versichert oder
+      familienversichert waren. Bei Kindern genügt es, wenn ein Elternteil
+      diese Zeit erfüllt; Zeiten in der privaten Pflege-Pflichtversicherung
+      werden angerechnet. Diese Voraussetzung wird zuerst geprüft — wer sie
+      nicht erfüllt, erhält auch bei festgestelltem Pflegegrad keine Leistungen.
+    </p>
+    <p class="mt-1 text-[14px] text-ink-mute">§ 33 Abs. 2 und 3 SGB XI</p>
+    <p class="mt-3 max-w-prose text-[15px] text-ink-soft">
+      Und warten kostet Geld: Leistungen werden frühestens ab dem Beginn des
+      Monats gezahlt, in dem der Antrag gestellt wurde — rückwirkend für die
+      Zeit davor gibt es nichts, auch wenn die Pflegebedürftigkeit längst
+      bestand.
+    </p>
+    <p class="mt-1 text-[14px] text-ink-mute">§ 33 Abs. 1 Sätze 2 und 3 SGB XI</p>
+  </div>
 
   <ol class="mt-6 flex flex-col divide-y divide-rule border-y border-rule">
     {
