@@ -7,6 +7,7 @@ import { CATEGORIES } from './src/data/kategorien.ts';
 import { THEMEN } from './src/data/themen.ts';
 import checkPlaceholders from './scripts/check-placeholders.mjs';
 import checkUrls from './scripts/check-urls.mjs';
+import checkMeta from './scripts/check-meta.mjs';
 
 // Everything the site renders but tells crawlers not to index, derived from the
 // registry itself so the sitemap and the pages' own robots meta cannot drift
@@ -25,6 +26,7 @@ export default defineConfig({
   site: 'https://deutschland-pflegegeld.de',
   output: 'static',
   integrations: [
+    checkMeta(),
     preact(),
     // Bricht den Build ab, wenn ein Deploy-Platzhalter es ins `dist/` geschafft
     // hat. Cloudflare Pages baut mit `npm run build`, ein roter Build ist also
