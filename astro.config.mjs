@@ -26,7 +26,7 @@ export default defineConfig({
   site: 'https://deutschland-pflegegeld.de',
   output: 'static',
   integrations: [
-    checkSeo({ domain: 'deutschland-pflegegeld.de' }),
+    checkSeo({ domain: 'deutschland-pflegegeld.de', jahrImTitel: true }),
     preact(),
     // Bricht den Build ab, wenn ein Deploy-Platzhalter es ins `dist/` geschafft
     // hat. Cloudflare Pages baut mit `npm run build`, ein roter Build ist also
