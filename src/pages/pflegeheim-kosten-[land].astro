@@ -90,8 +90,20 @@ const bestandteile = [
 const MAX_TITEL = 65;
 const MAX_BESCHREIBUNG = 160;
 const stand = datum(EIGENANTEIL_QUELLE.abgerufen);
+/**
+ * Gebraeuchliche Kurzform, aber nur wo nachweislich danach gesucht wird.
+ * Gemessen am 2026-08-31: „pflegeheim kosten nrw" traegt eigenes Suchvolumen
+ * (170, Difficulty 0), waehrend der ausgeschriebene Landesname in derselben
+ * Anfrage nicht vorkommt. Weitere Laender erst aufnehmen, wenn ein Beleg
+ * vorliegt — eine erfundene Abkuerzung kostet Titellaenge und bringt nichts.
+ */
+const KURZFORM: Record<string, string> = {
+  'Nordrhein-Westfalen': 'NRW',
+};
+const kurz = KURZFORM[land.name];
 const titel =
   [
+    ...(kurz ? [`Pflegeheim Kosten ${land.name} (${kurz}) 2026: Eigenanteil`] : []),
     `Pflegeheim Kosten ${land.name} 2026: Eigenanteil im Monat`,
     `Pflegeheim Kosten ${land.name} 2026: Eigenanteil`,
   ].find((t) => t.length <= MAX_TITEL) ?? `Pflegeheim Kosten ${land.name} 2026`;
