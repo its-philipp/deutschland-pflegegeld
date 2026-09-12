@@ -1,0 +1,348 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import Icon from '../components/Icon.astro';
+import NaechsterSchritt from '../components/NaechsterSchritt.astro';
+import { accentFor } from '../data/kategorien';
+import {
+  ENTLASTUNGSBETRAG,
+  GEMEINSAMER_JAHRESBETRAG,
+  PFLEGEGELD,
+  PFLEGEHILFSMITTEL_VERBRAUCH,
+  PFLEGESACHLEISTUNG,
+  SGB_XI_FASSUNG,
+  SGB_XI_STAND,
+  TEILSTATIONAERE_PFLEGE,
+  VOLLSTATIONAER,
+  VOLLSTATIONAER_GRAD_1,
+  WOHNUMFELDVERBESSERUNG,
+  type Leistung,
+  type Pflegegrad,
+} from '../data/leistungen';
+
+/**
+ * Die gradübergreifende Tabelle (2026-09-12).
+ *
+ * **Warum sie fehlte und warum sie gebaut wird.** Die fünf Pflegegrad-Seiten
+ * beantworten „was steht mir bei Grad 3 zu". Gemessen wird aber auch quer
+ * gefragt: `pflegegeld tabelle` trägt 4.400 Abfragen im Monat und
+ * `pflegegeld 2026` 9.900 bei Difficulty 4 — beides Fragen nach *allen*
+ * Beträgen nebeneinander, für die es hier keine Seite gab. Wer vergleichen
+ * will, musste fünf Seiten nacheinander öffnen.
+ *
+ * **Was diese Seite ausdrücklich nicht tut: den Pflegegrad-Seiten ihr Keyword
+ * wegnehmen.** `pflegegeld pflegegrad 2` (12.100) und `pflegegeld pflegegrad 3`
+ * (9.900) gehören dorthin und werden hier nicht angesteuert — Titel,
+ * Description und H1 sprechen von der Tabelle und von allen Graden, nie von
+ * einem einzelnen. Zwei eigene Seiten auf dieselbe Anfrage zu setzen wäre
+ * Kannibalisierung.
+ *
+ * **Kein Betrag steht in dieser Datei.** Alles kommt aus `data/leistungen.ts`
+ * — die Regel aus Aufgabe 2.3. Eine Tabelle ist genau der Ort, an dem man in
+ * Versuchung gerät, „schnell" eine Zahl hinzuschreiben, und genau der Ort, an
+ * dem niemand sie beim nächsten Verordnungsstand wiederfindet.
+ *
+ * **Die Jahreszahl wird abgeleitet.** Die übrigen Seiten dieses Projekts
+ * tragen „2026" fest im Titel; am 1. Januar werden sie alle gleichzeitig
+ * falsch, und `check-seo` meldet es dann auf jeder. Hier kommt sie aus der
+ * Bauzeit. Der Rückbau der übrigen Titel steht in STATE.md als Folgeaufgabe.
+ */
+const JAHR = new Date().getFullYear();
+
+const akzent = accentFor('leistungen');
+const GRADE = [1, 2, 3, 4, 5] as const;
+
+const euro = (b: number) =>
+  b.toLocaleString('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+const datum = (iso: string) => iso.split('-').reverse().join('.');
+
+/**
+ * Eine Zeile der Tabelle: je Grad ein Betrag oder `null` für „kein Anspruch".
+ *
+ * `null` wird als „—" mit Vorlesetext ausgegeben und nicht als 0 €. Der
+ * Unterschied ist für Pflegegrad 1 der ganze Inhalt der Zeile: Es gibt dort
+ * kein Pflegegeld, und „0 €" läse sich wie ein Betrag, der auf null gesetzt
+ * wurde.
+ */
+interface Zeile {
+  was: string;
+  takt: string;
+  betraege: Record<Pflegegrad, number | null>;
+  quelle: Leistung;
+  /**
+   * Eine zweite Fundstelle, wenn nicht alle Spalten der Zeile aus derselben
+   * Vorschrift stammen.
+   *
+   * Gebraucht wird sie bisher genau einmal, und der Fall ist lehrreich: Der
+   * Heimzuschuss steht für die Grade 2 bis 5 in § 43 Abs. 2 SGB XI, für
+   * Pflegegrad 1 aber in **Absatz 3** — andere Vorschrift, anderer
+   * Anspruchsgrund, anderer Betrag. Der erste Entwurf dieser Tabelle zitierte
+   * für die ganze Zeile Absatz 2 und stellte damit 131 € unter eine Norm, in
+   * der sie nicht stehen. Auf einer Seite, deren Versprechen „jeder Betrag mit
+   * seiner Fundstelle" ist, ist das kein Schönheitsfehler.
+   */
+  zusatzQuelle?: { quelle: Leistung; gilt: string };
+  hinweis: string;
+}
+
+/** Ein Betrag, der für jeden Grad gleich ist — als Zeile über alle fünf Spalten. */
+const fuerAlle = (betrag: number): Record<Pflegegrad, number | null> =>
+  ({ 1: betrag, 2: betrag, 3: betrag, 4: betrag, 5: betrag });
+
+const zeilen: Zeile[] = [
+  {
+    was: 'Pflegegeld',
+    takt: 'im Monat',
+    betraege: PFLEGEGELD.betrag,
+    quelle: PFLEGEGELD.quelle,
+    hinweis: 'Wenn Sie die Pflege selbst organisieren, etwa mit Angehörigen.',
+  },
+  {
+    was: 'Pflegesachleistung',
+    takt: 'im Monat',
+    betraege: PFLEGESACHLEISTUNG.betrag,
+    quelle: PFLEGESACHLEISTUNG.quelle,
+    hinweis: 'Der Wert der Einsätze eines ambulanten Pflegedienstes.',
+  },
+  {
+    was: 'Tages- oder Nachtpflege',
+    takt: 'im Monat',
+    betraege: TEILSTATIONAERE_PFLEGE.betrag,
+    quelle: TEILSTATIONAERE_PFLEGE.quelle,
+    hinweis: 'Zusätzlich zu Pflegegeld und Sachleistung.',
+  },
+  {
+    was: 'Verhinderungs- und Kurzzeitpflege',
+    takt: 'im Jahr',
+    betraege: {
+      1: null,
+      2: GEMEINSAMER_JAHRESBETRAG.betrag,
+      3: GEMEINSAMER_JAHRESBETRAG.betrag,
+      4: GEMEINSAMER_JAHRESBETRAG.betrag,
+      5: GEMEINSAMER_JAHRESBETRAG.betrag,
+    },
+    quelle: GEMEINSAMER_JAHRESBETRAG.quelle,
+    hinweis: 'Ein gemeinsamer Jahresbetrag für beides, seit der Neuregelung kein getrennter Topf.',
+  },
+  {
+    was: 'Entlastungsbetrag',
+    takt: 'im Monat',
+    betraege: fuerAlle(ENTLASTUNGSBETRAG.betrag),
+    quelle: ENTLASTUNGSBETRAG.quelle,
+    hinweis: 'Auch bei Pflegegrad 1. Keine Barauszahlung — er wird mit anerkannten Angeboten verrechnet.',
+  },
+  {
+    was: 'Pflegehilfsmittel zum Verbrauch',
+    takt: 'im Monat',
+    betraege: fuerAlle(PFLEGEHILFSMITTEL_VERBRAUCH.betrag),
+    quelle: PFLEGEHILFSMITTEL_VERBRAUCH.quelle,
+    hinweis: 'Handschuhe, Desinfektion, Bettschutzeinlagen.',
+  },
+  {
+    was: 'Wohnumfeld verbessern',
+    takt: 'je Maßnahme',
+    betraege: fuerAlle(WOHNUMFELDVERBESSERUNG.je_massnahme),
+    quelle: WOHNUMFELDVERBESSERUNG.quelle,
+    hinweis: 'Etwa Treppenlift oder bodengleiche Dusche. Auch bei Pflegegrad 1.',
+  },
+  {
+    was: 'Pflegeheim',
+    takt: 'im Monat',
+    betraege: {
+      1: VOLLSTATIONAER_GRAD_1.betrag,
+      2: VOLLSTATIONAER.betrag[2],
+      3: VOLLSTATIONAER.betrag[3],
+      4: VOLLSTATIONAER.betrag[4],
+      5: VOLLSTATIONAER.betrag[5],
+    },
+    quelle: VOLLSTATIONAER.quelle,
+    zusatzQuelle: { quelle: VOLLSTATIONAER_GRAD_1.quelle, gilt: 'Grad 1' },
+    hinweis:
+      'Was die Pflegekasse zu den pflegebedingten Kosten beisteuert. Bei Grad 1 ist es nur ein Zuschuss aus einer eigenen Vorschrift; den Rest zahlen Sie in jedem Fall selbst.',
+  },
+];
+
+const titel = `Pflegegeld ${JAHR}: Tabelle aller Pflegegrade`;
+const beschreibung = `Pflegegeld-Tabelle ${JAHR}: alle Beträge für Pflegegrad 1 bis 5 — Pflegegeld, Sachleistung, Entlastungsbetrag und Pflegeheim, mit Fundstelle im SGB XI.`;
+---
+
+<BaseLayout title={titel} description={beschreibung} path="/pflegegeld-tabelle/">
+  <p
+    style={`--accent: ${akzent}`}
+    class="flex items-center gap-2 text-[14px] font-medium text-(--accent)"
+  >
+    <Icon name="leistungen" class="h-5 w-5" />
+    Leistungen
+  </p>
+
+  <h1 class="mt-3 font-display text-3xl text-ink sm:text-4xl">
+    Pflegegeld {JAHR}: die Tabelle für alle Pflegegrade
+  </h1>
+
+  <p class="mt-4 max-w-prose text-[17px] text-ink-soft">
+    Alle Geldleistungen der Pflegeversicherung nebeneinander, von Pflegegrad 1 bis 5. Jeder
+    Betrag steht mit der Vorschrift, aus der er stammt — damit Sie ihn nachlesen und nicht
+    glauben müssen.
+  </p>
+
+  {/* Erlaubte Anzeigenposition: unter dem Einstieg, vor der Tabelle. Nie
+      zwischen einer Eingabe und ihrem Ergebnis (root CLAUDE.md). */}
+  <div class="mt-8">
+    <AdSlot />
+  </div>
+
+  <section class="mt-10">
+    <h2 class="font-display text-2xl text-ink">Alle Beträge im Überblick</h2>
+    <p class="mt-2 max-w-prose text-[15px] text-ink-mute">
+      Stand: {datum(SGB_XI_STAND)}. Fassung des SGB XI: {SGB_XI_FASSUNG}.
+    </p>
+
+    {/* Acht Zeilen mal fünf Spalten passen auf kein Telefon. Die Tabelle
+        scrollt deshalb in ihrem eigenen Kasten — der Seitenkörper darf nie
+        waagerecht scrollen. Die erste Spalte bleibt stehen, sonst weiß beim
+        Scrollen niemand mehr, welche Leistung er gerade liest.
+
+        **`contain: paint` ist hier kein Schmuck, sondern der Fix.** Gemessen am
+        2026-09-12 bei 375 px Breite: `overflow-x: auto` allein hielt die breite
+        Tabelle *nicht* davon ab, den Seitenkörper mitzuziehen — das Fenster
+        ließ sich um 34 Pixel waagerecht schieben, also genau um den
+        Innenabstand von `main` plus den Rahmen. Durchprobiert und jeweils
+        nachgemessen: ohne `w-full` — weiterhin 34. Mit `width: max-content` —
+        34. Mit `overflow-x: scroll` — 34. Mit `border-collapse: separate` — 32.
+        Erst Paint-Containment schneidet den Überhang sauber ab (0), und die
+        Tabelle scrollt in ihrem Kasten unverändert weiter.
+
+        Geprüft wurde zusätzlich, dass die klebende erste Spalte das übersteht:
+        `contain: paint` bildet zwar einen Umschließungsblock, aber `sticky`
+        richtet sich am Scroll-Vorfahren aus und bleibt damit stehen. */}
+    <div class="mt-6 overflow-x-auto border border-rule [contain:paint]">
+      <table class="w-full min-w-[46rem] border-collapse text-left text-[15px]">
+        <caption class="sr-only">
+          Leistungen der Pflegeversicherung je Pflegegrad, mit Fundstelle im SGB XI
+        </caption>
+        <thead>
+          <tr class="border-b border-rule bg-ink/[0.03]">
+            <th scope="col" class="sticky left-0 bg-ground px-4 py-3 font-medium text-ink">
+              Leistung
+            </th>
+            {
+              GRADE.map((g) => (
+                <th scope="col" class="px-4 py-3 text-right font-medium text-ink">
+                  <a class="underline underline-offset-4" href={`/pflegegrad-${g}/`}>
+                    Grad {g}
+                  </a>
+                </th>
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {
+            zeilen.map((z) => (
+              <tr class="border-b border-rule last:border-0 align-top">
+                <th scope="row" class="sticky left-0 bg-ground px-4 py-4 font-normal">
+                  <span class="block font-medium text-ink">{z.was}</span>
+                  <span class="mt-0.5 block text-[13px] text-ink-mute">{z.takt}</span>
+                  <a
+                    class="mt-1 block text-[13px] text-ink-mute underline underline-offset-2"
+                    href={z.quelle.url}
+                  >
+                    {z.quelle.fundstelle}
+                  </a>
+                  {z.zusatzQuelle && (
+                    <a
+                      class="block text-[13px] text-ink-mute underline underline-offset-2"
+                      href={z.zusatzQuelle.quelle.url}
+                    >
+                      {z.zusatzQuelle.quelle.fundstelle} ({z.zusatzQuelle.gilt})
+                    </a>
+                  )}
+                </th>
+                {GRADE.map((g) => (
+                  <td class="px-4 py-4 text-right tabular-nums text-ink">
+                    {z.betraege[g] === null ? (
+                      <span class="text-ink-mute">
+                        <span aria-hidden="true">—</span>
+                        <span class="sr-only">kein Anspruch</span>
+                      </span>
+                    ) : (
+                      euro(z.betraege[g]!)
+                    )}
+                  </td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <ul class="mt-6 flex flex-col gap-2 text-[14px] text-ink-mute">
+      {
+        zeilen.map((z) => (
+          <li>
+            <span class="text-ink">{z.was}:</span> {z.hinweis}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="mt-12 max-w-prose">
+    <h2 class="font-display text-2xl text-ink">Was die Tabelle nicht zeigt</h2>
+    <p class="mt-3 text-[15px] text-ink-soft">
+      Die Beträge sind Höchstbeträge, keine Auszahlungen. Pflegegeld und Pflegesachleistung
+      schließen einander nicht aus — wer beides in Anspruch nimmt, bekommt das Pflegegeld
+      anteilig gekürzt, und zwar um den Anteil der Sachleistung, den er ausgeschöpft hat. Wie
+      viel dabei herauskommt, hängt an Ihrem Fall; dafür ist der Rechner auf der Seite Ihres
+      Pflegegrades da.
+    </p>
+    <p class="mt-3 text-[15px] text-ink-soft">
+      Nicht enthalten ist außerdem der Leistungszuschlag nach § 43c SGB XI: Er ist kein fester
+      Betrag, sondern ein Prozentsatz auf den pflegebedingten Eigenanteil im Heim, und er
+      steigt mit der Dauer des Heimaufenthalts. Auch er steht deshalb dort, wo er hingehört —
+      bei den Pflegeheimkosten.
+    </p>
+    <p class="mt-3 text-[15px] text-ink-soft">
+      Und schließlich: Pflegegrad 1 ist in dieser Tabelle nicht einfach die kleinste Spalte. Bei
+      Grad 1 gibt es weder Pflegegeld noch Pflegesachleistung — der Strich steht dort nicht für
+      „wenig", sondern für „kein Anspruch".
+    </p>
+  </section>
+
+  <section class="mt-12">
+    <h2 class="font-display text-2xl text-ink">Was für Ihren Pflegegrad gilt</h2>
+    <p class="mt-2 max-w-prose text-[15px] text-ink-mute">
+      Jede Seite nennt die Voraussetzungen, die Bedingungen je Leistung und rechnet die
+      Kombination aus Pflegegeld und Sachleistung für Sie durch.
+    </p>
+    <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+      {
+        GRADE.map((g) => (
+          <li>
+            <a
+              class="flex items-baseline justify-between gap-3 border border-rule px-4 py-3 transition-colors hover:bg-ink/[0.03]"
+              href={`/pflegegrad-${g}/`}
+            >
+              <span class="font-medium text-ink">Pflegegrad {g}</span>
+              <span class="tabular-nums text-[15px] text-ink-mute">
+                {PFLEGEGELD.betrag[g] === null
+                  ? 'kein Pflegegeld'
+                  : `${euro(PFLEGEGELD.betrag[g]!)} Pflegegeld`}
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <NaechsterSchritt akzent={akzent} />
+
+  <Disclaimer />
+
+  <div class="mt-10">
+    <AdSlot />
+  </div>
+</BaseLayout>

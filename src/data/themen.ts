@@ -186,6 +186,17 @@ export const THEMEN: Thema[] = [
     kurz: 'Was ein Heimplatz hier selbst kostet, aufgeschlüsselt nach den drei Kostenteilen.',
     pfad: '/pflegeheim-kosten-thueringen/',
   },
+  {
+    // Der erste echte Eintrag der Kategorie „Leistungen". Bis zum 2026-09-12
+    // war sie leer, und `/kategorie/leistungen/` trug deshalb zu Recht
+    // `noindex` — die Seite hätte nichts verlinkt. Mit diesem Eintrag füllt
+    // sie sich von selbst: Das `noindex` hängt an `themen.length === 0`.
+    slug: 'pflegegeld-tabelle',
+    titel: 'Pflegegeld-Tabelle: alle Pflegegrade',
+    kategorie: 'leistungen',
+    kurz: 'Alle Geldleistungen der Pflegeversicherung nebeneinander, von Grad 1 bis 5, jeweils mit ihrer Fundstelle.',
+    pfad: '/pflegegeld-tabelle/',
+  },
 ];
 
 /** All topics belonging to one category, in registry order. */
