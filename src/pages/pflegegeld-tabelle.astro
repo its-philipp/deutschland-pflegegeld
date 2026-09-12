@@ -20,6 +20,7 @@ import {
   type Leistung,
   type Pflegegrad,
 } from '../data/leistungen';
+import { jahrAus } from '../lib/jahr';
 
 /**
  * Die gradübergreifende Tabelle (2026-09-12).
@@ -43,12 +44,13 @@ import {
  * Versuchung gerät, „schnell" eine Zahl hinzuschreiben, und genau der Ort, an
  * dem niemand sie beim nächsten Verordnungsstand wiederfindet.
  *
- * **Die Jahreszahl wird abgeleitet.** Die übrigen Seiten dieses Projekts
- * tragen „2026" fest im Titel; am 1. Januar werden sie alle gleichzeitig
- * falsch, und `check-seo` meldet es dann auf jeder. Hier kommt sie aus der
- * Bauzeit. Der Rückbau der übrigen Titel steht in STATE.md als Folgeaufgabe.
+ * **Die Jahreszahl kommt aus dem Stand des Gesetzestexts.** Der erste Entwurf
+ * dieser Seite nahm sie aus der Bauzeit (`new Date().getFullYear()`), und das
+ * war falsch: Ein Titel, der am 1. Januar von selbst auf „2027" springt,
+ * behauptet Aktualität, die die Beträge darunter nicht haben. Korrigiert am
+ * 2026-09-12, Begründung in `lib/jahr.ts`.
  */
-const JAHR = new Date().getFullYear();
+const JAHR = jahrAus(SGB_XI_STAND);
 
 const akzent = accentFor('leistungen');
 const GRADE = [1, 2, 3, 4, 5] as const;

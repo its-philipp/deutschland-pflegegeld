@@ -4,6 +4,8 @@ import AdSlot from '../components/AdSlot.astro';
 import Disclaimer from '../components/Disclaimer.astro';
 import PflegegradWizard from '../components/PflegegradWizard';
 import { BOGEN, MODUL5, STAND } from '../data/begutachtung';
+// Jahr aus dem Stand der Begutachtungs-Richtlinie, nicht aus der Uhr (lib/jahr.ts).
+import { jahrAus } from '../lib/jahr';
 
 /**
  * Die Pflegegrad-Selbsteinschätzung (queue task 2.6).
@@ -28,7 +30,7 @@ const module = [
 ---
 
 <BaseLayout
-  title="Pflegegrad berechnen 2026: Selbsteinschätzung nach § 15 SGB XI"
+  title={`Pflegegrad berechnen ${jahrAus(STAND)}: Selbsteinschätzung nach § 15 SGB XI`}
   description="Pflegegrad selbst einschätzen — mit den sechs Modulen des amtlichen Begutachtungsinstruments, ihren Gewichtungen und der Punktrechnung nach § 15 SGB XI."
   path="/pflegegrad-berechnen/"
 >

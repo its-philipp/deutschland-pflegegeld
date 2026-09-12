@@ -13,6 +13,7 @@ import {
   spanneErstesJahr,
   type LandEigenanteil,
 } from '../data/eigenanteile';
+import { jahrAus } from '../lib/jahr';
 import { LEISTUNGSZUSCHLAG, VOLLSTATIONAER } from '../data/leistungen';
 
 /**
@@ -101,12 +102,14 @@ const KURZFORM: Record<string, string> = {
   'Nordrhein-Westfalen': 'NRW',
 };
 const kurz = KURZFORM[land.name];
+// s. `lib/jahr.ts`: Der Titel trägt das Jahr der Erhebung, nicht das laufende.
+const jahr = jahrAus(EIGENANTEIL_QUELLE.stand);
 const titel =
   [
-    ...(kurz ? [`Pflegeheim Kosten ${land.name} (${kurz}) 2026: Eigenanteil`] : []),
-    `Pflegeheim Kosten ${land.name} 2026: Eigenanteil im Monat`,
-    `Pflegeheim Kosten ${land.name} 2026: Eigenanteil`,
-  ].find((t) => t.length <= MAX_TITEL) ?? `Pflegeheim Kosten ${land.name} 2026`;
+    ...(kurz ? [`Pflegeheim Kosten ${land.name} (${kurz}) ${jahr}: Eigenanteil`] : []),
+    `Pflegeheim Kosten ${land.name} ${jahr}: Eigenanteil im Monat`,
+    `Pflegeheim Kosten ${land.name} ${jahr}: Eigenanteil`,
+  ].find((t) => t.length <= MAX_TITEL) ?? `Pflegeheim Kosten ${land.name} ${jahr}`;
 const beschreibung =
   [
     `Was ein Heimplatz in ${land.name} selbst kostet: ${euro(erstesJahr)} im ersten Jahr, mit den drei Kostenteilen einzeln und dem Leistungszuschlag nach Aufenthaltsdauer. Stand ${stand}.`,

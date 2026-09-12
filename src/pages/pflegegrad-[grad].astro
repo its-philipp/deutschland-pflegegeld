@@ -24,6 +24,7 @@ import {
   type Leistung,
   type Pflegegrad,
 } from '../data/leistungen';
+import { jahrAus } from '../lib/jahr';
 
 /**
  * Eine Seite je Pflegegrad (queue task 2.5).
@@ -137,10 +138,13 @@ const zeilen: Zeile[] = [
 
 const geschwister = THEMEN.filter((t) => t.kategorie === 'pflegegrad' && t.slug !== `pflegegrad-${grad}`);
 
-const titel = `Pflegegrad ${grad}: Geld und Leistungen 2026`;
+// Die Jahreszahl kommt aus dem Stand des Gesetzestexts, nicht aus der Uhr —
+// Begründung in `lib/jahr.ts`.
+const jahr = jahrAus(SGB_XI_STAND);
+const titel = `Pflegegrad ${grad}: Geld und Leistungen ${jahr}`;
 const beschreibung = hatGeldleistung
-  ? `Pflegegrad ${grad} 2026: ${euro(pflegegeld!)} Pflegegeld oder ${euro(sachleistung!)} Sachleistung im Monat, dazu Entlastungsbetrag und Verhinderungspflege — mit Rechner und Fundstelle.`
-  : `Pflegegrad 1 2026: kein Pflegegeld, aber Entlastungsbetrag, Pflegehilfsmittel und Zuschüsse fürs Wohnumfeld — was Ihnen zusteht, mit Fundstelle zu jedem Betrag.`;
+  ? `Pflegegrad ${grad} ${jahr}: ${euro(pflegegeld!)} Pflegegeld oder ${euro(sachleistung!)} Sachleistung im Monat, dazu Entlastungsbetrag und Verhinderungspflege — mit Rechner und Fundstelle.`
+  : `Pflegegrad 1 ${jahr}: kein Pflegegeld, aber Entlastungsbetrag, Pflegehilfsmittel und Zuschüsse fürs Wohnumfeld — was Ihnen zusteht, mit Fundstelle zu jedem Betrag.`;
 ---
 
 <BaseLayout title={titel} description={beschreibung} path={`/pflegegrad-${grad}/`}>
