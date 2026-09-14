@@ -102,21 +102,32 @@ const KURZFORM: Record<string, string> = {
   'Nordrhein-Westfalen': 'NRW',
 };
 const kurz = KURZFORM[land.name];
+/**
+ * „in Hessen", aber „im Saarland" — das einzige Land mit Artikel. Bis 2026-09-14
+ * stand fünfmal „in Saarland" auf der Seite, auch in der H1.
+ */
+const imLand = land.name === 'Saarland' ? 'im Saarland' : `in ${land.name}`;
 // s. `lib/jahr.ts`: Der Titel trägt das Jahr der Erhebung, nicht das laufende.
 const jahr = jahrAus(EIGENANTEIL_QUELLE.stand);
 const titel =
   [
     ...(kurz ? [`Pflegeheim Kosten ${land.name} (${kurz}) ${jahr}: Eigenanteil`] : []),
+    // Suchanfragen „kosten pflegeheim pflegegrad 4 hessen" u. ä. landeten 2026-08/09
+    // in fünf Ländern auf Position 10–60 (GSC). Der Pflegegrad ist die Frage, und die
+    // Antwort der Seite ist, dass der Eigenanteil für 2 bis 5 gleich ist.
+    `Pflegeheim Kosten ${land.name} ${jahr}: Eigenanteil Pflegegrad 2–5`,
     `Pflegeheim Kosten ${land.name} ${jahr}: Eigenanteil im Monat`,
     `Pflegeheim Kosten ${land.name} ${jahr}: Eigenanteil`,
   ].find((t) => t.length <= MAX_TITEL) ?? `Pflegeheim Kosten ${land.name} ${jahr}`;
 const beschreibung =
   [
-    `Was ein Heimplatz in ${land.name} selbst kostet: ${euro(erstesJahr)} im ersten Jahr, mit den drei Kostenteilen einzeln und dem Leistungszuschlag nach Aufenthaltsdauer. Stand ${stand}.`,
-    `Was ein Heimplatz in ${land.name} selbst kostet: ${euro(erstesJahr)} im ersten Jahr, mit den drei Kostenteilen und dem Leistungszuschlag. Stand ${stand}.`,
-    `Was ein Heimplatz in ${land.name} selbst kostet: ${euro(erstesJahr)} im ersten Jahr, aufgeschlüsselt nach Kostenteilen. Stand ${stand}.`,
+    `Was ein Heimplatz ${imLand} selbst kostet: ${euro(erstesJahr)} im ersten Jahr – gleich für Pflegegrad 2 bis 5, mit den drei Kostenteilen und dem Leistungszuschlag. Stand ${stand}.`,
+    `Heimplatz ${imLand}: ${euro(erstesJahr)} Eigenanteil im ersten Jahr – gleich für Pflegegrad 2 bis 5, mit Kostenteilen und Leistungszuschlag. Stand ${stand}.`,
+    `Was ein Heimplatz ${imLand} selbst kostet: ${euro(erstesJahr)} im ersten Jahr, mit den drei Kostenteilen einzeln und dem Leistungszuschlag nach Aufenthaltsdauer. Stand ${stand}.`,
+    `Was ein Heimplatz ${imLand} selbst kostet: ${euro(erstesJahr)} im ersten Jahr, mit den drei Kostenteilen und dem Leistungszuschlag. Stand ${stand}.`,
+    `Was ein Heimplatz ${imLand} selbst kostet: ${euro(erstesJahr)} im ersten Jahr, aufgeschlüsselt nach Kostenteilen. Stand ${stand}.`,
   ].find((b) => b.length <= MAX_BESCHREIBUNG) ??
-  `Eigenanteil für einen Heimplatz in ${land.name}: ${euro(erstesJahr)} im ersten Jahr. Stand ${stand}.`;
+  `Eigenanteil für einen Heimplatz ${imLand}: ${euro(erstesJahr)} im ersten Jahr. Stand ${stand}.`;
 ---
 
 <BaseLayout title={titel} description={beschreibung} path={`/pflegeheim-kosten-${landSlug(land)}/`}>
@@ -126,11 +137,11 @@ const beschreibung =
   </p>
 
   <h1 class="mt-3 font-display text-3xl text-ink sm:text-4xl">
-    Was kostet ein Pflegeheim in {land.name}?
+    Was kostet ein Pflegeheim {imLand}?
   </h1>
 
   <p class="mt-6 max-w-prose text-lg text-ink">
-    Im ersten Jahr zahlen Bewohnerinnen und Bewohner in {land.name} durchschnittlich{' '}
+    Im ersten Jahr zahlen Bewohnerinnen und Bewohner {imLand} durchschnittlich{' '}
     <strong>{euro(erstesJahr)} im Monat</strong> aus eigener Tasche. Das sind{' '}
     {abweichung === 0
       ? 'genau so viel wie im Bundesdurchschnitt'
@@ -198,7 +209,7 @@ const beschreibung =
   <h2 class="mt-14 font-display text-2xl text-ink">Spielt der Pflegegrad eine Rolle?</h2>
   <p class="mt-2 max-w-prose text-ink-soft">
     Für diesen Betrag nicht. Wer mit <strong class="text-ink">Pflegegrad 4</strong>
-    in ein Heim in {land.name} zieht, zahlt an den <em>Pflegekosten</em> denselben
+    in ein Heim {imLand} zieht, zahlt an den <em>Pflegekosten</em> denselben
     Anteil wie jemand mit Pflegegrad 2 — deshalb heißt er
     „einrichtungseinheitlicher Eigenanteil". Das Gesetz schreibt es so vor: Für
     die vollstationäre Pflege sind „für die Pflegegrade 2 bis 5
