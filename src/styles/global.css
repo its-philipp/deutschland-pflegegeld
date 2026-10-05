@@ -60,6 +60,11 @@
     font-family: var(--font-display);
     font-weight: 600;
     text-wrap: balance;
+    /* "Datenschutzerklärung" at text-3xl is 8px wider than a 375px phone and
+       pushed /datenschutz/ into horizontal scroll (measured 2026-10-05).
+       `hyphens` uses <html lang="de">; `overflow-wrap` is the fallback. */
+    hyphens: auto;
+    overflow-wrap: break-word;
   }
 
   a {
