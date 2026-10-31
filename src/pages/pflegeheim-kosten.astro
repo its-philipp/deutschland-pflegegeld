@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import Disclaimer from '../components/Disclaimer.astro';
+import Icon from '../components/Icon.astro';
+import { accentFor } from '../data/kategorien';
+import {
+  BUND,
+  EIGENANTEIL_QUELLE,
+  LAENDER,
+  landSlug,
+  spanneErstesJahr,
+} from '../data/eigenanteile';
+import { jahrAus } from '../lib/jahr';
+import { LEISTUNGSZUSCHLAG, VOLLSTATIONAER } from '../data/leistungen';
+
+/**
+ * Die Übersicht über alle sechzehn Länder (2026-10-31).
+ *
+ * Bis dahin trug jede Landesseite dieselbe Erklärung — drei Kostenteile,
+ * Pflegegrad ohne Einfluss, Zuschlag nach Aufenthaltsdauer — mit anderen
+ * Zahlen. Gemessen waren das 95 % wortgleiche Sätze über sechzehn Seiten, und
+ * Google hat die Domain danach abgestuft. Die Erklärung steht jetzt einmal, hier,
+ * mit dem Bundesdurchschnitt; die Landesseiten tragen ihre Zahlen und das, was
+ * in ihrem Land tatsächlich anders ist.
+ */
+const akzent = accentFor('heim');
+const euro = (b: number) =>
+  b.toLocaleString('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+const datum = (iso: string) => iso.split('-').reverse().join('.');
+const jahr = jahrAus(EIGENANTEIL_QUELLE.stand);
+const { guenstigste, teuerste } = spanneErstesJahr();
+
+const sortiert = [...LAENDER].sort(
+  (a, b) => a.eigenbeteiligung_mit_zuschuss.bis_12_monate - b.eigenbeteiligung_mit_zuschuss.bis_12_monate,
+);
+
+const bestandteile = [
+  {
+    was: 'Pflegekosten (einrichtungseinheitlicher Eigenanteil)',
+    betrag: BUND.eee_ohne_zuschuss,
+    hinweis: `Darin enthalten: ${euro(BUND.davon_ausbildungskosten)} für die Ausbildung von Pflegekräften. Nur dieser Teil wird durch den Zuschlag gemindert.`,
+  },
+  {
+    was: 'Unterkunft und Verpflegung',
+    betrag: BUND.unterkunft_verpflegung,
+    hinweis: 'Zimmer und Essen. Vom Leistungszuschlag unberührt.',
+  },
+  {
+    was: 'Investitionskosten',
+    betrag: BUND.investitionskosten,
+    hinweis: 'Für Bau und Instandhaltung des Hauses. Vom Leistungszuschlag unberührt.',
+  },
+];
+
+const stufen = [
+  { label: 'im 1. Jahr', prozent: 15, zahlt: BUND.eigenbeteiligung_mit_zuschuss.bis_12_monate },
+  { label: 'ab dem 2. Jahr', prozent: 30, zahlt: BUND.eigenbeteiligung_mit_zuschuss.ab_12_monate },
+  { label: 'ab dem 3. Jahr', prozent: 50, zahlt: BUND.eigenbeteiligung_mit_zuschuss.ab_24_monate },
+  { label: 'ab dem 4. Jahr', prozent: 75, zahlt: BUND.eigenbeteiligung_mit_zuschuss.ab_36_monate },
+];
+---
+
+<BaseLayout
+  title={`Pflegeheim Kosten ${jahr}: Eigenanteil in allen 16 Bundesländern`}
+  description={`Was ein Heimplatz selbst kostet: ${euro(BUND.eigenbeteiligung_mit_zuschuss.bis_12_monate)} im Bundesdurchschnitt im ersten Jahr – alle 16 Länder im Vergleich, mit Kostenteilen und Zuschlag. Stand ${datum(EIGENANTEIL_QUELLE.abgerufen)}.`}
+  path="/pflegeheim-kosten/"
+>
+  <p style={`--accent: ${akzent}`} class="flex items-center gap-2 text-[14px] font-medium text-(--accent)">
+    <Icon name="heim" class="h-5 w-5" />
+    Pflegeheim & Eigenanteil
+  </p>
+
+  <h1 class="mt-3 font-display text-3xl text-ink sm:text-4xl">
+    Was kostet ein Pflegeheim? Alle Bundesländer im Vergleich
+  </h1>
+
+  <p class="mt-6 max-w-prose text-lg text-ink">
+    Im Bundesdurchschnitt zahlen Bewohnerinnen und Bewohner im ersten Jahr{' '}
+    <strong>{euro(BUND.eigenbeteiligung_mit_zuschuss.bis_12_monate)} im Monat</strong> selbst.
+    Wie viel es tatsächlich ist, hängt vor allem vom Bundesland ab: zwischen {guenstigste.name} und{' '}
+    {teuerste.name} liegen{' '}
+    {euro(
+      teuerste.eigenbeteiligung_mit_zuschuss.bis_12_monate -
+        guenstigste.eigenbeteiligung_mit_zuschuss.bis_12_monate,
+    )}{' '}
+    im Monat.
+  </p>
+
+  <div class="mt-10">
+    <AdSlot />
+  </div>
+
+  <h2 class="mt-12 font-display text-2xl text-ink">Eigenanteil nach Bundesland</h2>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    Sortiert vom günstigsten zum teuersten Land, jeweils im ersten Jahr und ab dem vierten Jahr im
+    Heim. Jede Zeile führt zur Seite des Landes, mit den Kostenteilen und den Regeln, die dort
+    gelten.
+  </p>
+  <div class="mt-5 overflow-x-auto">
+    <table class="w-full text-left">
+      <thead>
+        <tr class="border-b-2 border-ink">
+          <th scope="col" class="py-2 pr-3 font-display font-semibold">Land</th>
+          <th scope="col" class="py-2 pr-3 text-right font-display font-semibold">1. Jahr</th>
+          <th scope="col" class="py-2 text-right font-display font-semibold">ab 4. Jahr</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          sortiert.map((l, i) => (
+            <tr class="border-b border-rule align-baseline">
+              <th scope="row" class="py-3 pr-3 text-left font-normal">
+                <span class="mr-2 inline-block w-6 text-right tabular-nums text-ink-mute">{i + 1}.</span>
+                <a href={`/pflegeheim-kosten-${landSlug(l)}/`} class="text-ink underline underline-offset-2">
+                  {l.name}
+                </a>
+              </th>
+              <td class="py-3 pr-3 text-right font-display tabular-nums whitespace-nowrap text-ink">
+                {euro(l.eigenbeteiligung_mit_zuschuss.bis_12_monate)}
+              </td>
+              <td class="py-3 text-right font-display tabular-nums whitespace-nowrap text-ink-soft">
+                {euro(l.eigenbeteiligung_mit_zuschuss.ab_36_monate)}
+              </td>
+            </tr>
+          ))
+        }
+        <tr class="align-baseline">
+          <th scope="row" class="py-3 pr-3 text-left font-semibold text-ink">Bundesdurchschnitt</th>
+          <td class="py-3 pr-3 text-right font-display tabular-nums whitespace-nowrap text-ink">
+            {euro(BUND.eigenbeteiligung_mit_zuschuss.bis_12_monate)}
+          </td>
+          <td class="py-3 text-right font-display tabular-nums whitespace-nowrap text-ink-soft">
+            {euro(BUND.eigenbeteiligung_mit_zuschuss.ab_36_monate)}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="mt-14 font-display text-2xl text-ink">Woraus sich der Eigenanteil zusammensetzt</h2>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    Drei Posten, und nur einer davon wird durch den Zuschlag der Pflegekasse kleiner. Das ist der
+    Punkt, an dem die meisten Darstellungen zu viel versprechen. Die Beträge sind der
+    Bundesdurchschnitt, vor dem Zuschlag.
+  </p>
+  <div class="mt-5 overflow-x-auto">
+    <table class="w-full text-left">
+      <tbody>
+        {
+          bestandteile.map((b) => (
+            <tr class="border-b border-rule align-baseline">
+              <th scope="row" class="py-3 pr-3 text-left font-normal">
+                <span class="block text-ink">{b.was}</span>
+                <span class="mt-0.5 block text-[15px] text-ink-mute">{b.hinweis}</span>
+              </th>
+              <td class="py-3 text-right font-display text-lg tabular-nums whitespace-nowrap text-ink">
+                {euro(b.betrag)}
+              </td>
+            </tr>
+          ))
+        }
+        <tr class="align-baseline">
+          <th scope="row" class="py-3 pr-3 text-left font-semibold text-ink">Zusammen, vor dem Zuschlag</th>
+          <td class="py-3 text-right font-display text-xl tabular-nums whitespace-nowrap text-ink">
+            {euro(BUND.eigenbeteiligung_ohne_zuschuss)}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="mt-4 max-w-prose text-ink-soft">
+    Die Unterschiede zwischen den Ländern kommen vor allem daher, wie stark ein Land sich an den
+    Investitionskosten beteiligt, und von unterschiedlichen Personalkosten.
+  </p>
+
+  <h2 class="mt-14 font-display text-2xl text-ink">Spielt der Pflegegrad eine Rolle?</h2>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    Für den Eigenanteil nicht. Wer mit <strong class="text-ink">Pflegegrad 4</strong> in ein Heim
+    zieht, zahlt an den <em>Pflegekosten</em> denselben Anteil wie jemand mit Pflegegrad 2 —
+    deshalb heißt er „einrichtungseinheitlicher Eigenanteil". Das Gesetz schreibt es so vor: Für
+    die vollstationäre Pflege sind „für die Pflegegrade 2 bis 5 einrichtungseinheitliche
+    Eigenanteile zu ermitteln".
+  </p>
+  <p class="mt-3 max-w-prose text-ink-soft">
+    Was sich mit dem Pflegegrad ändert, ist der Anteil, den die Pflegekasse dem Heim zahlt — bei
+    Pflegegrad 2 sind das {euro(VOLLSTATIONAER.betrag[2]!)} im Monat, bei Pflegegrad 5{' '}
+    {euro(VOLLSTATIONAER.betrag[5]!)}. Ihre Rechnung bleibt dieselbe. Wer mit einem höheren Grad
+    eine höhere Eigenbeteiligung erwartet, wird von der Abrechnung überrascht.
+  </p>
+  <p class="mt-2 text-[14px] text-ink-mute">§ 84 Abs. 2 Satz 3 SGB XI</p>
+
+  <h2 class="mt-14 font-display text-2xl text-ink">Der Zuschlag wächst mit der Aufenthaltsdauer</h2>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    Ab Pflegegrad {LEISTUNGSZUSCHLAG.gilt_ab_pflegegrad} übernimmt die Pflegekasse nach § 43c SGB
+    XI einen wachsenden Anteil der <em>Pflegekosten</em> — nicht der gesamten Rechnung. Deshalb
+    sinkt der Eigenanteil deutlich, aber nie auf null. Im Bundesdurchschnitt:
+  </p>
+  <ul class="mt-5 flex flex-col divide-y divide-rule border-y border-rule">
+    {
+      stufen.map((s) => (
+        <li class="flex items-baseline justify-between gap-4 py-3">
+          <span class="text-ink">
+            {s.label}
+            <span class="ml-2 text-[15px] text-ink-mute">{s.prozent} % der Pflegekosten</span>
+          </span>
+          <span class="font-display text-lg tabular-nums whitespace-nowrap text-ink">{euro(s.zahlt)}</span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2 class="mt-14 font-display text-2xl text-ink">Woher diese Zahlen stammen</h2>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    Erhebung des {EIGENANTEIL_QUELLE.herausgeber}, Stand {EIGENANTEIL_QUELLE.stand}, veröffentlicht
+    am {datum(EIGENANTEIL_QUELLE.veroeffentlicht)}, abgerufen am {datum(EIGENANTEIL_QUELLE.abgerufen)}.
+    Es sind Durchschnittswerte — die Kosten unterscheiden sich von Heim zu Heim erheblich.{' '}
+    <a href={EIGENANTEIL_QUELLE.pressemitteilung} rel="nofollow noopener" target="_blank" class="text-ink underline">
+      Zur Quelle
+    </a>
+    . Alle sechzehn Länder als Tabelle:{' '}
+    <a class="text-ink underline" href="/eigenanteile-bundeslaender.csv">eigenanteile-bundeslaender.csv</a>.
+  </p>
+
+  <div class="mt-12">
+    <AdSlot />
+  </div>
+
+  <div class="mt-10">
+    <Disclaimer />
+  </div>
+</BaseLayout>

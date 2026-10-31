@@ -82,6 +82,13 @@ export const THEMEN: Thema[] = [
     pfad: '/pflegegrad-5/',
   },
   {
+    slug: 'pflegeheim-kosten',
+    titel: 'Pflegeheim Kosten: alle Bundesländer im Vergleich',
+    kategorie: 'heim',
+    kurz: 'Der Eigenanteil aller sechzehn Länder in einer Tabelle — und was die drei Kostenteile bedeuten.',
+    pfad: '/pflegeheim-kosten/',
+  },
+  {
     slug: 'pflegeheim-baden-wuerttemberg',
     titel: 'Pflegeheim Baden-Württemberg: Eigenanteil',
     kategorie: 'heim',
