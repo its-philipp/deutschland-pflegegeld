@@ -235,7 +235,10 @@ const beschreibung =
       <thead>
         <tr class="border-b-2 border-ink">
           <th scope="col" class="py-2 pr-3 font-display font-semibold">Posten</th>
-          <th scope="col" class="py-2 pr-3 text-right font-display font-semibold">{land.name}</th>
+          {/* „Land" statt des Namens: „Mecklenburg-Vorpommern" machte die Tabelle auf
+              375 px 17 px zu breit und schob die Bund-Spalte aus dem Bild — derselbe
+              Fehler wie am 2026-10-05 mit min-w. Welches Land, sagt die Seite. */}
+          <th scope="col" class="py-2 pr-3 text-right font-display font-semibold">Land</th>
           <th scope="col" class="py-2 text-right font-display font-semibold">Bund</th>
         </tr>
       </thead>
