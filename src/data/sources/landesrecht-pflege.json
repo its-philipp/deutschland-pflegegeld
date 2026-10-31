@@ -1,0 +1,717 @@
+{
+  "_meta": {
+    "topic": "landesrecht-pflege",
+    "retrieved": "2026-10-31",
+    "collector": "data-researcher subagent",
+    "zweck": "Landesspezifische Fakten für die 16 Seiten /pflegeheim-kosten-{land}/: Heimrecht, Hilfe zu den Investitionskosten (Pflegewohngeld), Landespflegegeld.",
+    "method": "Gesetzestexte wurden dort gelesen, wo das Landesrecht-Portal automatisierte Abrufe zulässt (gesetze-bayern.de, recht.nrw.de, revosax.sachsen.de, bravors.brandenburg.de, transparenz.bremen.de, NI-VORIS, Gesetzblatt BW als PDF). Portale, deren robots.txt automatisierte Abrufe sperrt (landesrecht-bw.de, gesetze.berlin.de, landesrecht-hamburg.de, rv.hessenrecht.hessen.de, landesrecht-mv.de, landesrecht.rlp.de, recht.saarland.de, landesrecht.sachsen-anhalt.de, landesrecht.thueringen.de), wurden nicht abgerufen; Bot-Schutz (saarland.de 403, buerger.thueringen.de) wurde nicht umgangen. Dort stützen sich die Angaben auf amtliche Ministeriums-/Landtagsseiten oder auf Auszüge von Suchtreffern amtlicher Seiten; jeder Block trägt ein Feld 'verifikation' (heimrecht) bzw. 'stand'. 'Gibt es kein Pflegewohngeld' (investitionskosten_hilfe.gibt_es=false) stützt sich auf die Länderangaben im amtlichen BMG-Bericht 'Berichtspflicht der Länder zu Förderung und Investitionskosten von Pflegeeinrichtungen, Berichtsjahr 2024' (IGES, Januar 2026), Tabelle 2: nur MV, NRW und SH melden Subjektförderung (Pflegewohngeld). 'Gibt es kein Landespflegegeld' stützt sich auf die Aussage der bayerischen Gesundheitsministerin im Landtag (08.10.2025), Bayern sei das einzige Bundesland mit Landespflegegeld.",
+    "felder": {
+      "heimrecht.url": "Adresse der amtlichen Seite, die tatsächlich gelesen wurde (Landesrecht-Portal, Gesetzblatt, Ministerium oder Landtag).",
+      "heimrecht.url_portal": "Adresse der Landesrecht-Portalseite, falls sie auf einer amtlichen Seite verlinkt war, aber wegen robots.txt nicht geöffnet wurde (nur HH, HE). Sonst null.",
+      "heimrecht.verifikation": "Wie gesichert Titel/Kürzel/Zuständigkeit sind: gesetzestext_gelesen > gesetzblatt_gelesen > amtliche_seite_gelesen > nur_suchtreffer_amtlicher_seiten.",
+      "investitionskosten_hilfe.gibt_es": "true = einkommensabhängige Bewohnerleistung des Landes für Pflegeheimbewohner (Pflegewohngeld). false = laut BMG-Bericht (Berichtsjahr 2024) keine solche Leistung. null + unbelegt=true = Lage unklar.",
+      "landespflegegeld.gibt_es": "Nur das allgemeine Landespflegegeld für Pflegebedürftige (Pflegegrad ab 2). Gleichnamige Leistungen nur für bestimmte Behinderungsgruppen stehen in 'sonderleistung' (BE, HB, RP) bzw. im Hinweis (BB: Landesteilhabegeld)."
+    },
+    "pruefungen": {
+      "zeilen": {
+        "erwartet": 16,
+        "gefunden": 16
+      },
+      "codes": "identisch mit src/data/sources/vdek-eigenanteile.json (ohne BUND); Reihenfolge wie dort",
+      "pflichtfelder_je_nicht_null_block": "url + abgerufen vorhanden"
+    },
+    "offen": [
+      "Heimrecht – Landesrecht-Portale mit robots.txt-Sperre nicht gelesen (BW, BE, HH, HE, MV, RP, SL, ST, TH). Für BW liegt das Gesetzblatt (PDF) vor, für BE/HH/HE/ST/TH/RP/SL/MV nur amtliche Begleitseiten bzw. Landtags-/Suchtreffer-Auszüge; Paragrafen der Zuständigkeitsnormen sind dort (außer MV-Entwurf) nicht geprüft (aufsicht_norm = null).",
+      "BE: Adresse der Gesetzesseite auf gesetze.berlin.de nicht verifiziert; als url dient die Senatsseite zum WTG.",
+      "HH, HE: url_portal stammt aus Links amtlicher Seiten, nicht geöffnet. HH: aktuelle Fassung des HmbWBG nicht geprüft. HE: Datum und Fassung des HGBP nicht aus dem Gesetzestext bestätigt.",
+      "MV: Das Wohnformen- und Teilhabegesetz (WoTG M-V) ersetzt ab 01.01.2026 das Einrichtungenqualitätsgesetz; Endfassung/GVOBl. nicht gelesen (regierung-mv.de ist nur per JavaScript lesbar). Pflegewohngeld (§ 9 LPflegeG M-V): Wortlaut nicht gelesen; für Neubewohner seit 2012 abgeschafft (Landtag 2016), laut BMG-Bericht fließen 2024 noch 948.258 € – Status für Altfälle nicht amtlich belegt.",
+      "SH: Wortlaut § 6 Abs. 4 LPflegeG nicht gelesen (juris-Portal nur per JavaScript); Paragraf aus Landtag-Drs. 20/228 und BMG-Bericht. Das Gesetz heißt nach Landtags-Drs. 19/561 (2018) Selbstbestimmungsstärkungsgesetz – aktuelle Fassung nicht geprüft. Die Seite des Landes nennt keinen Stand für den Höchstbetrag 15,35 €/Tag.",
+      "SL, TH, RP, ST: Gesetzestitel, Kürzel und Zuständigkeit nur aus Suchtreffer-Auszügen amtlicher Seiten (saarland.de/403, buerger.thueringen.de/Bot-Schutz, msagd.rlp.de/keine Antwort, lvwa.sachsen-anhalt.de/JavaScript-Hülle). SL-Kürzel 'HeimG SL' stammt aus Formularbezeichnungen des Ministeriums. ST: Änderung des WTG LSA ab 01.09.2026 nur aus einem Suchtreffer (GVBl. LSA Nr. 12 vom 22.06.2026) bekannt.",
+      "HB: Mehrere Vorschriften des BremWoBeG (u. a. § 37 Zuständige Behörde) gelten seit 30.06.2025 in geänderter Fassung; Wortlaut der neuen Fassung nicht gelesen.",
+      "NW: Novelle des WTG NRW (Kabinettsbeschluss 02.06.2026) soll Anfang 2027 in Kraft treten – für 2026 gilt die Fassung vom 31.01.2023. Die Seiten mags.nrw antworteten auf Abrufe nicht, daher kein aufsicht_url.",
+      "BY: Es gibt keine amtliche Landesseite, die 'FQA' im Gesetzestext definiert (Gesetz nennt Kreisverwaltungsbehörde); FQA-Begriff belegt über das BayernPortal. Bayern 2026: Landtagsanträge (SPD, 27.01.2026) fordern Übernahme der Investitionskosten – kein Beschluss gefunden.",
+      "SN: Keine amtliche Erklärseite zum KSV als Heimaufsicht gelesen (aufsicht_url = null).",
+      "Pflegewohngeld 'false': Beleg ist der BMG-Bericht für das Berichtsjahr 2024 (veröffentlicht Januar 2026). Änderungen 2025/2026 sind darin nicht enthalten; ein neues Pflegewohngeld in einem anderen Land wurde nicht gefunden. Hessen, Saarland, BW u. a. lehnen laut Landtagsdokumenten/Presse eine Übernahme ab, einzelne Anträge liegen vor (nicht amtlich ausgewertet).",
+      "TH: 'Bewohnerbezogene Aufwendungszuschüsse' (§ 4 Abs. 2 ThürAGPflegeVG) betreffen 2024 nur 24 Personen; Voraussetzungen unbekannt – investitionskosten_hilfe daher gibt_es=null/unbelegt.",
+      "Landespflegegeld: Gleichnamige Leistungen für Behinderungsgruppen in BE (LPflGG), HB (BremLPG, Beleg 2021), RP (LPflGG, 384 €/Monat laut Landesregierung Okt. 2024) und Brandenburg (Landesteilhabegeld seit 01.07.2024) wurden nur oberflächlich erfasst; Beträge/Normen/Heimgeltung nicht geprüft. Entscheidung, ob sie auf den Seiten erwähnt werden, liegt beim Orchestrator.",
+      "Bayern Landespflegegeld: 'gilt_auch_im_heim' stützt sich auf das BayernPortal (amtlich); das Gesetz und die Landesamt-FAQ (Stand 03.2026) machen keine Aussage zur Wohnform. Die Aussage auf lfp.bayern.de zu Beträgen ist 500 €; ältere Landkreis-Merkblätter nennen noch 1.000 €."
+    ]
+  },
+  "laender": [
+    {
+      "code": "BW",
+      "name": "Baden-Württemberg",
+      "heimrecht": {
+        "titel": "Gesetz für Teilhabe- und Pflegequalität",
+        "abkuerzung": "TPQG",
+        "url": "https://www.landtag-bw.de/files/live/sites/LTBW/files/dokumente/gesetzblaetter/2026/GBl2026011.pdf",
+        "url_portal": null,
+        "aufsicht": "Beratungs- und Prüfbehörde",
+        "aufsicht_norm": "§ 16 Abs. 1 Nr. 3 TPQG (untere Verwaltungsbehörden als untere Aufsichtsbehörden mit der Bezeichnung Beratungs- und Prüfbehörde)",
+        "aufsicht_url": "https://sozialministerium.baden-wuerttemberg.de/de/gesundheit-pflege/pflege/tpqg",
+        "stand": "TPQG vom 10.02.2026 (GBl. 2026 Nr. 11 vom 27.02.2026), in Kraft seit 28.02.2026 (Tag nach Verkündung); löst das Wohn-, Teilhabe- und Pflegegesetz (WTPG) ab (§ 19 TPQG).",
+        "verifikation": "gesetzblatt_gelesen",
+        "abgerufen": "2026-10-31"
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": false,
+        "unbelegt": false,
+        "bezeichnung": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/5_Publikationen/Pflege/Berichte/Ergebnisbericht_Investitionskosten_Berichtsjahr_2024_bf.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Berichtsjahr 2024 (IGES-Ergebnisbericht für das BMG, Januar 2026; Tabelle 2 und Tabelle 25). Spätere Änderungen sind darin nicht abgebildet.",
+        "hinweis": "Das Land meldet nur Objektförderung (Innovationsprogramm Pflege), keine einkommensabhängige Leistung für Heimbewohner."
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": null
+      }
+    },
+    {
+      "code": "BY",
+      "name": "Bayern",
+      "heimrecht": {
+        "titel": "Pflege- und Wohnqualitätsgesetz",
+        "abkuerzung": "PfleWoqG",
+        "url": "https://www.gesetze-bayern.de/Content/Document/BayPfleWoqG/true",
+        "url_portal": null,
+        "aufsicht": "FQA",
+        "aufsicht_norm": "Art. 24 Abs. 1 PfleWoqG (Kreisverwaltungsbehörde ist zuständige Behörde), Art. 24 Abs. 3 (Regierungen sind Aufsichtsbehörden)",
+        "aufsicht_url": "https://www.bayernportal.de/dokumente/leistung/8166387046123",
+        "stand": "Gesetz vom 08.07.2008 (GVBl. S. 346), Text gilt ab 01.08.2023 (zuletzt geändert durch Gesetz vom 24.07.2023, GVBl. S. 431) laut gesetze-bayern.de am 2026-10-31.",
+        "verifikation": "gesetzestext_gelesen",
+        "abgerufen": "2026-10-31",
+        "aufsicht_lang": "Fachstelle für Pflege- und Behinderteneinrichtungen – Qualitätsentwicklung und Aufsicht (FQA), angesiedelt bei den Kreisverwaltungsbehörden"
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": false,
+        "unbelegt": false,
+        "bezeichnung": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/5_Publikationen/Pflege/Berichte/Ergebnisbericht_Investitionskosten_Berichtsjahr_2024_bf.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Berichtsjahr 2024 (IGES-Ergebnisbericht für das BMG, Januar 2026; Tabelle 2 und Tabelle 25). Spätere Änderungen sind darin nicht abgebildet.",
+        "hinweis": "Im BMG-Bericht meldet das Land nur Objektförderung (Förderrichtlinie Pflege im sozialen Nahraum, Förderung einzelner Einrichtungen), keine einkommensabhängige Bewohnerleistung."
+      },
+      "landespflegegeld": {
+        "gibt_es": true,
+        "betrag": 500,
+        "betrag_einheit": "EUR pro Pflegegeldjahr (Pflegegeldjahr = Kalenderjahr)",
+        "voraussetzung_kurz": "Anspruch hat, wer am letzten Tag des Pflegegeldjahres mit Haupt- oder alleiniger Wohnung in Bayern gemeldet ist und an mindestens einem Tag des Jahres mindestens Pflegegrad 2 hatte; einkommensunabhängig, Antrag beim Landesamt für Pflege (wirkt für Folgejahre fort).",
+        "norm": "Art. 2 Abs. 1 und Abs. 4 Satz 1 BayLPflGG (Betrag: 500 € pro Pflegegeldjahr); Antrag: Art. 3 Abs. 1",
+        "url": "https://www.gesetze-bayern.de/Content/Document/BayLPflGG/true",
+        "abgerufen": "2026-10-31",
+        "stand": "Text gilt ab 01.01.2026 (zuletzt geändert durch Gesetz vom 23.12.2025, GVBl. S. 650); Betrag war bis einschließlich Pflegegeldjahr 2025 1.000 € (Gesetzentwurf-Debatte im Landtag am 08.10.2025: Kürzung auf 500 € für das Pflegegeldjahr 2026). Auszahlung bis 31.01. des Folgejahres (Art. 2 Abs. 4 Satz 2).",
+        "gilt_auch_im_heim": true,
+        "gilt_auch_im_heim_beleg": {
+          "url": "https://www.bayernportal.de/dokumente/leistung/012516151850",
+          "abgerufen": "2026-10-31",
+          "wortlaut_kurz": "BayernPortal: Anspruch besteht 'unabhängig davon, ob sie zuhause oder in einem Pflegeheim leben'. Das Gesetz selbst enthält keine Einschränkung nach Wohnform."
+        },
+        "weitere_quellen": [
+          {
+            "url": "https://www.lfp.bayern.de/landespflegegeld/",
+            "abgerufen": "2026-10-31",
+            "inhalt": "Bayerisches Landesamt für Pflege: 500,00 € pro Pflegegeldjahr, einkommensunabhängig, steuerfrei."
+          }
+        ],
+        "hinweis": "Auch für Heimbewohnerinnen und -bewohner mit Hauptwohnsitz in Bayern; wird nicht auf Leistungen der Pflegeversicherung oder Sozialhilfe angerechnet (Art. 1 Satz 3, Landesamt-FAQ Stand 03.2026)."
+      }
+    },
+    {
+      "code": "BE",
+      "name": "Berlin",
+      "heimrecht": {
+        "titel": "Wohnteilhabegesetz",
+        "abkuerzung": "WTG",
+        "url": "https://www.berlin.de/sen/pflege/grundlagen/rechtliche-grundlagen/landesrecht/artikel.1402653.php",
+        "url_portal": null,
+        "aufsicht": "Heimaufsicht",
+        "aufsicht_norm": "Die Senatsverwaltung nennt die Heimaufsicht (Landesamt für Gesundheit und Soziales, LAGeSo) als 'nach dem WTG zuständige Aufsichtsbehörde'; Paragraf nicht aus dem Gesetzestext geprüft.",
+        "aufsicht_url": "https://www.berlin.de/lageso/soziales/heimaufsicht/",
+        "stand": "WTG 2021 neu gefasst (GVBl. Berlin Nr. 35 vom 12.05.2021), gilt seit 01.12.2021 in der ab 01.06.2023 wirksamen Fassung (laut Senatsverwaltung).",
+        "verifikation": "amtliche_seite_gelesen",
+        "abgerufen": "2026-10-31",
+        "portal_hinweis": "gesetze.berlin.de sperrt automatisierte Abrufe per robots.txt; die Gesetzesseite wurde nicht geöffnet und ihre Adresse ist nicht verifiziert."
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": false,
+        "unbelegt": false,
+        "bezeichnung": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/5_Publikationen/Pflege/Berichte/Ergebnisbericht_Investitionskosten_Berichtsjahr_2024_bf.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Berichtsjahr 2024 (IGES-Ergebnisbericht für das BMG, Januar 2026; Tabelle 2 und Tabelle 25). Spätere Änderungen sind darin nicht abgebildet.",
+        "hinweis": "Die Landespauschale (§ 6 LPflegEG) gilt nach Angabe des Landes nur für Tages- und Kurzzeitpflegeplätze, nicht für Heimbewohner in der Dauerpflege."
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": "Berlin hat ein 'Landespflegegeld', das aber nur bestimmte Behinderungsgruppen erhält (siehe sonderleistung).",
+        "sonderleistung": {
+          "bezeichnung": "Landespflegegeld nach dem Landespflegegeldgesetz (LPflGG)",
+          "zielgruppe": "Blinde, Taubblinde, hochgradig Sehbehinderte, Gehörlose (kein allgemeines Pflegegeld für Pflegebedürftige)",
+          "einkommensunabhaengig": true,
+          "url": "https://service.berlin.de/dienstleistung/324555/standort/326211/",
+          "abgerufen": "2026-10-31",
+          "betrag": null,
+          "betrag_hinweis": "Beträge nicht verifiziert; Leistungen der Pflegekasse werden nach festgelegtem Rahmen angerechnet.",
+          "gilt_auch_im_heim": null
+        }
+      }
+    },
+    {
+      "code": "BB",
+      "name": "Brandenburg",
+      "heimrecht": {
+        "titel": "Brandenburgisches Pflege- und Betreuungswohngesetz",
+        "abkuerzung": "BbgPBWoG",
+        "url": "https://bravors.brandenburg.de/gesetze/bbgpbwog",
+        "url_portal": null,
+        "aufsicht": "Aufsicht für unterstützende Wohnformen (AuW)",
+        "aufsicht_norm": "§ 26 Abs. 1 BbgPBWoG: zuständige Behörde ist das Landesamt für Soziales und Versorgung Brandenburg (LASV); dort die Aufsicht für unterstützende Wohnformen (E-Mail-Adresse heimaufsicht@lasv.brandenburg.de).",
+        "aufsicht_url": "https://lasv.brandenburg.de/sixcms/media.php/9/LASV-DIN-Lang-Falzflyer-AuW-web-07-2025-barrierefrei-ua.pdf",
+        "stand": "Gesetz vom 08.07.2009 (GVBl.I/09 Nr. 13 S. 298), geändert durch Art. 21 des Gesetzes vom 05.03.2024 (GVBl.I/24 Nr. 9) laut bravors am 2026-10-31.",
+        "verifikation": "gesetzestext_gelesen",
+        "abgerufen": "2026-10-31"
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": false,
+        "unbelegt": false,
+        "bezeichnung": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/5_Publikationen/Pflege/Berichte/Ergebnisbericht_Investitionskosten_Berichtsjahr_2024_bf.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Berichtsjahr 2024 (IGES-Ergebnisbericht für das BMG, Januar 2026; Tabelle 2 und Tabelle 25). Spätere Änderungen sind darin nicht abgebildet.",
+        "hinweis": "Das Land fördert Einrichtungen (Pflegezukunftsinvestitions-Richtlinie) und meldet keine einkommensabhängige Bewohnerleistung."
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": "Brandenburg zahlt seit 01.07.2024 ein Landesteilhabegeld (Landesteilhabegeldgesetz) für blinde, taubblinde und gehörlose Menschen; das ist kein Pflegegeld für Pflegebedürftige. Beleg nur indirekt über die Stellungnahme der Landesregierung Rheinland-Pfalz in https://www.diebuergerbeauftragte.rlp.de/wp-content/uploads/2024/07/LE-066-24-Veroeffentlichung-BB.pdf"
+      }
+    },
+    {
+      "code": "HB",
+      "name": "Bremen",
+      "heimrecht": {
+        "titel": "Bremisches Wohn- und Betreuungsgesetz",
+        "abkuerzung": "BremWoBeG",
+        "url": "https://www.transparenz.bremen.de/metainformationen/bremisches-wohn-und-betreuungsgesetz-vom-13-dezember-2022-187119?asl=bremen203_tpgesetz.c.55340.de&template=20_gp_ifg_meta_detail_d",
+        "url_portal": null,
+        "aufsicht": "Bremische Wohn- und Betreuungsaufsicht",
+        "aufsicht_norm": null,
+        "aufsicht_url": "https://www.service.bremen.de/dienstleistungen/bremische-wohn-und-betreuungsaufsicht-16722",
+        "stand": "Gesetz vom 13.12.2022, in Kraft seit 01.01.2023; laut Transparenzportal gelten mehrere Vorschriften (u. a. § 37 Zuständige Behörde) seit 30.06.2025 in geänderter Fassung, deren Wortlaut nicht geprüft wurde.",
+        "verifikation": "inhaltsuebersicht_und_amtliche_seite_gelesen",
+        "abgerufen": "2026-10-31",
+        "aufsicht_lang": "Bremische Wohn- und Betreuungsaufsicht bei der Senatorin für Gesundheit, Frauen und Verbraucherschutz"
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": false,
+        "unbelegt": false,
+        "bezeichnung": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/5_Publikationen/Pflege/Berichte/Ergebnisbericht_Investitionskosten_Berichtsjahr_2024_bf.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Berichtsjahr 2024 (IGES-Ergebnisbericht für das BMG, Januar 2026; Tabelle 2 und Tabelle 25). Spätere Änderungen sind darin nicht abgebildet.",
+        "hinweis": "Die bremische Landesförderung (BremAGPflegeVG) gilt nur für teilstationäre Pflege und Kurzzeitpflege, nicht für Heimbewohner in der Dauerpflege."
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": "Bremen hat ein 'Landespflegegeld' nur für bestimmte Behinderungsgruppen (siehe sonderleistung).",
+        "sonderleistung": {
+          "bezeichnung": "Landespflegegeld nach dem Bremischen Landespflegegeldgesetz (BremLPG)",
+          "zielgruppe": "Blinde und schwerstbehinderte Menschen (kein allgemeines Pflegegeld für Pflegebedürftige)",
+          "einkommensunabhaengig": true,
+          "url": "https://www.teilhabebeirat.bremen.de/sixcms/media.php/13/03%20-%20Beschlussvorschlag%20zur%20%C3%84nderung%20des%20Landespflegegeldgesetzes.pdf",
+          "abgerufen": "2026-10-31",
+          "stand": "Dokument des Landesteilhabebeirats vom 25.11.2021; aktuelle Rechtslage 2026 nicht geprüft.",
+          "betrag": null,
+          "betrag_hinweis": "Beträge nicht verifiziert; Leistungen der Pflegeversicherung werden laut Dokument in voller Höhe angerechnet.",
+          "gilt_auch_im_heim": null
+        }
+      }
+    },
+    {
+      "code": "HH",
+      "name": "Hamburg",
+      "heimrecht": {
+        "titel": "Hamburgisches Wohn- und Betreuungsqualitätsgesetz",
+        "abkuerzung": "HmbWBG",
+        "url": "https://www.hamburg.de/politik-und-verwaltung/behoerden/sozialbehoerde/themen/pflege/wohn-und-betreuungsqualitaetsgesetz-grundlagen-67310",
+        "url_portal": "http://www.landesrecht-hamburg.de/jportal/portal/page/bshaprod.psml?doc.id=jlr-WoBetrQGHArahmen&st=lr&showdoccase=1",
+        "aufsicht": "Wohn-Pflege-Aufsicht (WPA)",
+        "aufsicht_norm": null,
+        "aufsicht_url": "https://www.hamburg.de/politik-und-verwaltung/behoerden/sozialbehoerde/themen/pflege/wohn-pflege-aufsicht",
+        "stand": "Gesetz in Kraft seit 01.01.2010; aktuelle Fassung nicht geprüft.",
+        "verifikation": "amtliche_seite_gelesen",
+        "abgerufen": "2026-10-31",
+        "portal_hinweis": "Adresse stammt aus einem Link auf der amtlichen hamburg.de-Seite; landesrecht-hamburg.de sperrt automatisierte Abrufe per robots.txt, die Seite wurde nicht geöffnet.",
+        "aufsicht_lang": "Die Wohn-Pflege-Aufsichten sind in den sieben Bezirksämtern organisiert; für ambulante Dienste ist die Zentrale Prüfstelle für Ambulante Dienste (ZePAD) zuständig."
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": false,
+        "unbelegt": false,
+        "bezeichnung": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/5_Publikationen/Pflege/Berichte/Ergebnisbericht_Investitionskosten_Berichtsjahr_2024_bf.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Berichtsjahr 2024 (IGES-Ergebnisbericht für das BMG, Januar 2026; Tabelle 2 und Tabelle 25). Spätere Änderungen sind darin nicht abgebildet.",
+        "hinweis": "Nach dem BMG-Bericht fördert Hamburg nur Kurzzeitpflege (bis zu 18 € täglich je belegtem Platz) und kleinräumige Wohnformen, keine Heimbewohner in der Dauerpflege."
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": null
+      }
+    },
+    {
+      "code": "HE",
+      "name": "Hessen",
+      "heimrecht": {
+        "titel": "Hessisches Gesetz über Betreuungs- und Pflegeleistungen",
+        "abkuerzung": "HGBP",
+        "url": "https://hlfgp.hessen.de/hessische-betreuungs-und-pflegeaufsicht",
+        "url_portal": "https://www.rv.hessenrecht.hessen.de/bshe/document/jlr-BetrPflGHEV3P3",
+        "aufsicht": "Betreuungs- und Pflegeaufsicht",
+        "aufsicht_norm": null,
+        "aufsicht_url": "https://hlfgp.hessen.de/hessische-betreuungs-und-pflegeaufsicht",
+        "stand": "Rechtsgrundlage laut Landesamt für Gesundheit und Pflege; Fassung und Datum des Gesetzes nicht aus dem Gesetzestext geprüft.",
+        "verifikation": "amtliche_seite_gelesen",
+        "abgerufen": "2026-10-31",
+        "portal_hinweis": "Link auf § 3 HGBP von der amtlichen HLfGP-Seite übernommen; rv.hessenrecht.hessen.de sperrt automatisierte Abrufe per robots.txt, nicht geöffnet.",
+        "aufsicht_lang": "Hessische Betreuungs- und Pflegeaufsicht; die Prüfteams sitzen bei den Hessischen Ämtern für Versorgung und Soziales (HAVS), obere Aufsicht beim Hessischen Landesamt für Gesundheit und Pflege (HLfGP)."
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": false,
+        "unbelegt": false,
+        "bezeichnung": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/5_Publikationen/Pflege/Berichte/Ergebnisbericht_Investitionskosten_Berichtsjahr_2024_bf.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Berichtsjahr 2024 (IGES-Ergebnisbericht für das BMG, Januar 2026; Tabelle 2 und Tabelle 25). Spätere Änderungen sind darin nicht abgebildet.",
+        "hinweis": "Die investive Förderung von Altenpflegeeinrichtungen wurde nach Angabe des Landes 2014 eingestellt, es laufen nur noch Altzahlungen; keine Bewohnerleistung."
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": null
+      }
+    },
+    {
+      "code": "MV",
+      "name": "Mecklenburg-Vorpommern",
+      "heimrecht": {
+        "titel": "Wohnformen- und Teilhabegesetz (Gesetz zur Förderung der Qualität in Pflege- und Betreuungswohnformen für pflegebedürftige Menschen und Menschen mit Behinderungen sowie zur Stärkung von deren Teilhabe in Mecklenburg-Vorpommern)",
+        "abkuerzung": "WoTG M-V",
+        "url": "https://www.dokumentation.landtag-mv.de/parldok/dokument/64755/8_4994_gesetz_zur_neufassung_des_einrichtungenqualitaetsgesetzes_und_zur_aenderung_weiterer_regelungen",
+        "url_portal": null,
+        "aufsicht": "Landkreise und kreisfreie Städte als zuständige Behörde",
+        "aufsicht_norm": "§ 4 WoTG M-V (Entwurf): Den Landkreisen und kreisfreien Städten obliegt die Durchführung; zuständige Behörde sind die Landräte und Oberbürgermeister der kreisfreien Städte (übertragener Wirkungskreis). In der Beschlussempfehlung und im Landtag weiterhin 'Heimaufsicht' genannt.",
+        "aufsicht_url": null,
+        "stand": "Gesetzentwurf der Landesregierung Drs. 8/4994 (04.06.2025) sieht Inkrafttreten am 01.01.2026 vor und hebt das Einrichtungenqualitätsgesetz (EQG M-V) auf; Beschlussempfehlung Drs. 8/5696 (27.11.2025) ändert nur Artikel 1. Verkündung (16.12.2025, GVOBl. M-V Nr. 26 vom 30.12.2025 S. 792) nur aus Suchtreffern bekannt, nicht aus dem GVOBl. gelesen.",
+        "verifikation": "gesetzentwurf_und_beschlussempfehlung_gelesen_endfassung_nicht_gelesen",
+        "abgerufen": "2026-10-31",
+        "portal_hinweis": "landesrecht-mv.de sperrt automatisierte Abrufe per robots.txt; regierung-mv.de liefert dem Abruf nur eine JavaScript-Hülle."
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": false,
+        "unbelegt": false,
+        "bezeichnung": "Pflegewohngeld (§ 9 Landespflegegesetz M-V)",
+        "voraussetzung_kurz": null,
+        "norm": "§ 9 Landespflegegesetz Mecklenburg-Vorpommern (Paragraf laut BMG-Bericht; Gesetzestext nicht gelesen)",
+        "url": "https://kleineanfragen.de/mecklenburg-vorpommern/6/5862-verwendung-der-eingesparten-mittel-fuer-das-pflegewohngeld.pdf",
+        "abgerufen": "2026-10-31",
+        "url_amtlich": "Landtag Mecklenburg-Vorpommern, Drucksache 6/5862 vom 03.08.2016 (Antwort der Landesregierung); die Adresse oben ist eine öffentliche Spiegelung dieser Drucksache.",
+        "stand": "Landesregierung 2016: 'Mit der Änderung des Landespflegerechts im Jahr 2012 wurde das Pflegewohngeld für neue Bewohner in den Pflegeheimen Mecklenburg-Vorpommerns abgeschafft' (früher bis zu 200 € im Monat); Ausgaben 2015: 4,6 Mio. €. BMG-Bericht (Berichtsjahr 2024, https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/5_Publikationen/Pflege/Berichte/Ergebnisbericht_Investitionskosten_Berichtsjahr_2024_bf.pdf) führt MV weiterhin mit 948.258 € Subjektförderung nach § 9 LPflegeG M-V.",
+        "hinweis": "Für neu einziehende Bewohner abgeschafft; die Restzahlungen 2024 betreffen vermutlich Bestandsfälle (Bestandsschutz laut Presse), das ist nicht amtlich belegt – auf der Seite daher nur als 'für neue Bewohner abgeschafft' formulieren.",
+        "auslaufmodell": true
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": null
+      }
+    },
+    {
+      "code": "NI",
+      "name": "Niedersachsen",
+      "heimrecht": {
+        "titel": "Niedersächsisches Gesetz über unterstützende Wohnformen",
+        "abkuerzung": "NuWG",
+        "url": "https://voris.wolterskluwer-online.de/browse/document/8357e986-491a-3961-901d-df9f01c44be0",
+        "url_portal": null,
+        "aufsicht": "Heimaufsichtsbehörde",
+        "aufsicht_norm": "§ 19 Abs. 1 NuWG: Aufgaben der Heimaufsichtsbehörde nehmen die Landkreise und kreisfreien Städte wahr (für bestimmte Behinderteneinrichtungen das Landesamt für Soziales, Jugend und Familie).",
+        "aufsicht_url": "https://www.ms.niedersachsen.de/startseite/gesundheit_pflege/pflege/heimaufsicht-181817.html",
+        "stand": "Gesetz vom 29.06.2011 (Nds. GVBl. S. 196), aktuelle Fassung ab 01.07.2016 laut NI-VORIS am 2026-10-31.",
+        "verifikation": "gesetzestext_gelesen",
+        "abgerufen": "2026-10-31"
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": false,
+        "unbelegt": false,
+        "bezeichnung": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/5_Publikationen/Pflege/Berichte/Ergebnisbericht_Investitionskosten_Berichtsjahr_2024_bf.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Berichtsjahr 2024 (IGES-Ergebnisbericht für das BMG, Januar 2026; Tabelle 2 und Tabelle 25). Spätere Änderungen sind darin nicht abgebildet.",
+        "hinweis": "Nach Angabe des Landes gibt es für stationäre Einrichtungen keine Förderung, weil die Investitionskosten der privaten Miete gleichgesetzt werden; gemeldet wird nur eine auslaufende Altförderung von sieben vollstationären Einrichtungen."
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": null
+      }
+    },
+    {
+      "code": "NW",
+      "name": "Nordrhein-Westfalen",
+      "heimrecht": {
+        "titel": "Wohn- und Teilhabegesetz",
+        "abkuerzung": "WTG NRW",
+        "url": "https://recht.nrw.de/lrgv/gesetz/31012023-wohn-und-teilhabegesetz-wtg/",
+        "url_portal": null,
+        "aufsicht": "Beratungs- und Prüfbehörde",
+        "aufsicht_norm": "§ 43 Abs. 1 WTG: Kreise und kreisfreie Städte als Beratungs- und Prüfbehörden; Aufsicht: Bezirksregierungen (Abs. 3), oberste Aufsichtsbehörde das für Pflege und Eingliederungshilfe zuständige Ministerium (Abs. 4)",
+        "aufsicht_url": null,
+        "stand": "Gesetz vom 02.10.2014 (GV. NRW. S. 625), aktuellste Fassung auf recht.nrw.de: 31.01.2023. Novelle: Kabinett hat am 02.06.2026 einen Änderungsentwurf beschlossen, Inkrafttreten laut Land Anfang 2027 (Pressemitteilung land.nrw vom 03.06.2026).",
+        "verifikation": "gesetzestext_gelesen",
+        "abgerufen": "2026-10-31",
+        "aufsicht_alias": [
+          "Heimaufsicht (Wortwahl der Landesregierung, land.nrw 03.06.2026)",
+          "WTG-Behörde (in der Praxis üblich; nicht im Gesetzestext)"
+        ]
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": true,
+        "unbelegt": false,
+        "bezeichnung": "Pflegewohngeld",
+        "voraussetzung_kurz": "Für Pflegebedürftige in einer vollstationären Dauerpflegeeinrichtung in NRW, wenn Einkommen und Vermögen (auch des Partners) nicht ausreichen, die Investitionskosten selbst zu zahlen; Barvermögen bis 10.000 € (Paare 15.000 €) bleibt unberücksichtigt, vom Einkommen werden u. a. Taschengeld, Unterkunft/Verpflegung, nicht gedeckte Pflegekosten und ein Selbstbehalt von 50 € abgezogen.",
+        "norm": "§ 14 Alten- und Pflegegesetz NRW (APG NRW), Verfahren § 16 APG DVO NRW",
+        "url": "https://recht.nrw.de/lrgv/gesetz/01012024-gesetz-zur-weiterentwicklung-des-landespflegerechtes-und-sicherung-einer/",
+        "abgerufen": "2026-10-31",
+        "url_verordnung": "https://recht.nrw.de/lrgv/rechtsverordnung/01012024-verordnung-zur-ausfuehrung-des-alten-und-pflegegesetzes-nordrhein/",
+        "stand": "APG NRW in der Fassung vom 01.01.2024 (aktuellste Fassung auf recht.nrw.de), § 14 Abs. 1–9 gelesen; Zusatzvoraussetzung: gewöhnlicher Aufenthalt vor Heimeintritt in NRW (§ 14 Abs. 6, mit Ausnahme für Angehörige in NRW).",
+        "hinweis": "Wird nach § 16 Abs. 4 APG DVO NRW unmittelbar an die Einrichtung ausgezahlt; der Antrag wird mit Zustimmung der Bewohnerin bzw. des Bewohners meist von der Einrichtung beim Sozialhilfeträger gestellt (§ 16 Abs. 2) und gilt nur in Einrichtungen, die nicht von der Förderung ausgeschlossen sind (§ 14 Abs. 1 Satz 3)."
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": null
+      }
+    },
+    {
+      "code": "RP",
+      "name": "Rheinland-Pfalz",
+      "heimrecht": {
+        "titel": "Landesgesetz über Wohnformen und Teilhabe",
+        "abkuerzung": "LWTG",
+        "url": "https://msagd.rlp.de/de/unsere-themen/gesundheit-und-pflege/pflege/landesgesetz-ueber-wohnenformen-und-teilhabe/",
+        "url_portal": null,
+        "aufsicht": "Beratungs- und Prüfbehörde (BP-LWTG)",
+        "aufsicht_norm": null,
+        "aufsicht_url": "https://lsjv.rlp.de/fileadmin/lsjv/Themen/Pflege/Pflegebedarf/Wohnen_und_Teilhabe/Organigramm_BP_LWTG.pdf",
+        "stand": "Gesetz in Kraft seit 01.01.2010; aktuelle Fassung nicht geprüft.",
+        "verifikation": "nur_suchtreffer_amtlicher_seiten",
+        "abgerufen": "2026-10-31",
+        "portal_hinweis": "Beide Adressen sind amtliche Seiten (Ministerium bzw. Landesamt für Soziales, Jugend und Versorgung), wurden aber nicht geöffnet: msagd.rlp.de antwortete nicht, landesrecht.rlp.de sperrt automatisierte Abrufe per robots.txt. Titel, Kürzel und Zuständigkeit stammen aus Suchtreffer-Auszügen dieser Seiten.",
+        "aufsicht_lang": "Die Beratungs- und Prüfbehörde (früher Heimaufsicht) ist beim Landesamt für Soziales, Jugend und Versorgung (LSJV) angesiedelt."
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": false,
+        "unbelegt": false,
+        "bezeichnung": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/5_Publikationen/Pflege/Berichte/Ergebnisbericht_Investitionskosten_Berichtsjahr_2024_bf.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Berichtsjahr 2024 (IGES-Ergebnisbericht für das BMG, Januar 2026; Tabelle 2 und Tabelle 25). Spätere Änderungen sind darin nicht abgebildet.",
+        "hinweis": "Das Land meldet für 2024 und die Vorjahre keine Maßnahme der Investitionskostenförderung."
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": "Rheinland-Pfalz zahlt ein 'Landespflegegeld' nur an schwerbehinderte Menschen (siehe sonderleistung).",
+        "sonderleistung": {
+          "bezeichnung": "Landespflegegeld nach dem Landespflegegeldgesetz",
+          "zielgruppe": "Schwerbehinderte Menschen, als Ausgleich behinderungsbedingter Mehraufwendungen (kein allgemeines Pflegegeld für Pflegebedürftige)",
+          "einkommensunabhaengig": true,
+          "betrag": 384,
+          "betrag_einheit": "EUR pro Monat",
+          "url": "https://www.diebuergerbeauftragte.rlp.de/wp-content/uploads/2024/07/LE-066-24-Veroeffentlichung-BB.pdf",
+          "abgerufen": "2026-10-31",
+          "stand": "Angabe der Landesregierung gegenüber dem Petitionsausschuss, Schreiben der Bürgerbeauftragten vom 21.10.2024; aktueller Betrag 2026 nicht geprüft; Norm (Paragraf) nicht verifiziert.",
+          "gilt_auch_im_heim": null
+        }
+      }
+    },
+    {
+      "code": "SL",
+      "name": "Saarland",
+      "heimrecht": {
+        "titel": "Saarländisches Gesetz zur Sicherung der Wohn-, Betreuungs- und Pflegequalität",
+        "abkuerzung": "HeimG SL",
+        "url": "https://www.saarland.de/SharedDocs/Downloads/DE/msgff/tp_soziales/downloads_heimaufsicht/download_heimgesetz.pdf?__blob=publicationFile&v=1",
+        "url_portal": null,
+        "aufsicht": "Beratungs- und Prüfbehörde (Heimaufsicht)",
+        "aufsicht_norm": null,
+        "aufsicht_url": "https://www.saarland.de/masfg/DE/portale/sozialesleben/leistungensoziales/heimaufsicht",
+        "stand": "Aktuelle Fassung nicht geprüft; laut Suchtreffer-Auszug von saarland.de in der Fassung seit 05.05.2017.",
+        "verifikation": "nur_suchtreffer_amtlicher_seiten",
+        "abgerufen": "2026-10-31",
+        "portal_hinweis": "saarland.de antwortete auf automatisierte Abrufe mit 403 (nicht umgangen), recht.saarland.de sperrt per robots.txt. Titel, Kürzel und Zuständigkeit (Referat des Fachministeriums) stammen aus Suchtreffer-Auszügen."
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": false,
+        "unbelegt": false,
+        "bezeichnung": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/5_Publikationen/Pflege/Berichte/Ergebnisbericht_Investitionskosten_Berichtsjahr_2024_bf.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Berichtsjahr 2024 (IGES-Ergebnisbericht für das BMG, Januar 2026; Tabelle 2 und Tabelle 25). Spätere Änderungen sind darin nicht abgebildet.",
+        "hinweis": "Die Landesförderung nach § 6 Saarländisches Pflegegesetz gilt nur für teilstationäre Pflege und Kurzzeitpflege, nicht für Heimbewohner in der Dauerpflege."
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": null
+      }
+    },
+    {
+      "code": "SN",
+      "name": "Sachsen",
+      "heimrecht": {
+        "titel": "Sächsisches Wohnteilhabegesetz",
+        "abkuerzung": "SächsWTG",
+        "url": "https://www.revosax.sachsen.de/vorschrift/20766",
+        "url_portal": null,
+        "aufsicht": "Kommunaler Sozialverband Sachsen (KSV)",
+        "aufsicht_norm": "§ 31 Abs. 1 SächsWTG: zuständige Behörde ist der Kommunale Sozialverband Sachsen; Abs. 2: Aufsichtsbehörde ist das Staatsministerium für Soziales und Gesellschaftlichen Zusammenhalt.",
+        "aufsicht_url": null,
+        "stand": "Gesetz vom 20.03.2024 (SächsGVBl. S. 325), rechtsbereinigt mit Stand 17.08.2024 (aktuelle Fassung auf REVOSax am 2026-10-31); löst das SächsBeWoG ab.",
+        "verifikation": "gesetzestext_gelesen",
+        "abgerufen": "2026-10-31"
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": false,
+        "unbelegt": false,
+        "bezeichnung": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/5_Publikationen/Pflege/Berichte/Ergebnisbericht_Investitionskosten_Berichtsjahr_2024_bf.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Berichtsjahr 2024 (IGES-Ergebnisbericht für das BMG, Januar 2026; Tabelle 2 und Tabelle 25). Spätere Änderungen sind darin nicht abgebildet.",
+        "hinweis": "Das Land meldet für 2024 nur eine Richtlinie zur Förderung neuer Kurzzeitpflegeplätze, keine Leistung für Heimbewohner."
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": null
+      }
+    },
+    {
+      "code": "ST",
+      "name": "Sachsen-Anhalt",
+      "heimrecht": {
+        "titel": "Gesetz über Wohnformen und Teilhabe des Landes Sachsen-Anhalt (Wohn- und Teilhabegesetz)",
+        "abkuerzung": "WTG LSA",
+        "url": "https://lvwa.sachsen-anhalt.de/fileadmin/Bibliothek/Politik_und_Verwaltung/LVWA/LVwA/Dokumente/5_famgesjugvers/506/Heimbericht_2025.pdf",
+        "url_portal": null,
+        "aufsicht": "Heimaufsicht (Landesverwaltungsamt)",
+        "aufsicht_norm": null,
+        "aufsicht_url": null,
+        "stand": "WTG LSA vom 17.02.2011 (GVBl. LSA 2011, S. 136) laut Tätigkeitsbericht des Landesverwaltungsamts für 2025; Änderungsgesetz vom 16.06.2026 soll nach Suchtreffer (GVBl. LSA Nr. 12 vom 22.06.2026) ab 01.09.2026 gelten – nicht aus dem Gesetzblatt gelesen.",
+        "verifikation": "amtlicher_bericht_gelesen_zustaendigkeit_aus_suchtreffer",
+        "abgerufen": "2026-10-31",
+        "portal_hinweis": "landesrecht.sachsen-anhalt.de sperrt automatisierte Abrufe per robots.txt; lvwa.sachsen-anhalt.de liefert dem Abruf nur eine JavaScript-Hülle. Die Zuständigkeit des Landesverwaltungsamts (Referat 506 – Heimaufsicht) stammt aus Suchtreffer-Auszügen amtlicher LVwA-Dokumente."
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": false,
+        "unbelegt": false,
+        "bezeichnung": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/5_Publikationen/Pflege/Berichte/Ergebnisbericht_Investitionskosten_Berichtsjahr_2024_bf.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Berichtsjahr 2024 (IGES-Ergebnisbericht für das BMG, Januar 2026; Tabelle 2 und Tabelle 25). Spätere Änderungen sind darin nicht abgebildet.",
+        "hinweis": "Das Land meldet 2024 nur die Corona-Investitionsrichtlinie für Einrichtungen, keine Leistung für Heimbewohner."
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": null
+      }
+    },
+    {
+      "code": "SH",
+      "name": "Schleswig-Holstein",
+      "heimrecht": {
+        "titel": "Selbstbestimmungsstärkungsgesetz",
+        "abkuerzung": "SbStG",
+        "url": "https://www.landtag.ltsh.de/infothek/wahl19/drucks/00500/drucksache-19-00561.pdf",
+        "url_portal": null,
+        "aufsicht": "Heimaufsicht der Kreise und kreisfreien Städte",
+        "aufsicht_norm": "§ 30 Abs. 1 SbStG (laut Drs. 19/561): zuständige Behörden sind die Landrätinnen und Landräte sowie die Bürgermeisterinnen und Bürgermeister der kreisfreien Städte.",
+        "aufsicht_url": null,
+        "stand": "Beleg ist die Antwort der Landesregierung auf die Kleine Anfrage Drs. 19/561 vom 13.03.2018; aktuelle Fassung des Gesetzes nicht geprüft.",
+        "verifikation": "landtagsdrucksache_gelesen_gesetzestext_nicht_gelesen",
+        "abgerufen": "2026-10-31",
+        "portal_hinweis": "Das juris-Portal gesetze-rechtsprechung.sh.juris.de liefert dem Abruf nur eine JavaScript-Hülle; der Gesetzestext konnte nicht gelesen werden."
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": true,
+        "unbelegt": false,
+        "bezeichnung": "Pflegewohngeld",
+        "voraussetzung_kurz": "Für Pflegebedürftige in vollstationären Einrichtungen, wenn das eigene Einkommen und Vermögen nicht ausreicht, die Investitionskosten zu zahlen; einkommens- und vermögensabhängig.",
+        "norm": "§ 6 Abs. 4 Landespflegegesetz Schleswig-Holstein (LPflegeG); Paragraf laut Landtag-Drucksache 20/228 und BMG-Bericht, Gesetzestext nicht gelesen",
+        "url": "https://www.schleswig-holstein.de/DE/fachinhalte/P/pflege/leistungen/PflegeBezahlen.html",
+        "abgerufen": "2026-10-31",
+        "stand": "Seite des Landes, abgerufen 2026-10-31 (ohne Jahresangabe): maximal 15,35 € täglich. Norm: Schleswig-Holsteinischer Landtag Drs. 20/228 vom 28.09.2022 ('Zuschüsse nach § 6 Absatz 4 LPflegeG (Pflegewohngeld)') und BMG-Bericht Berichtsjahr 2024.",
+        "max_betrag_eur_pro_tag": 15.35,
+        "hinweis": "Den Antrag kann die stationäre Pflegeeinrichtung beim örtlichen Sozialhilfeträger stellen; höchstens 15,35 € täglich."
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": null
+      }
+    },
+    {
+      "code": "TH",
+      "name": "Thüringen",
+      "heimrecht": {
+        "titel": "Thüringer Wohn- und Teilhabegesetz",
+        "abkuerzung": "ThürWTG",
+        "url": "https://buerger.thueringen.de/detail?pstId=808579",
+        "url_portal": null,
+        "aufsicht": "Heimaufsicht (Thüringer Landesverwaltungsamt)",
+        "aufsicht_norm": null,
+        "aufsicht_url": null,
+        "stand": "Gesetz vom 10.06.2014 (GVBl. S. 161), laut Suchtreffer zuletzt 2024 geändert; aktuelle Fassung nicht geprüft.",
+        "verifikation": "nur_suchtreffer_amtlicher_seiten",
+        "abgerufen": "2026-10-31",
+        "portal_hinweis": "Der Zuständigkeitsfinder buerger.thueringen.de ist durch eine Bot-Sicherheitsprüfung geschützt (nicht umgangen), landesrecht.thueringen.de sperrt per robots.txt. Titel, Kürzel und Zuständigkeit (Referat Heimaufsicht im Thüringer Landesverwaltungsamt) stammen aus Suchtreffer-Auszügen amtlicher Seiten."
+      },
+      "investitionskosten_hilfe": {
+        "gibt_es": null,
+        "unbelegt": true,
+        "bezeichnung": "Bewohnerbezogene Aufwendungszuschüsse (§ 4 Abs. 2 ThürAGPflegeVG)",
+        "voraussetzung_kurz": null,
+        "norm": "§ 4 Abs. 2 ThürAGPflegeVG (laut BMG-Bericht; Gesetzestext nicht gelesen)",
+        "url": "https://www.bundesgesundheitsministerium.de/fileadmin/Dateien/5_Publikationen/Pflege/Berichte/Ergebnisbericht_Investitionskosten_Berichtsjahr_2024_bf.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Berichtsjahr 2024 (IGES-Ergebnisbericht für das BMG, Januar 2026; Tabelle 2 und Tabelle 25). Spätere Änderungen sind darin nicht abgebildet.",
+        "hinweis": "Randerscheinung: 2024 wurden laut BMG-Bericht in der vollstationären Dauerpflege nur 24 Pflegebedürftige gefördert (39.092 €); Voraussetzungen und ob Neuzugänge antragsberechtigt sind, sind nicht belegt – auf der Seite keine Aussage treffen."
+      },
+      "landespflegegeld": {
+        "gibt_es": false,
+        "betrag": null,
+        "voraussetzung_kurz": null,
+        "norm": null,
+        "url": "https://www.bayern.landtag.de/www/ElanTextAblage_WP19/Protokolle/19%20Wahlperiode%20Kopie/19%20WP%20Plenum%20Kopie/059/059_PL_007_gesetzentwurf-8147.pdf",
+        "abgerufen": "2026-10-31",
+        "stand": "Aussage der Bayerischen Staatsministerin für Gesundheit, Pflege und Prävention im Landtag am 08.10.2025: Bayern sei das einzige Bundesland mit Landespflegegeld. Für 2026 kein anderslautender Beleg gefunden.",
+        "gilt_auch_im_heim": null,
+        "hinweis": null
+      }
+    }
+  ]
+}

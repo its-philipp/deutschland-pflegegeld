@@ -22,6 +22,12 @@ import {
   beratung,
   heimstatistik,
 } from '../data/laender';
+import {
+  heimrecht,
+  investitionskostenHilfe,
+  landespflegegeld,
+  type Absatz,
+} from '../data/landesrecht';
 
 /**
  * "Pflegeheim Kosten «Bundesland»" — sixteen pages (queue task 2.7).
@@ -120,6 +126,13 @@ const heimquoteVergleich =
     : heime.heimquote > HEIMSTATISTIK_BUND.heimquote
       ? `mehr als im Bund (${zahl(HEIMSTATISTIK_BUND.heimquote)} %)`
       : `weniger als im Bund (${zahl(HEIMSTATISTIK_BUND.heimquote)} %)`;
+
+// Geld zuerst, dann das Gesetz: Pflegewohngeld, Landespflegegeld, Heimrecht.
+const landesrecht = [
+  investitionskostenHilfe(land, euro),
+  landespflegegeld(land),
+  heimrecht(land),
+].filter((a): a is Absatz => a !== null);
 
 const nachbarn = rangfolge
   .map((l, i) => ({ land: l, platz: i + 1 }))
@@ -356,7 +369,28 @@ const beschreibung =
     abgerufen am {datum(rat.abgerufen)}
   </p>
 
-  {/* LANDESRECHT: Heimgesetz, Pflegewohngeld, Landespflegegeld — folgt mit landesrecht-pflege.json. */}
+  {
+    landesrecht.length > 0 && (
+      <>
+        <h2 class="mt-14 font-display text-2xl text-ink">Was {imLand} für Heimbewohner gilt</h2>
+        {landesrecht.map((a) => (
+          <>
+            <p class="mt-3 max-w-prose text-ink-soft">{a.text}</p>
+            <p class="mt-1 text-[14px] text-ink-mute">
+              {a.url ? (
+                <a href={a.url} rel="nofollow noopener" target="_blank" class="underline">
+                  {a.quelle}
+                </a>
+              ) : (
+                a.quelle
+              )}
+              , abgerufen am {datum(a.abgerufen)}
+            </p>
+          </>
+        ))}
+      </>
+    )
+  }
 
   <h2 class="mt-14 font-display text-2xl text-ink">{land.name} zwischen seinen Nachbarn im Ranking</h2>
   <ul class="mt-4 flex flex-col divide-y divide-rule border-y border-rule">
