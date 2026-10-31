@@ -1,0 +1,1091 @@
+{
+  "_meta": {
+    "topic": "pflege-laenderstatistik",
+    "retrieved": "2026-10-31",
+    "collector": "data-researcher subagent",
+    "zweck": "Landesspezifische Fakten für die 16 Seiten /pflegeheim-kosten-{land}/: Pflegestatistik 2023 je Land, vdek-Eigenanteil Stand 1. Juli 2025 (für den Vorjahresvergleich zu 1. Juli 2026) und Pflegestützpunkte nach § 7c SGB XI.",
+    "method": {
+      "pflegestatistik": "Zahlen aus dem Statistischen Bericht der Statistischen Ämter des Bundes und der Länder (Destatis, XLSX 'Länderergebnisse 2023', erschienen 22.01.2025), maschinell aus den Tabellenblättern gelesen, nicht abgetippt. Definitionen: 'pflegeheime' = Tab. 22412-10 Spalte 'Heime' (alle zugelassenen Pflegeheime nach § 72 SGB XI am 15.12.2023, auch solche mit nur Kurzzeit-/Tages-/Nachtpflege; Deutschland 16.505). 'pflegeheime_mit_vollstationaerer_dauerpflege' = Tab. 22412-10 Spalte 'darunter Pflegeheime mit vollstationärer Dauerpflege' (Deutschland 11.250). 'plaetze_vollstationaer_dauer' = Tab. 22412-11 Spalte 'Dauerpflege' (verfügbare Plätze vollstationäre Dauerpflege, ohne Kurzzeit- und Tages-/Nachtpflege; Deutschland 874.562). 'pflegebeduerftige_vollstationaer' = Tab. 22412-12 Block 'Vollstationäre Dauerpflege', Spalte 'insgesamt' (Personen in vollstationärer DAUERpflege am 15.12.2023, ohne Kurzzeitpflege und ohne teilstationäre Pflege; Deutschland 775.961). 'pflegebeduerftige_vollstationaer_inkl_kurzzeit' = Tab. 22421-01 Spalte 'vollstationär in Heimen' (Dauer- plus Kurzzeitpflege; Deutschland 799.591; entspricht der Destatis-Schlagzeile 'rund 800 000 in Heimen vollstationär betreut'). 'pflegebeduerftige_gesamt' = Tab. 22421-01 'insgesamt', Pflegebedürftige zum Jahresende 2023 (Stichtag 31.12.2023, weil die Pflegegeld-Statistik der Kassen zu diesem Stichtag meldet; Deutschland 5.688.473). Der Stichtag der Heimerhebung ist der 15.12.2023.",
+      "eigenanteil_vorjahr": "vdek-Datengrafik 'Finanzielle Belastung einer/eines Pflegebedürftigen im Pflegeheim in EUR je Monat, 1. Juli 2025 - Bund und Bundesländer' (Seite 3 der PDF '20250722_Eigenananteile_Bund_Grafiken.pdf'). Anders als die 2026er Grafik (JPG) hat dieses PDF eine Textebene: die Werte wurden mit pdftotext aus der Textebene gelesen und zusätzlich gegen das gerenderte Seitenbild verglichen (keine OCR, keine Handabschrift). 'bis_12_monate' = Zeile 'Eigenbeteiligung mit Zuschüssen, bis 12 Monate = 15 %'. 'veraenderung_zu_2026' = Wert aus src/data/sources/vdek-eigenanteile.json (1. Juli 2026) minus Wert 2025; Prozent auf eine Dezimalstelle gerundet; nicht vom vdek veröffentlicht, außer Bund (+256 €) und fünf Länder (siehe validierung).",
+      "pflegestuetzpunkte": "Je Land die amtliche Angabe auf der Landes-/Ministeriumsseite oder, wo dort keine Zahl steht, die Angabe des Landesverbands der Pflegekassen (vdek-Landesvertretung) bzw. die Zahl der Einträge einer amtlichen Standortliste. Das Feld 'anzahl_art' trennt 'amtlich_genannt' (Zahl steht so im Text der Quelle) von 'aus_amtlicher_liste_gezaehlt' (Einträge der amtlichen Liste von uns gezählt). 'einheit' sagt, was gezählt ist (Pflegestützpunkte vs. Standorte). 'stand' ist der Stand, den die Quelle selbst nennt; null, wenn die Seite keinen trägt (dann gilt 'abgerufen')."
+    },
+    "quelle_pflegestatistik": {
+      "herausgeber": "Statistisches Bundesamt (Destatis) mit den Statistischen Ämtern der Länder",
+      "titel": "Statistischer Bericht - Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse - 2023",
+      "stichtag": "15.12.2023 (Pflegeeinrichtungen); 31.12.2023 (Pflegegeld-Empfänger, damit Pflegebedürftige insgesamt)",
+      "erschienen": "2025-01-22",
+      "naechste_ausgabe": "Stichtag 15.12.2025; laut Bericht Bundesergebnisse planmäßig 12 Monate nach dem Stichtag, Länderergebnisse 'üblicherweise etwas früher'. Am 2026-10-31 liegt auf destatis.de keine Ausgabe 2025 vor.",
+      "seite": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/_inhalt.html",
+      "xlsx": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+      "genesis_hinweis": "Das Übersichtsblatt des Berichts nennt als GENESIS-Online-Tabellen 22412-0010 (Pflegeheime, Plätze, Pflegebedürftige nach Land), 22412-0011 (Plätze nach Träger), 22412-0012 (Pflegebedürftige stationär nach Land und Pflegegrad) und 22421-0010 (Pflegebedürftige nach Land). Die Werte hier stammen aus dem XLSX-Bericht, nicht aus einem GENESIS-Abruf; die Tabellennummern des Berichts (22412-10 usw.) sind Blattnummern der Publikation, keine GENESIS-Codes.",
+      "lizenz_hinweis": "Impressum des Berichts: '© Statistisches Bundesamt (Destatis), 2025. Vervielfältigung und Verbreitung, auch auszugsweise, mit Quellenangabe gestattet.' Quellenangabe auf der Seite nötig.",
+      "abgerufen": "2026-10-31"
+    },
+    "quelle_vorjahr": {
+      "herausgeber": "Verband der Ersatzkassen e. V. (vdek)",
+      "titel": "Finanzielle Belastung einer/eines Pflegebedürftigen im Pflegeheim in EUR je Monat, 1. Juli 2025 - Bund und Bundesländer",
+      "stand": "1. Juli 2025",
+      "veroeffentlicht": "2025-07-22",
+      "pressemitteilung": "https://www.vdek.com/presse/pressemitteilungen/2025/pflegeheim-monatliche-eigenbeteiligung-steigt-stationaere-pflege.html",
+      "pressemitteilung_pdf": "https://www.vdek.com/content/vdeksite/presse/pressemitteilungen/2025/pflegeheim-monatliche-eigenbeteiligung-steigt-stationaere-pflege/_jcr_content/par/download/file.res/vdek_pm_20250722_Eigenanteile_Pflege.pdf",
+      "datengrafik": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+      "datengrafik_seite": 3,
+      "abgerufen": "2026-10-31",
+      "validierung": {
+        "spaltensummen": {
+          "geprueft": 17,
+          "abweichungen": 0,
+          "regel": "EEE + Unterkunft/Verpflegung + Investitionskosten = Eigenbeteiligung ohne Zuschüsse (16 Länder + Bund)"
+        },
+        "zuschussprozente": {
+          "geprueft": 68,
+          "abweichungen": 0,
+          "regel": "Zuschuss = 15/30/50/75 % des EEE (Toleranz 0,6 € wegen Rundung)"
+        },
+        "eigenbeteiligung_mit_zuschuss": {
+          "geprueft": 68,
+          "abweichungen_ueber_toleranz": 0,
+          "regel": "ohne Zuschüsse − Prozentsatz × EEE liegt innerhalb 0,60 € vom veröffentlichten Wert; gegen den veröffentlichten gerundeten Zuschuss innerhalb 1 € (vdek rundet unabhängig). Auch hier: veröffentlichte Werte verwenden, nicht selbst subtrahieren."
+        },
+        "zweitquellen_text": {
+          "regel": "Bis-12-Monate-Wert gegen einen zweiten amtlichen/Verbandstext am 22.07.2025 oder gegen vdek-Vergleichstabellen 07/2025 → 07/2026 geprüft",
+          "bestaetigt": {
+            "BUND": 3108,
+            "BY": 3094,
+            "BE": 3123,
+            "BB": 2875,
+            "HB": 3449,
+            "NW": 3427,
+            "RP": 3051,
+            "SL": 3403,
+            "SH": 2912,
+            "NI": 2785,
+            "TH": 2909,
+            "ST": 2595,
+            "HE": 3026,
+            "MV": 2752
+          },
+          "bestaetigt_ueber_vorjahresdifferenz_2026": {
+            "HH": "3.481 − 302 = 3.179",
+            "BW": "3.657 − 257 = 3.400",
+            "SL": "3.695 − 292 = 3.403",
+            "NW": "3.671 − 244 = 3.427",
+            "BUND": "3.364 − 256 = 3.108"
+          },
+          "nur_aus_bund_tabelle": [
+            "SN"
+          ],
+          "belege": [
+            "vdek-Landesvertretungen, Pressemitteilungen 22.07.2025: Bayern (https://www.vdek.com/LVen/BAY/Presse/Pressemitteilungen/2025/erneuter-anstieg-der-eigenbeteiligung-fuer-pflegebeduerftige-bayern.html), Brandenburg (https://www.vdek.com/LVen/BERBRA/Presse/Pressemitteilungen/Brandenburg/2025/eigenbeteiligung-in-brandenburger-pflegeheimen.html), Berlin, Bremen (https://www.vdek.com/LVen/BRE/Presse/Pressemitteilungen/2025/eigenanteile-juli25-pflegeheim.html), NRW (https://www.vdek.com/LVen/NRW/Presse/Pressemitteilungen/2025/stationaere-pflege-nrw.html), Rheinland-Pfalz (https://www.vdek.com/LVen/RLP/Presse/Pressemitteilungen/2025/eigenanteile_pflege.html), Saarland (https://www.vdek.com/LVen/SAA/Presse/Pressemitteilungen/2025/eigenanteile_pflege.html), Schleswig-Holstein, Niedersachsen (https://www.vdek.com/LVen/NDS/presse/pressemitteilungen/2025/eigenbeteiligung-pflege.html), Thüringen (https://www.vdek.com/LVen/THG/Presse/Pressemitteilungen/2025/Eigenbeteiligung-in-Pflegeheimen.html)",
+            "vdek-Vergleichstabellen 07/2025 → 07/2026 (xplain-Textfassung der Grafiken): Sachsen-Anhalt, Hessen, Mecklenburg-Vorpommern",
+            "vdek-Pressemitteilung 14.07.2026 (Bund: 3.364 € = +256 € ggü. Vorjahr; EEE 1.583 → 1.775; U/V 1.018 → 1.068; Investitionskosten 507 → 521; Ausbildungskosten 114 → 128) – bestätigt die Bund-Zeile 2025 komponentenweise"
+          ]
+        }
+      },
+      "hinweis_vergleichbarkeit": "Beide Jahre sind vdek-Auswertungen zum Stichtag 1. Juli und bilden Durchschnittswerte ab. Die vdek-Landeswerte vom 1. Januar 2026 (z. B. Sachsen 2.986 €) sind ein anderer Stichtag und hier nicht verwendet."
+    },
+    "validierung_pflegestatistik": {
+      "geprueft": 148,
+      "regeln": [
+        "Summe der 16 Länder = Zeile Deutschland (Heime, Heime mit Dauerpflege, Plätze Dauerpflege, Pflegebedürftige Dauerpflege, Pflegebedürftige gesamt): 5/5 gleich",
+        "Je Zeile (17): Dauerpflege + Kurzzeitpflege (Tab. 22412-12) = 'vollstationär in Heimen' (Tab. 22421-01); Plätze zusammen = Dauer + Kurzzeit; Plätze insgesamt = vollstationär + Tages-/Nachtpflege; Plätze 22412-10 = 22412-11; Pflegebedürftige 22412-10 = 22412-12 'insgesamt'",
+        "Plausibilität je Zeile: Dauerpflege-Belegung <= Dauerpflege-Plätze; Heime mit Dauerpflege <= Heime; vollstationär <= gesamt",
+        "Stichproben gegen die Berichte der Statistischen Landesämter (Stichtag 15.12.2023): Hessen (Hessisches Statistisches Landesamt, K VIII 1 - 2j/2023): 1.095 Heime, 68.371 Plätze, 62.041 Plätze Dauerpflege, 55.197 Dauerpflege, 423.378 gesamt; Rheinland-Pfalz (Statistisches Landesamt, K VIII 1 - 2j/2023): 582 Heime, 46.559 Plätze, 42.791 Plätze Dauerpflege, 35.464 Dauerpflege, 271.519 gesamt; Berlin (Amt für Statistik Berlin-Brandenburg, SB K VIII 1 - 2j/23): 388 Heime, 32.879 Plätze, 30.178 Plätze Dauerpflege, 27.470 Dauerpflege, 211.999 gesamt; Brandenburg (dass.): 649 Heime, 32.155 Plätze, 26.160 Plätze Dauerpflege, 23.237 Dauerpflege, 214.072 gesamt – alle Werte identisch"
+      ],
+      "abweichungen": 0
+    },
+    "quelle_pflegestuetzpunkte": {
+      "rechtsgrundlage": "§ 7c SGB XI: Pflegekassen und Krankenkassen richten Pflegestützpunkte ein, 'sofern die zuständige oberste Landesbehörde dies bestimmt' – die Zahl ist Landesentscheidung. Eine aktuelle bundesweite amtliche Gesamtübersicht wurde nicht gefunden; die letzte gefundene bundesweite Zählung ist die GKV-SV-Evaluation (IGES, 31.03.2020; Stand Oktober 2019: 430 Standorte, nach 14 Ländern mit Regelung, Sachsen und Sachsen-Anhalt ausgenommen) und wurde wegen des Alters nicht verwendet.",
+      "gkv_sv_evaluation": "https://www.gkv-spitzenverband.de/media/dokumente/pflegeversicherung/beratung_und_betreuung/pflegeberatung/20200331_IGES_Evaluation_Pflegeberatung_Abschlussbericht.pdf",
+      "liste_der_laenderseiten": "https://www.pflege-in-hessen.de/fileadmin/pflege_in_hessen/Dokumente/Pflegestuetzpunkte_der_anderen_Bundeslaender.pdf (Hessisches Ministerium, Stand Mai 2025: Verweisliste auf die Pflegestützpunkt-Seiten der Länder)",
+      "abgerufen": "2026-10-31"
+    },
+    "offen": [
+      "Pflegestatistik 2025 (Stichtag 15.12.2025) ist am 2026-10-31 noch nicht veröffentlicht; die Daten sind Stand 15.12.2023 (31.12.2023 für 'pflegebeduerftige_gesamt'). Nach Erscheinen (voraussichtlich Dez 2026 bis Q1 2027) neu einlesen.",
+      "GENESIS-Online wurde nicht abgefragt (Abruf braucht Registrierung); die Werte stammen aus dem XLSX-Bericht von Destatis, der dieselben Tabellen enthält. Die GENESIS-Tabellencodes im Übersichtsblatt sind nicht 1:1 den Berichtsblättern zugeordnet und deshalb nur als Hinweis genannt.",
+      "Eigenanteil 2025 Sachsen (3.152 − Vorjahr: 2.857): keine zweite amtliche Quelle für den 1.-Juli-2025-Wert gefunden (die vdek-Landesmitteilung Sachsen vom 06.02.2025 nennt 2.720 € mit Stand 1. Januar 2025, ein anderer Stichtag). Wert stammt aus der Bund-Tabelle und ist rechnerisch konsistent.",
+      "Pflegestützpunkte Baden-Württemberg: keine amtlich genannte Gesamtzahl; 123 Standorte sind von uns auf der Landeskarte gezählt (nicht Pflegestützpunkte im engeren Sinn).",
+      "Pflegestützpunkte Bremen, Hamburg, Schleswig-Holstein, Thüringen: Zahl aus der amtlichen Liste gezählt, keine ausdrücklich genannte Gesamtzahl.",
+      "Pflegestützpunkte Hessen: Widerspruch zwischen Landesportal (26, Stand 05/2025) und vdek-Landesvertretung (33, Seitenstand 29.09.2026) – ungeklärt.",
+      "Pflegestützpunkte Nordrhein-Westfalen: weder amtliche aktuelle Zahl noch amtliches Landesverzeichnis gefunden; anzahl und url bewusst null.",
+      "Pflegestützpunkte Niedersachsen: '52 Einrichtungen gesamt' im Listenkopf der SPN-Adressliste; nur die ersten 20 Einträge einzeln geprüft (Seitenumbruch).",
+      "Pflegestützpunkte Saarland: saarland.de liefert Skripten HTTP 403; die Landes-URL stammt aus der vdek-Seite und wurde nicht inhaltlich geprüft (url_alternativ = vdek-Seite).",
+      "Pflegestützpunkte Sachsen/Sachsen-Anhalt: 'gibt_es: false' stützt sich auf die vdek-Landesvertretungen (2026) und die GKV-SV-Evaluation (2020); die Landesseiten selbst erwähnen Pflegestützpunkte nicht, eine ausdrückliche Landesaussage 'keine Pflegestützpunkte' wurde nicht gefunden.",
+      "Pflegestützpunkte, 'stand': bei Seiten ohne eigenen Stand (BW, HB, HH, MV, NI, TH) null; dann gilt 'abgerufen'. Bei Hessen 'stand' = '2025-05' (Monatsangabe der Landesseite)."
+    ]
+  },
+  "laender": [
+    {
+      "code": "BW",
+      "name": "Baden-Württemberg",
+      "pflegestatistik": {
+        "pflegeheime": 2059,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 1526,
+        "plaetze_vollstationaer_dauer": 98517,
+        "pflegebeduerftige_vollstationaer": 89416,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 92908,
+        "pflegebeduerftige_gesamt": 624831,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 3400,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3657,
+          "differenz_eur": 257,
+          "differenz_prozent": 7.6,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 2170,
+          "davon_ausbildungskosten": 146,
+          "unterkunft_verpflegung": 1095,
+          "investitionskosten": 460,
+          "eigenbeteiligung_ohne_zuschuss": 3725,
+          "zuschuss": {
+            "bis_12_monate_15": 326,
+            "ab_12_monate_30": 651,
+            "ab_24_monate_50": 1085,
+            "ab_36_monate_75": 1628
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 3400,
+            "ab_12_monate": 3074,
+            "ab_24_monate": 2640,
+            "ab_36_monate": 2098
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": true,
+        "anzahl": 123,
+        "anzahl_art": "aus_amtlicher_liste_gezaehlt",
+        "einheit": "Standorte (Karteneinträge in 44 von 44 Stadt-/Landkreisen)",
+        "stand": null,
+        "url": "https://www.bw-pflegestuetzpunkt.de/bw-karte/",
+        "quelle_anzahl_url": "https://www.bw-pflegestuetzpunkt.de/bw-karte/",
+        "hinweis": "Amtlich genannt wird nur: 'Alle Stadt- und Landkreise in Baden-Württemberg haben Pflegestützpunkte mit regionalen Standorten.' Eine Gesamtzahl nennt das Portal der Kommission Pflegestützpunkte Baden-Württemberg (Geschäftsstelle beim KVJS) nicht. 123 = von uns gezählte Standort-Einträge der Landeskarte; ein Pflegestützpunkt kann mehrere Standorte haben (z. B. Rems-Murr-Kreis: 3), die Zahl der Pflegestützpunkte ist daher kleiner.",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "BY",
+      "name": "Bayern",
+      "pflegestatistik": {
+        "pflegeheime": 2146,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 1467,
+        "plaetze_vollstationaer_dauer": 124563,
+        "pflegebeduerftige_vollstationaer": 108289,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 110844,
+        "pflegebeduerftige_gesamt": 631273,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 3094,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3270,
+          "differenz_eur": 176,
+          "differenz_prozent": 5.7,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 2030,
+          "davon_ausbildungskosten": 128,
+          "unterkunft_verpflegung": 940,
+          "investitionskosten": 428,
+          "eigenbeteiligung_ohne_zuschuss": 3398,
+          "zuschuss": {
+            "bis_12_monate_15": 305,
+            "ab_12_monate_30": 609,
+            "ab_24_monate_50": 1015,
+            "ab_36_monate_75": 1523
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 3094,
+            "ab_12_monate": 2789,
+            "ab_24_monate": 2383,
+            "ab_36_monate": 1876
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": true,
+        "anzahl": 59,
+        "anzahl_art": "amtlich_genannt",
+        "einheit": "Pflegestützpunkte",
+        "stand": "2026-03-05",
+        "url": "https://www.stmgp.bayern.de/pflege/pflege-zu-hause/pflegestuetzpunkte/",
+        "quelle_anzahl_url": "https://www.vdek.com/LVen/BAY/Vertragspartner/pflege-2/pflegestuetzpunkte.html",
+        "hinweis": "Nicht flächendeckend: Einrichtung ist Entscheidung der Kommunen. Zahl 59 laut vdek-Landesvertretung Bayern (Seitenstand 05.03.2026: 'Zwischenzeitlich haben bereits 59 Pflegestützpunkte in Bayern ihren Betrieb aufgenommen'). Das StMGP nannte am 16.05.2025 (LT-Drs. 19/6718) 56 Pflegestützpunkte, die 61 der 96 Landkreise und kreisfreien Städte abdecken. Die StMGP-Liste (Seitenstand 10.03.2026) führt 61 Zeilen; Weilheim-Schongau und Donau-Ries haben je 2 Standorte, das ergibt 59 Pflegestützpunkte.",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "BE",
+      "name": "Berlin",
+      "pflegestatistik": {
+        "pflegeheime": 388,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 280,
+        "plaetze_vollstationaer_dauer": 30178,
+        "pflegebeduerftige_vollstationaer": 27470,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 27699,
+        "pflegebeduerftige_gesamt": 211999,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 3123,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3388,
+          "differenz_eur": 265,
+          "differenz_prozent": 8.5,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 2162,
+          "davon_ausbildungskosten": 243,
+          "unterkunft_verpflegung": 826,
+          "investitionskosten": 459,
+          "eigenbeteiligung_ohne_zuschuss": 3447,
+          "zuschuss": {
+            "bis_12_monate_15": 324,
+            "ab_12_monate_30": 649,
+            "ab_24_monate_50": 1081,
+            "ab_36_monate_75": 1622
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 3123,
+            "ab_12_monate": 2798,
+            "ab_24_monate": 2366,
+            "ab_36_monate": 1826
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": true,
+        "anzahl": 36,
+        "anzahl_art": "amtlich_genannt",
+        "einheit": "Standorte",
+        "stand": "2025-04-30",
+        "url": "https://www.pflegestuetzpunkteberlin.de/",
+        "quelle_anzahl_url": "https://www.berlin.de/sen/pflege/planung-und-zusammenarbeit/landespflegeplan/steckbriefe/pflegestuetzpunkte-berlin-1576584.php",
+        "hinweis": "Senatsverwaltung (Landespflegeplan-Steckbrief, Datum 30.04.2025): 'Die Pflegestützpunkte Berlin beraten vor Ort an 36 Standorten'. Gemeinsame Trägerschaft von Land und Pflegekassen.",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "BB",
+      "name": "Brandenburg",
+      "pflegestatistik": {
+        "pflegeheime": 649,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 341,
+        "plaetze_vollstationaer_dauer": 26160,
+        "pflegebeduerftige_vollstationaer": 23237,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 23693,
+        "pflegebeduerftige_gesamt": 214072,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 2875,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3150,
+          "differenz_eur": 275,
+          "differenz_prozent": 9.6,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 1933,
+          "davon_ausbildungskosten": 125,
+          "unterkunft_verpflegung": 920,
+          "investitionskosten": 312,
+          "eigenbeteiligung_ohne_zuschuss": 3165,
+          "zuschuss": {
+            "bis_12_monate_15": 290,
+            "ab_12_monate_30": 580,
+            "ab_24_monate_50": 967,
+            "ab_36_monate_75": 1450
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 2875,
+            "ab_12_monate": 2585,
+            "ab_24_monate": 2199,
+            "ab_36_monate": 1715
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": true,
+        "anzahl": 19,
+        "anzahl_art": "amtlich_genannt",
+        "einheit": "Pflegestützpunkte (zusätzlich 27 Außenstellen)",
+        "stand": "2025-04-16",
+        "url": "https://pflegestuetzpunkte-brandenburg.de/",
+        "quelle_anzahl_url": "https://masgz.brandenburg.de/sixcms/media.php/9/042_25_MGS_Besuch_Pflegestuetzpunkt_EE_20250416.pdf",
+        "hinweis": "Ministerium für Gesundheit und Soziales, Pressemitteilung 042/2025 vom 16.04.2025: 'In allen Landkreisen und kreisfreien Städten des Landes Brandenburg arbeiten Pflegestützpunkte – insgesamt gibt es 19 Pflegestützpunkte mit 27 Außenstellen.' Dazu ein mobiles Beratungsangebot im Landkreis Barnim und vier Videoberatungsstellen.",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "HB",
+      "name": "Bremen",
+      "pflegestatistik": {
+        "pflegeheime": 150,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 94,
+        "plaetze_vollstationaer_dauer": 6547,
+        "pflegebeduerftige_vollstationaer": 5621,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 5786,
+        "pflegebeduerftige_gesamt": 47628,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 3449,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3761,
+          "differenz_eur": 312,
+          "differenz_prozent": 9.0,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 2022,
+          "davon_ausbildungskosten": 170,
+          "unterkunft_verpflegung": 1125,
+          "investitionskosten": 605,
+          "eigenbeteiligung_ohne_zuschuss": 3752,
+          "zuschuss": {
+            "bis_12_monate_15": 303,
+            "ab_12_monate_30": 607,
+            "ab_24_monate_50": 1011,
+            "ab_36_monate_75": 1517
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 3449,
+            "ab_12_monate": 3145,
+            "ab_24_monate": 2741,
+            "ab_36_monate": 2236
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": true,
+        "anzahl": 6,
+        "anzahl_art": "aus_amtlicher_liste_gezaehlt",
+        "einheit": "Standorte (Vahr, Vegesack, Gröpelingen, Huchting, Huckelriede, Bremerhaven)",
+        "stand": null,
+        "url": "https://www.bremen-pflegestuetzpunkt.de/",
+        "quelle_anzahl_url": "https://www.rathaus.bremen.de/sixcms/media.php/13/20260317_top_16_Pflegestuetzpunkte.pdf",
+        "hinweis": "Keine Gesamtzahl amtlich genannt. Die Standortliste des gemeinsamen Portals führt 6 Standorte (5 in Bremen, 1 in Bremerhaven). Senatsantwort vom 17.03.2026 (Bürgerschaft, Anfrage L 04): zwei Hauptstandorte in der Stadt Bremen (Vahr, Vegesack), Außenstellen Gröpelingen, Huckelriede, Huchting sowie ein Standort Bremerhaven.",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "HH",
+      "name": "Hamburg",
+      "pflegestatistik": {
+        "pflegeheime": 206,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 152,
+        "plaetze_vollstationaer_dauer": 16612,
+        "pflegebeduerftige_vollstationaer": 14137,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 14416,
+        "pflegebeduerftige_gesamt": 96606,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 3179,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3481,
+          "differenz_eur": 302,
+          "differenz_prozent": 9.5,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 1870,
+          "davon_ausbildungskosten": 189,
+          "unterkunft_verpflegung": 1019,
+          "investitionskosten": 570,
+          "eigenbeteiligung_ohne_zuschuss": 3459,
+          "zuschuss": {
+            "bis_12_monate_15": 281,
+            "ab_12_monate_30": 561,
+            "ab_24_monate_50": 935,
+            "ab_36_monate_75": 1403
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 3179,
+            "ab_12_monate": 2898,
+            "ab_24_monate": 2524,
+            "ab_36_monate": 2057
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": true,
+        "anzahl": 8,
+        "anzahl_art": "aus_amtlicher_liste_gezaehlt",
+        "einheit": "Pflegestützpunkte (7 Bezirke + 1 für Kinder und Jugendliche)",
+        "stand": null,
+        "url": "https://www.hamburg.de/politik-und-verwaltung/behoerden/sozialbehoerde/themen/pflege/beratung/pflegestuetzpunkte",
+        "quelle_anzahl_url": "https://www.hamburg.de/politik-und-verwaltung/behoerden/sozialbehoerde/themen/pflege/beratung/pflegestuetzpunkte/pflegestuetzpunkte-hamburg-85942",
+        "hinweis": "Keine Gesamtzahl amtlich genannt. Die Seite der Sozialbehörde 'Die Hamburger Pflegestützpunkte im Überblick' verlinkt 7 Bezirks-Pflegestützpunkte (Altona, Bergedorf, Eimsbüttel, Hamburg-Mitte, Hamburg-Nord, Harburg, Wandsbek) und 1 Pflegestützpunkt für Kinder und Jugendliche. Ob einzelne Bezirke mehrere Standorte haben, steht dort nicht.",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "HE",
+      "name": "Hessen",
+      "pflegestatistik": {
+        "pflegeheime": 1095,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 820,
+        "plaetze_vollstationaer_dauer": 62041,
+        "pflegebeduerftige_vollstationaer": 55197,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 57322,
+        "pflegebeduerftige_gesamt": 423378,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 3026,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3431,
+          "differenz_eur": 405,
+          "differenz_prozent": 13.4,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 1849,
+          "davon_ausbildungskosten": 141,
+          "unterkunft_verpflegung": 936,
+          "investitionskosten": 518,
+          "eigenbeteiligung_ohne_zuschuss": 3303,
+          "zuschuss": {
+            "bis_12_monate_15": 277,
+            "ab_12_monate_30": 555,
+            "ab_24_monate_50": 925,
+            "ab_36_monate_75": 1387
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 3026,
+            "ab_12_monate": 2748,
+            "ab_24_monate": 2379,
+            "ab_36_monate": 1916
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": true,
+        "anzahl": 26,
+        "anzahl_art": "amtlich_genannt",
+        "einheit": "Pflegestützpunkte",
+        "stand": "2025-05",
+        "url": "https://www.pflege-in-hessen.de/beratung-und-information/pflegestuetzpunkte",
+        "quelle_anzahl_url": "https://www.pflege-in-hessen.de/beratung-und-information/pflegestuetzpunkte",
+        "hinweis": "Landesportal des Hessischen Ministeriums für Familie, Senioren, Sport, Gesundheit und Pflege (Hessenkarte, Stand 05/2025): 'In Hessen gibt es 26 Pflegestützpunkte - in jedem Landkreis und in jeder kreisfreien Stadt einen.' WIDERSPRUCH: die vdek-Landesvertretung Hessen nennt 33 Pflegestützpunkte (Seitenstand 29.09.2026, 'angelehnt an die Landkreisstruktur'). Ursache ungeklärt (evtl. Zählung von Standorten); die Landesangabe 26 ist verwendet, 33 nicht bestätigt.",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "MV",
+      "name": "Mecklenburg-Vorpommern",
+      "pflegestatistik": {
+        "pflegeheime": 531,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 265,
+        "plaetze_vollstationaer_dauer": 20724,
+        "pflegebeduerftige_vollstationaer": 18832,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 19015,
+        "pflegebeduerftige_gesamt": 139872,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 2752,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3032,
+          "differenz_eur": 280,
+          "differenz_prozent": 10.2,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 1808,
+          "davon_ausbildungskosten": 146,
+          "unterkunft_verpflegung": 850,
+          "investitionskosten": 365,
+          "eigenbeteiligung_ohne_zuschuss": 3023,
+          "zuschuss": {
+            "bis_12_monate_15": 271,
+            "ab_12_monate_30": 542,
+            "ab_24_monate_50": 904,
+            "ab_36_monate_75": 1356
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 2752,
+            "ab_12_monate": 2481,
+            "ab_24_monate": 2119,
+            "ab_36_monate": 1667
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": true,
+        "anzahl": 19,
+        "anzahl_art": "amtlich_genannt",
+        "einheit": "Pflegestützpunkte",
+        "stand": null,
+        "url": "https://www.pflegestuetzpunktemv.de/",
+        "quelle_anzahl_url": "https://mecklenburg-vorpommern.de/thema/pflege-und-unterstuetzung",
+        "hinweis": "Landesportal Mecklenburg-Vorpommern: 'Mecklenburg-Vorpommern bietet mit insgesamt 19 Pflegestützpunkten ein starkes Auffangnetz.' Die Seite trägt keinen Stand.",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "NI",
+      "name": "Niedersachsen",
+      "pflegestatistik": {
+        "pflegeheime": 2049,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 1409,
+        "plaetze_vollstationaer_dauer": 105539,
+        "pflegebeduerftige_vollstationaer": 90281,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 93678,
+        "pflegebeduerftige_gesamt": 623071,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 2785,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3008,
+          "differenz_eur": 223,
+          "differenz_prozent": 8.0,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 1665,
+          "davon_ausbildungskosten": 119,
+          "unterkunft_verpflegung": 823,
+          "investitionskosten": 547,
+          "eigenbeteiligung_ohne_zuschuss": 3035,
+          "zuschuss": {
+            "bis_12_monate_15": 250,
+            "ab_12_monate_30": 500,
+            "ab_24_monate_50": 833,
+            "ab_36_monate_75": 1249
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 2785,
+            "ab_12_monate": 2536,
+            "ab_24_monate": 2203,
+            "ab_36_monate": 1786
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": true,
+        "anzahl": 52,
+        "anzahl_art": "amtlich_genannt",
+        "einheit": "Einrichtungen (Senioren- und Pflegestützpunkte Niedersachsen, SPN, sowie Pflegestützpunkte)",
+        "stand": null,
+        "url": "https://www.senioren-in-niedersachsen.de/aktiver-ruhestand/senioren-und-pflegestuetzpunkte/spn-adressliste",
+        "quelle_anzahl_url": "https://www.senioren-in-niedersachsen.de/aktiver-ruhestand/senioren-und-pflegestuetzpunkte/spn-adressliste",
+        "hinweis": "Seit 01.01.2014 sind Seniorenservicebüros und Pflegestützpunkte zu 'Senioren- und Pflegestützpunkten Niedersachsen (SPN)' zusammengeführt. Die amtliche SPN-Adressliste des Landes-Seniorenportals nennt im Listenkopf '52 Einrichtungen gesamt' (nur die ersten 20 Einzeleinträge geprüft, alle mit 'Pflegestützpunkt' im Namen). Das Land fördert je Landkreis/kreisfreier Stadt einen SPN; 'Ziel: 48 SPN' auf der Infoseite ist ein Ziel, kein Bestand.",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "NW",
+      "name": "Nordrhein-Westfalen",
+      "pflegestatistik": {
+        "pflegeheime": 3252,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 2244,
+        "plaetze_vollstationaer_dauer": 177765,
+        "pflegebeduerftige_vollstationaer": 164126,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 169213,
+        "pflegebeduerftige_gesamt": 1387134,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 3427,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3671,
+          "differenz_eur": 244,
+          "differenz_prozent": 7.1,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 1782,
+          "davon_ausbildungskosten": 151,
+          "unterkunft_verpflegung": 1276,
+          "investitionskosten": 636,
+          "eigenbeteiligung_ohne_zuschuss": 3694,
+          "zuschuss": {
+            "bis_12_monate_15": 267,
+            "ab_12_monate_30": 535,
+            "ab_24_monate_50": 891,
+            "ab_36_monate_75": 1337
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 3427,
+            "ab_12_monate": 3159,
+            "ab_24_monate": 2803,
+            "ab_36_monate": 2358
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": true,
+        "anzahl": null,
+        "anzahl_art": null,
+        "einheit": null,
+        "stand": "2023-03-01",
+        "url": null,
+        "quelle_anzahl_url": "https://www.landtag.nrw.de/portal/WWW/dokumentenarchiv/Dokument/MMST18-348.pdf",
+        "hinweis": "Keine amtliche aktuelle Zahl gefunden. Nicht flächendeckend: laut vdek-Landesvertretung NRW (Stellungnahme 18/348 an den Landtag NRW, 01.03.2023) wurden nach 2009 'in vielen Kreisen und kreisfreien Städten' Pflegestützpunkte geschaffen; die Einrichtung hängt von der Zustimmung der Kommune ab und die Zahl 'nahm in den Folgejahren nach entsprechenden kommunalen Entscheidungen ab'. Ein landesweites amtliches Verzeichnis wurde nicht gefunden (das in der Hessen-Liste verlinkte Portal wohnen-im-alter.de ist privat und nicht verwendet).",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "RP",
+      "name": "Rheinland-Pfalz",
+      "pflegestatistik": {
+        "pflegeheime": 582,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 464,
+        "plaetze_vollstationaer_dauer": 42791,
+        "pflegebeduerftige_vollstationaer": 35464,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 37073,
+        "pflegebeduerftige_gesamt": 271519,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 3051,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3289,
+          "differenz_eur": 238,
+          "differenz_prozent": 7.8,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 1552,
+          "davon_ausbildungskosten": 120,
+          "unterkunft_verpflegung": 1233,
+          "investitionskosten": 499,
+          "eigenbeteiligung_ohne_zuschuss": 3284,
+          "zuschuss": {
+            "bis_12_monate_15": 233,
+            "ab_12_monate_30": 466,
+            "ab_24_monate_50": 776,
+            "ab_36_monate_75": 1164
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 3051,
+            "ab_12_monate": 2818,
+            "ab_24_monate": 2508,
+            "ab_36_monate": 2120
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": true,
+        "anzahl": 135,
+        "anzahl_art": "amtlich_genannt",
+        "einheit": "Pflegestützpunkte",
+        "stand": "2026-03-03",
+        "url": "https://sozialportal.service24.rlp.de/?type=PSP",
+        "quelle_anzahl_url": "https://www.vdek.com/LVen/RLP/Vertragspartner/Pflege.html",
+        "hinweis": "vdek-Landesvertretung Rheinland-Pfalz (Seitenstand 03.03.2026): 'In Rheinland-Pfalz gibt es derzeit 135 Pflegestützpunkte.' Flächendeckend, getragen von Kranken- und Pflegekassen, Land, Landkreisen und kreisfreien Städten. Die Landesseite sozialportal.rlp.de nennt selbst keine Zahl.",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "SL",
+      "name": "Saarland",
+      "pflegestatistik": {
+        "pflegeheime": 213,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 164,
+        "plaetze_vollstationaer_dauer": 13177,
+        "pflegebeduerftige_vollstationaer": 11181,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 11668,
+        "pflegebeduerftige_gesamt": 80351,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 3403,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3695,
+          "differenz_eur": 292,
+          "differenz_prozent": 8.6,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 1953,
+          "davon_ausbildungskosten": 203,
+          "unterkunft_verpflegung": 1216,
+          "investitionskosten": 527,
+          "eigenbeteiligung_ohne_zuschuss": 3696,
+          "zuschuss": {
+            "bis_12_monate_15": 293,
+            "ab_12_monate_30": 586,
+            "ab_24_monate_50": 977,
+            "ab_36_monate_75": 1465
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 3403,
+            "ab_12_monate": 3110,
+            "ab_24_monate": 2720,
+            "ab_36_monate": 2231
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": true,
+        "anzahl": 8,
+        "anzahl_art": "amtlich_genannt",
+        "einheit": "Pflegestützpunkte",
+        "stand": "2024-12-18",
+        "url": "https://www.saarland.de/masfg/DE/portale/sozialesleben/leistungensoziales/pflege/pflegestuetzpunkte/pflegestuetzpunkte_node.html",
+        "url_alternativ": "https://www.vdek.com/LVen/SAA/Vertragspartner/Pflege/Pflegeberatung.html",
+        "quelle_anzahl_url": "https://www.vdek.com/LVen/SAA/Vertragspartner/Pflege/Pflegeberatung.html",
+        "hinweis": "vdek-Landesvertretung Saarland (Seitenstand 18.12.2024): 'Im Saarland gibt es acht Pflegestützpunkte.' Die Landes-URL stammt von dieser Seite; saarland.de antwortet automatisierten Abrufen mit HTTP 403 und konnte nicht inhaltlich geprüft werden.",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "SN",
+      "name": "Sachsen",
+      "pflegestatistik": {
+        "pflegeheime": 1142,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 697,
+        "plaetze_vollstationaer_dauer": 54837,
+        "pflegebeduerftige_vollstationaer": 48585,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 49676,
+        "pflegebeduerftige_gesamt": 363243,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 2857,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3152,
+          "differenz_eur": 295,
+          "differenz_prozent": 10.3,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 1858,
+          "davon_ausbildungskosten": 109,
+          "unterkunft_verpflegung": 830,
+          "investitionskosten": 448,
+          "eigenbeteiligung_ohne_zuschuss": 3136,
+          "zuschuss": {
+            "bis_12_monate_15": 279,
+            "ab_12_monate_30": 557,
+            "ab_24_monate_50": 929,
+            "ab_36_monate_75": 1394
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 2857,
+            "ab_12_monate": 2579,
+            "ab_24_monate": 2207,
+            "ab_36_monate": 1743
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": false,
+        "anzahl": null,
+        "anzahl_art": null,
+        "einheit": null,
+        "stand": "2026-08-31",
+        "url": "https://www.pflegenetz.sachsen.de/",
+        "quelle_anzahl_url": "https://www.vdek.com/LVen/SAC/Vertragspartner/Pflege/pflegeberatung.html",
+        "hinweis": "Statt Pflegestützpunkten vernetzte Pflegeberatung: vdek-Landesvertretung Sachsen (Seitenstand 31.08.2026): 'Sachsen hat sich für die Pflegeberatung in regional angesiedelten Pflegenetzwerken entschieden ... Dazu wurden 13 Netzwerkregionen in Sachsen gebildet.' GKV-Spitzenverband-Evaluation der Pflegeberatung (IGES, 31.03.2020): 'In Sachsen und Sachsen-Anhalt wird stattdessen ein Konzept der vernetzten Pflegeberatung umgesetzt.' Die Seite des Landes (pflegenetz.sachsen.de) erwähnt Pflegestützpunkte nicht.",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "ST",
+      "name": "Sachsen-Anhalt",
+      "pflegestatistik": {
+        "pflegeheime": 756,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 437,
+        "plaetze_vollstationaer_dauer": 30900,
+        "pflegebeduerftige_vollstationaer": 27241,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 28258,
+        "pflegebeduerftige_gesamt": 204236,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 2595,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 2891,
+          "differenz_eur": 296,
+          "differenz_prozent": 11.4,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 1723,
+          "davon_ausbildungskosten": 81,
+          "unterkunft_verpflegung": 802,
+          "investitionskosten": 328,
+          "eigenbeteiligung_ohne_zuschuss": 2853,
+          "zuschuss": {
+            "bis_12_monate_15": 258,
+            "ab_12_monate_30": 517,
+            "ab_24_monate_50": 862,
+            "ab_36_monate_75": 1292
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 2595,
+            "ab_12_monate": 2336,
+            "ab_24_monate": 1992,
+            "ab_36_monate": 1561
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": false,
+        "anzahl": null,
+        "anzahl_art": null,
+        "einheit": null,
+        "stand": "2026-05-06",
+        "url": "https://pflege.sachsen-anhalt.de/themen-im-fokus/vernetzte-pflegeberatung",
+        "quelle_anzahl_url": "https://www.vdek.com/LVen/SAH/Vertragspartner/Pflegeversicherung/vernetzte-pflegeberatung.html",
+        "hinweis": "Statt Pflegestützpunkten 'Vernetzte Pflegeberatung': vdek-Landesvertretung Sachsen-Anhalt (Seitenstand 06.05.2026): 'In Sachsen-Anhalt hat sich die Vernetzte Pflegeberatung als Alternative zu den Pflegestützpunkten bewährt.' Das Landesportal nennt 'Ca. 150 Beratungsstellen' (ohne Stand) und erwähnt Pflegestützpunkte nicht. GKV-Spitzenverband-Evaluation der Pflegeberatung (IGES, 31.03.2020): siehe Sachsen.",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "SH",
+      "name": "Schleswig-Holstein",
+      "pflegestatistik": {
+        "pflegeheime": 693,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 537,
+        "plaetze_vollstationaer_dauer": 37394,
+        "pflegebeduerftige_vollstationaer": 32916,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 33957,
+        "pflegebeduerftige_gesamt": 175323,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 2912,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3148,
+          "differenz_eur": 236,
+          "differenz_prozent": 8.1,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 1599,
+          "davon_ausbildungskosten": 73,
+          "unterkunft_verpflegung": 1004,
+          "investitionskosten": 549,
+          "eigenbeteiligung_ohne_zuschuss": 3152,
+          "zuschuss": {
+            "bis_12_monate_15": 240,
+            "ab_12_monate_30": 480,
+            "ab_24_monate_50": 800,
+            "ab_36_monate_75": 1199
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 2912,
+            "ab_12_monate": 2672,
+            "ab_24_monate": 2353,
+            "ab_36_monate": 1953
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": true,
+        "anzahl": 15,
+        "anzahl_art": "aus_amtlicher_liste_gezaehlt",
+        "einheit": "Kreise/kreisfreie Städte mit Eintrag in der Standortliste",
+        "stand": "2026-02-25",
+        "url": "https://www.schleswig-holstein.de/DE/fachinhalte/P/pflege/beratung/Pflegestuetzpunkte.html",
+        "quelle_anzahl_url": "https://www.schleswig-holstein.de/DE/fachinhalte/P/pflege/beratung/Pflegestuetzpunkte.html",
+        "hinweis": "Landesportal (Letzte Aktualisierung 25.02.2026) nennt keine Gesamtzahl; die Standortliste führt 15 Einträge (11 Kreise + 4 kreisfreie Städte). Widersprüchliche Formulierung auf derselben Seite: 'in allen Kreisen und kreisfreien Städten eingerichtet' und 'in fast allen Kreisen und kreisfreien Städten'. Außenstellen sind auf der Karte markiert, aber nicht gezählt.",
+        "abgerufen": "2026-10-31"
+      }
+    },
+    {
+      "code": "TH",
+      "name": "Thüringen",
+      "pflegestatistik": {
+        "pflegeheime": 594,
+        "pflegeheime_mit_vollstationaerer_dauerpflege": 353,
+        "plaetze_vollstationaer_dauer": 26817,
+        "pflegebeduerftige_vollstationaer": 23968,
+        "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 24385,
+        "pflegebeduerftige_gesamt": 193937,
+        "stichtag": "2023-12-15",
+        "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+        "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+        "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+        "abgerufen": "2026-10-31"
+      },
+      "eigenanteil_vorjahr": {
+        "bis_12_monate": 2909,
+        "veraenderung_zu_2026": {
+          "eigenanteil_2026_bis_12_monate": 3163,
+          "differenz_eur": 254,
+          "differenz_prozent": 8.7,
+          "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+        },
+        "komponenten": {
+          "eee_ohne_zuschuss": 1825,
+          "davon_ausbildungskosten": 129,
+          "unterkunft_verpflegung": 920,
+          "investitionskosten": 438,
+          "eigenbeteiligung_ohne_zuschuss": 3183,
+          "zuschuss": {
+            "bis_12_monate_15": 274,
+            "ab_12_monate_30": 548,
+            "ab_24_monate_50": 913,
+            "ab_36_monate_75": 1369
+          },
+          "eigenbeteiligung_mit_zuschuss": {
+            "bis_12_monate": 2909,
+            "ab_12_monate": 2636,
+            "ab_24_monate": 2271,
+            "ab_36_monate": 1814
+          }
+        },
+        "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+        "abgerufen": "2026-10-31"
+      },
+      "pflegestuetzpunkte": {
+        "gibt_es": true,
+        "anzahl": 7,
+        "anzahl_art": "aus_amtlicher_liste_gezaehlt",
+        "einheit": "Pflegestützpunkte",
+        "stand": null,
+        "url": "https://www.tmasgff.de/gesundheit/pflege/kontakt-und-beratungsstellen",
+        "quelle_anzahl_url": "https://www.tmasgff.de/gesundheit/pflege/kontakt-und-beratungsstellen",
+        "hinweis": "Thüringer Ministerium (TMASGFF) listet unter 'Folgende Pflegestützpunkte stehen Ihnen im Freistaat als Anlaufstelle zur Verfügung' 7 Pflegestützpunkte (Jena, Kyffhäuserkreis, Landkreis Nordhausen, Saale-Holzland-Kreis, Schmalkalden-Meiningen, Suhl, Weimar). Nicht flächendeckend: 'einige Kommunen, in denen kein Pflegestützpunkt existiert' haben eigene Beratungsstellen (Hildburghausen, Ilm-Kreis, Erfurt, Weimarer Land). Die Seite trägt keinen Stand.",
+        "abgerufen": "2026-10-31"
+      }
+    }
+  ],
+  "bund_vorjahr": {
+    "bis_12_monate": 3108,
+    "veraenderung_zu_2026": {
+      "eigenanteil_2026_bis_12_monate": 3364,
+      "differenz_eur": 256,
+      "differenz_prozent": 8.2,
+      "quelle_2026": "src/data/sources/vdek-eigenanteile.json (vdek, Stand 1. Juli 2026)"
+    },
+    "komponenten": {
+      "eee_ohne_zuschuss": 1862,
+      "davon_ausbildungskosten": 134,
+      "unterkunft_verpflegung": 1018,
+      "investitionskosten": 507,
+      "eigenbeteiligung_ohne_zuschuss": 3387,
+      "zuschuss": {
+        "bis_12_monate_15": 279,
+        "ab_12_monate_30": 559,
+        "ab_24_monate_50": 931,
+        "ab_36_monate_75": 1397
+      },
+      "eigenbeteiligung_mit_zuschuss": {
+        "bis_12_monate": 3108,
+        "ab_12_monate": 2828,
+        "ab_24_monate": 2456,
+        "ab_36_monate": 1991
+      }
+    },
+    "url": "https://www.vdek.com/content/dam/vdeksite/vdek/presse/pm/2025/20250722_Eigenananteile_Bund_Grafiken.pdf",
+    "abgerufen": "2026-10-31"
+  },
+  "bund_pflegestatistik": {
+    "pflegeheime": 16505,
+    "pflegeheime_mit_vollstationaerer_dauerpflege": 11250,
+    "plaetze_vollstationaer_dauer": 874562,
+    "pflegebeduerftige_vollstationaer": 775961,
+    "pflegebeduerftige_vollstationaer_inkl_kurzzeit": 799591,
+    "pflegebeduerftige_gesamt": 5688473,
+    "stichtag": "2023-12-15",
+    "stichtag_pflegebeduerftige_gesamt": "2023-12-31",
+    "tabelle": "Statistischer Bericht 'Pflegestatistik - Pflege im Rahmen der Pflegeversicherung, Länderergebnisse 2023' (EVAS 22411, 22412, 22421; erschienen 22.01.2025): Tab. 22412-10 (Heime), 22412-11 (verfügbare Plätze), 22412-12 (Pflegebedürftige in Pflegeheimen), 22421-01 (Pflegebedürftige gesamt)",
+    "url": "https://www.destatis.de/DE/Themen/Gesellschaft-Umwelt/Gesundheit/Pflege/Publikationen/Downloads-Pflege/statistischer-bericht-pflege-laenderergebnisse-5224002239005.xlsx?__blob=publicationFile",
+    "abgerufen": "2026-10-31"
+  }
+}

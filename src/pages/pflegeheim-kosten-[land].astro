@@ -13,6 +13,15 @@ import {
   type LandEigenanteil,
 } from '../data/eigenanteile';
 import { jahrAus } from '../lib/jahr';
+import {
+  ANSTIEG_BUND,
+  HEIMSTATISTIK_BUND,
+  PFLEGESTATISTIK_QUELLE,
+  VORJAHR_QUELLE,
+  anstieg,
+  beratung,
+  heimstatistik,
+} from '../data/laender';
 
 /**
  * "Pflegeheim Kosten «Bundesland»" — sixteen pages (queue task 2.7).
@@ -90,6 +99,28 @@ const groessteAbweichung = [...bestandteile].sort(
 const rangfolge = [...LAENDER].sort(
   (a, b) => a.eigenbeteiligung_mit_zuschuss.bis_12_monate - b.eigenbeteiligung_mit_zuschuss.bis_12_monate,
 );
+// Der Landesteil (2026-10-31): was dieses Land von den anderen unterscheidet.
+const zuwachs = anstieg(land);
+const heime = heimstatistik(land);
+const rat = beratung(land);
+const zahl = (n: number) => n.toLocaleString('de-DE');
+const zuwachsVergleich =
+  zuwachs.rang === 1
+    ? 'der stärkste Anstieg aller sechzehn Länder'
+    : zuwachs.rang === 16
+      ? 'der geringste Anstieg aller sechzehn Länder'
+      : zuwachs.prozent > ANSTIEG_BUND.prozent
+        ? `mehr als im Bundesdurchschnitt (${zahl(ANSTIEG_BUND.prozent)} %)`
+        : zuwachs.prozent < ANSTIEG_BUND.prozent
+          ? `weniger als im Bundesdurchschnitt (${zahl(ANSTIEG_BUND.prozent)} %)`
+          : 'genau so viel wie im Bundesdurchschnitt';
+const heimquoteVergleich =
+  Math.abs(heime.heimquote - HEIMSTATISTIK_BUND.heimquote) < 0.5
+    ? `etwa so viele wie im Bund (${zahl(HEIMSTATISTIK_BUND.heimquote)} %)`
+    : heime.heimquote > HEIMSTATISTIK_BUND.heimquote
+      ? `mehr als im Bund (${zahl(HEIMSTATISTIK_BUND.heimquote)} %)`
+      : `weniger als im Bund (${zahl(HEIMSTATISTIK_BUND.heimquote)} %)`;
+
 const nachbarn = rangfolge
   .map((l, i) => ({ land: l, platz: i + 1 }))
   .filter(({ platz }) => Math.abs(platz - rang) <= 2);
@@ -285,7 +316,47 @@ const beschreibung =
     </table>
   </div>
 
-  {/* LANDESTEIL: hier kommen die landesspezifischen Abschnitte hin. */}
+  <h2 class="mt-14 font-display text-2xl text-ink">Wie stark der Eigenanteil {imLand} gestiegen ist</h2>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    Vor einem Jahr, zum {VORJAHR_QUELLE.stand}, lag der Eigenanteil im ersten Jahr {imLand} bei{' '}
+    {euro(zuwachs.vorjahr)}. Seitdem ist er um <strong class="text-ink">{euro(zuwachs.differenz)}</strong>{' '}
+    gestiegen, das sind {zahl(zuwachs.prozent)} % — {zuwachsVergleich}.
+  </p>
+  <p class="mt-2 text-[14px] text-ink-mute">
+    {VORJAHR_QUELLE.herausgeber}, Stand {VORJAHR_QUELLE.stand} und {EIGENANTEIL_QUELLE.stand}.{' '}
+    <a href={VORJAHR_QUELLE.pressemitteilung} rel="nofollow noopener" target="_blank" class="underline">
+      Vorjahreswerte
+    </a>
+  </p>
+
+  <h2 class="mt-14 font-display text-2xl text-ink">Pflegeheime {imLand} in Zahlen</h2>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    Ende 2023 gab es {imLand} {zahl(heime.heime)} Pflegeheime mit Dauerpflege und{' '}
+    {zahl(heime.plaetze)} Plätze; rund {heime.auslastung} % davon waren belegt.{' '}
+    {zahl(heime.bewohner)} Menschen lebten dauerhaft im Heim — das sind{' '}
+    <strong class="text-ink">{zahl(heime.heimquote)} %</strong> aller{' '}
+    {zahl(heime.pflegebeduerftige)} Pflegebedürftigen im Land, {heimquoteVergleich}. Die große
+    Mehrheit wird zu Hause versorgt.
+  </p>
+  <p class="mt-2 text-[14px] text-ink-mute">
+    Statistisches Bundesamt, Pflegestatistik 2023 (Länderergebnisse, erschienen{' '}
+    {datum(PFLEGESTATISTIK_QUELLE.erschienen)}).{' '}
+    <a href={PFLEGESTATISTIK_QUELLE.seite} rel="nofollow noopener" target="_blank" class="underline">
+      Zur Quelle
+    </a>
+  </p>
+
+  <h2 class="mt-14 font-display text-2xl text-ink">Beratung vor dem Heimeinzug {imLand}</h2>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    {rat.text} Die Pflegeberatung selbst ist ein Anspruch gegenüber Ihrer Pflegekasse, kostenlos
+    und auf Wunsch bei Ihnen zu Hause (§ 7a SGB XI).
+  </p>
+  <p class="mt-2 text-[14px] text-ink-mute">
+    <a href={rat.url} rel="nofollow noopener" target="_blank" class="underline">Übersicht für {land.name}</a>,
+    abgerufen am {datum(rat.abgerufen)}
+  </p>
+
+  {/* LANDESRECHT: Heimgesetz, Pflegewohngeld, Landespflegegeld — folgt mit landesrecht-pflege.json. */}
 
   <h2 class="mt-14 font-display text-2xl text-ink">{land.name} zwischen seinen Nachbarn im Ranking</h2>
   <ul class="mt-4 flex flex-col divide-y divide-rule border-y border-rule">
