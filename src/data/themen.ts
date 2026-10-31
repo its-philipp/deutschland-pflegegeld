@@ -33,6 +33,13 @@ export function pfadVon(thema: Thema): string {
 
 export const THEMEN: Thema[] = [
   {
+    slug: 'pflegegrad-beantragen',
+    titel: 'Pflegegrad beantragen: Antrag, Begutachtung, Fristen',
+    kategorie: 'antrag',
+    kurz: 'Formlos bei der Pflegekasse beantragen — und welche Fristen danach für die Kasse laufen.',
+    pfad: '/pflegegrad-beantragen/',
+  },
+  {
     slug: 'pflegegrad-berechnen',
     titel: 'Pflegegrad berechnen: Selbsteinschätzung',
     kategorie: 'antrag',

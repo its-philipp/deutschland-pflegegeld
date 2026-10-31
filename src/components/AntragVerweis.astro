@@ -1,0 +1,31 @@
+---
+import Icon from './Icon.astro';
+
+/**
+ * Der Hinweis auf `/pflegegrad-beantragen/` — statt des ganzen Antragsblocks.
+ *
+ * Bis 2026-10-31 stand `NaechsterSchritt` vollständig auf acht Seiten; auf den
+ * Pflegegrad-Seiten war er rund ein Drittel aller Sätze, wortgleich. Er lebt
+ * jetzt auf einer eigenen Seite, die nach genau dieser Frage gesucht wird, und
+ * hier steht nur der Weg dorthin.
+ */
+interface Props {
+  akzent?: string;
+}
+
+const { akzent = 'var(--color-ink)' } = Astro.props;
+---
+
+<a
+  href="/pflegegrad-beantragen/"
+  style={`--accent: ${akzent}`}
+  class="mt-14 flex items-start gap-4 rounded-lg border border-rule p-5 transition-colors hover:bg-(--accent)/5"
+>
+  <Icon name="pfeil-rechts" class="mt-1 h-6 w-6 shrink-0 text-(--accent)" />
+  <span>
+    <span class="block font-display text-xl text-ink">Pflegegrad beantragen: Weg und Fristen</span>
+    <span class="mt-1 block text-ink-soft">
+      Antrag, Begutachtung, Bescheid — mit den Fristen, die für die Pflegekasse laufen.
+    </span>
+  </span>
+</a>

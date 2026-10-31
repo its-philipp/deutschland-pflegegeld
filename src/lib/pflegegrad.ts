@@ -110,6 +110,16 @@ export function pflegegradAus(gesamtpunkte: number): 0 | 1 | 2 | 3 | 4 | 5 {
 }
 
 /**
+ * Die Punktspanne eines Grades — aus derselben Tabelle wie `pflegegradAus`,
+ * damit Seite und Rechner nie zwei verschiedene Grenzen nennen. `unter` ist
+ * `null` bei Pflegegrad 5, der bis einschließlich 100 reicht.
+ */
+export function punktspanne(grad: 1 | 2 | 3 | 4 | 5): { ab: number; unter: number | null } {
+  const i = SCHWELLEN.findIndex((s) => s.grad === grad);
+  return { ab: SCHWELLEN[i]!.ab, unter: i === 0 ? null : SCHWELLEN[i - 1]!.ab };
+}
+
+/**
  * Kinder bis zu 18 Monaten (§ 15 Abs. 7).
  *
  * Dieselben Punktspannen führen jeweils einen Grad höher; ab 12,5 Punkten

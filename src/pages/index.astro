@@ -4,7 +4,7 @@ import PflegegradBadge from '../components/PflegegradBadge.astro';
 import PflegegradSkala from '../components/PflegegradSkala.astro';
 import AdSlot from '../components/AdSlot.astro';
 import Icon from '../components/Icon.astro';
-import NaechsterSchritt from '../components/NaechsterSchritt.astro';
+import AntragVerweis from '../components/AntragVerweis.astro';
 import ThemenSuche from '../components/ThemenSuche.tsx';
 import type { ThemenSucheItem } from '../components/ThemenSuche.tsx';
 import { SITE_NAME } from '../lib/site';
@@ -167,5 +167,5 @@ const themenItems: ThemenSucheItem[] = THEMEN.map((thema) => {
     </ul>
   </section>
 
-  <NaechsterSchritt akzent={accentFor('antrag')} />
+  <AntragVerweis akzent={accentFor('antrag')} />
 </BaseLayout>

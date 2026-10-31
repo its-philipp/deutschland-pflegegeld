@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import AdSlot from '../components/AdSlot.astro';
 import Disclaimer from '../components/Disclaimer.astro';
 import Icon from '../components/Icon.astro';
-import NaechsterSchritt from '../components/NaechsterSchritt.astro';
+import AntragVerweis from '../components/AntragVerweis.astro';
 import { accentFor } from '../data/kategorien';
 import {
   ENTLASTUNGSBETRAG,
@@ -340,7 +340,7 @@ const beschreibung = `Pflegegeld-Tabelle ${JAHR}: alle Beträge für Pflegegrad 
     </ul>
   </section>
 
-  <NaechsterSchritt akzent={akzent} />
+  <AntragVerweis akzent={akzent} />
 
   <Disclaimer />
 

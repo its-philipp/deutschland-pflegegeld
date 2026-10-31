@@ -6,7 +6,16 @@ import Icon from '../components/Icon.astro';
 import PflegegradBadge from '../components/PflegegradBadge.astro';
 import PflegegradSkala from '../components/PflegegradSkala.astro';
 import LeistungsRechner from '../components/LeistungsRechner';
-import NaechsterSchritt from '../components/NaechsterSchritt.astro';
+import AntragVerweis from '../components/AntragVerweis.astro';
+import {
+  BERATUNGSBESUCH,
+  BEZEICHNUNG,
+  QUELLE_BEDARFSKONSTELLATION,
+  QUELLE_BERATUNGSBESUCH,
+  QUELLE_KINDER,
+  QUELLE_PUNKTE,
+} from '../data/pflegegrade';
+import { punktspanne } from '../lib/pflegegrad';
 import { accentFor } from '../data/kategorien';
 import { pfadVon, THEMEN } from '../data/themen';
 import {
@@ -62,6 +71,17 @@ const heim = VOLLSTATIONAER.betrag[grad];
 const euro = (b: number) =>
   b.toLocaleString('de-DE', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
 const datum = (iso: string) => iso.split('-').reverse().join('.');
+const komma = (n: number) => n.toLocaleString('de-DE');
+
+// § 15 Abs. 3 und 7 SGB XI, aus derselben Schwellentabelle wie der Rechner.
+const spanne = punktspanne(grad);
+const punkteText =
+  spanne.unter === null
+    ? `${komma(spanne.ab)} bis 100 Gesamtpunkte`
+    : `${komma(spanne.ab)} bis unter ${komma(spanne.unter)} Gesamtpunkte`;
+const naechster = grad < 5 ? punktspanne((grad + 1) as Pflegegrad) : null;
+// Kinder bis 18 Monate erreichen jeden Grad ab 2 mit der Spanne des Grades darunter.
+const saeugling = grad >= 2 ? punktspanne((grad - 1) as Pflegegrad) : null;
 
 /** One row of the benefits table. `betrag === null` means "kein Anspruch". */
 interface Zeile {
@@ -265,16 +285,79 @@ const beschreibung = hatGeldleistung
     )
   }
 
-  <h2 class="mt-14 font-display text-2xl text-ink">Wo Pflegegrad {grad} auf der Skala liegt</h2>
+  <h2 class="mt-14 font-display text-2xl text-ink">Was Pflegegrad {grad} nach dem Gesetz bedeutet</h2>
   <p class="mt-2 max-w-prose text-ink-soft">
-    Diese Farbskala bedeutet auf jeder Seite dieser Website dasselbe. Je dunkler, desto höher der
-    Grad — und desto mehr Leistungen stehen zu.
+    Das Gesetz beschreibt Pflegegrad {grad} als „{BEZEICHNUNG[grad]}". Entscheidend ist der
+    Punktwert aus der Begutachtung: <strong class="text-ink">{punkteText}</strong>.
+    {
+      naechster
+        ? ` Ab ${komma(naechster.ab)} Punkten beginnt Pflegegrad ${grad + 1}.`
+        : ' Höher geht die Skala nicht.'
+    }
+    {grad === 1 && ' Unter 12,5 Punkten wird kein Pflegegrad festgestellt.'}
   </p>
   <div class="mt-5">
     <PflegegradSkala aktiv={grad} />
   </div>
+  {
+    grad === 5 && (
+      <p class="mt-5 max-w-prose text-ink-soft">
+        Für Pflegegrad 5 gibt es zusätzlich eine Ausnahme von der Punktgrenze: Wer eine besondere
+        Bedarfskonstellation mit einem
+        außergewöhnlich hohen Hilfebedarf hat, kann aus pflegefachlichen Gründen Pflegegrad 5
+        bekommen, auch mit weniger als 90 Punkten. Welche Konstellationen das sind, legt der
+        Medizinische Dienst Bund in seinen Begutachtungs-Richtlinien fest.
+      </p>
+    )
+  }
+  {
+    saeugling && (
+      <p class="mt-5 max-w-prose text-ink-soft">
+        Für Kinder bis 18 Monate gilt eine eigene Einstufung, jeweils einen Grad höher:
+        Pflegegrad {grad} schon ab {komma(saeugling.ab)} Punkten.
+      </p>
+    )
+  }
+  <p class="mt-3 text-[14px] text-ink-mute">
+    {
+      [QUELLE_PUNKTE, ...(grad === 5 ? [QUELLE_BEDARFSKONSTELLATION] : []), ...(saeugling ? [QUELLE_KINDER] : [])].map(
+        (q, i) => (
+          <>
+            {i > 0 && ' · '}
+            <a href={q.url} rel="nofollow noopener" target="_blank" class="underline">
+              {q.fundstelle}
+            </a>
+          </>
+        ),
+      )
+    }
+    {' '}— gelesen am {datum(QUELLE_PUNKTE.abgerufen)}. Selbst nachrechnen:{' '}
+    <a href="/pflegegrad-berechnen/" class="underline">Pflegegrad berechnen</a>.
+  </p>
 
-  <NaechsterSchritt akzent={akzent} />
+  <h2 class="mt-14 font-display text-2xl text-ink">Der Beratungsbesuch bei Pflegegrad {grad}</h2>
+  <p class="mt-2 max-w-prose text-ink-soft">
+    {BERATUNGSBESUCH[grad].text}
+    {
+      BERATUNGSBESUCH[grad].pflicht &&
+        ' Das ist keine Formalie: Wird der Besuch nicht abgerufen, hat die Pflegekasse das Pflegegeld angemessen zu kürzen und im Wiederholungsfall zu entziehen.'
+    }
+  </p>
+  <p class="mt-3 max-w-prose text-ink-soft">
+    {
+      hatGeldleistung &&
+        'Wer statt Pflegegeld einen Pflegedienst nutzt, kann ebenfalls halbjährlich eine Beratung abrufen, muss aber nicht. '
+    }
+    Bis einschließlich 31. März 2027 findet auf Wunsch jede zweite Beratung per Videogespräch
+    statt; die erste ist immer zu Hause.
+  </p>
+  <p class="mt-2 text-[14px] text-ink-mute">
+    <a href={QUELLE_BERATUNGSBESUCH.url} rel="nofollow noopener" target="_blank" class="underline">
+      {QUELLE_BERATUNGSBESUCH.fundstelle}
+    </a>
+  </p>
+
+  <AntragVerweis akzent={akzent} />
 
   <h2 class="mt-14 font-display text-2xl text-ink">Andere Pflegegrade</h2>
   <ul class="mt-4 flex flex-col divide-y divide-rule border-y border-rule">
